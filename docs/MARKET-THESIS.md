@@ -37,6 +37,10 @@ Sources: [Microsoft FY2026 Q2 earnings](https://www.microsoft.com/en-us/investor
   AI tools daily. Among software developers using agents at work, 84% use them
   for software development.
   [Stack Overflow 2025 AI survey](https://survey.stackoverflow.co/2025/ai)
+- Anthropic's 2026 study analyzed roughly 400,000 Claude Code sessions from
+  about 235,000 people and reports that Claude Code users average 20 hours per
+  week in the tool.
+  [Anthropic agentic-coding study](https://www.anthropic.com/research/claude-code-expertise)
 
 The implication is not merely more generated code. Teams now have more parallel
 agent work, more context trapped in individual sessions, and more output that
@@ -63,6 +67,8 @@ risk.
 |---|---|---|
 | Claude Code Remote Control | A local terminal session can stay synchronized across terminal, browser, and phone, survive disconnects, and accept prompts from multiple surfaces. | The official flow is described as one user continuing their own session across devices. It does not document cross-provider team identity or named teammate authorship. [Claude Code Remote Control](https://code.claude.com/docs/en/remote-control) |
 | GitHub Agent HQ | Repository members can see cloud-agent sessions, live logs, steering prompts, commits, and audit context. | It centers GitHub cloud-agent jobs and PRs. `mpai` centers local native sessions across vendors before work becomes a PR. [GitHub agent session management](https://docs.github.com/en/copilot/how-tos/copilot-on-github/use-copilot-agents/manage-and-track-agents) |
+| ClaudeReview | Developers want one-command, cross-provider sharing of Claude Code, Codex, and Gemini transcripts for review. | It publishes encrypted read-only artifacts and deep links. `mpai` joins an owner-hosted live session and preserves the teammate's identity on new prompts. [ClaudeReview](https://claudereview.com/) |
+| AQ | Teams will pay for multiplayer agent workspaces with identity, access control, live terminals, editors, and previews. | It moves work into a shared cloud workspace. `mpai` is the narrower native layer for sessions already running on teammates' own machines. [AQ session-sharing guide](https://aq.dev/guides/share-a-claude-code-session-with-your-team/) |
 | VS Code Live Share | Developers value real-time identity, host/guest permissions, shared terminals, and following collaborators. | It is editor- and terminal-sharing rather than an AI-session directory; Microsoft now labels it maintenance mode. [Microsoft Live Share](https://learn.microsoft.com/en-us/visualstudio/liveshare/use/share-project-join-session-visual-studio-code) |
 | Cursor Teams | Companies already pay for centralized billing, administration, model controls, SCIM, audit logs, and service accounts around AI development. | Cursor owns one editor. `mpai` should remain provider- and surface-neutral. [Cursor pricing](https://cursor.com/pricing) |
 
