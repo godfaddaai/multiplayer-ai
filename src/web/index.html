@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="mpai-dashboard-token" content="__MPAI_DASHBOARD_TOKEN__">
+    <title>Multiplayer AI</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="team-panel" aria-label="Team">
+        <header class="brand">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+          <span>
+            <strong>Multiplayer</strong>
+            <small>AI work, together</small>
+          </span>
+        </header>
+
+        <div class="section-label">
+          <span>People</span>
+          <span id="online-count" class="count">0</span>
+        </div>
+        <nav id="people" class="people-list" aria-label="Teammates"></nav>
+
+        <div class="privacy-card">
+          <span class="privacy-icon" aria-hidden="true">↔</span>
+          <div>
+            <strong>Tailnet private</strong>
+            <small>Nothing is published to the web.</small>
+          </div>
+        </div>
+        <div id="me" class="me-card"></div>
+      </aside>
+
+      <section class="tasks-panel" aria-label="AI tasks">
+        <header class="tasks-header">
+          <div>
+            <span class="eyebrow">Their workspace</span>
+            <h1 id="peer-title">Choose a teammate</h1>
+          </div>
+          <button id="refresh" class="icon-button" type="button" aria-label="Refresh tasks">↻</button>
+        </header>
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="search" type="search" placeholder="Find a task" autocomplete="off">
+          <kbd>⌘ K</kbd>
+        </label>
+        <div class="section-label task-label">
+          <span>Recent work</span>
+          <span id="task-count" class="count">0</span>
+        </div>
+        <div id="tasks" class="task-list"></div>
+      </section>
+
+      <main class="context-panel">
+        <header id="context-header" class="context-header">
+          <div class="context-heading">
+            <span id="task-provider" class="provider-badge">AI</span>
+            <div>
+              <h2 id="task-title">Shared context lives here</h2>
+              <p id="task-meta">Choose a teammate and one of their tasks.</p>
+            </div>
+          </div>
+          <div id="live-state" class="live-state"><i></i><span>Waiting</span></div>
+        </header>
+
+        <div id="transcript" class="transcript" aria-live="polite">
+          <div class="empty-state">
+            <div class="empty-orbit" aria-hidden="true"><i></i><i></i><i></i></div>
+            <h3>Step into the same conversation.</h3>
+            <p>Read the real context, see which AI is working, and add a turn with your name attached.</p>
+          </div>
+        </div>
+
+        <form id="composer" class="composer">
+          <label for="prompt" class="sr-only">Prompt this task</label>
+          <textarea id="prompt" rows="1" placeholder="Choose a task to join the conversation…" disabled></textarea>
+          <div class="composer-footer">
+            <span id="send-as">Your name stays attached to the turn</span>
+            <button id="send" type="submit" disabled>
+              <span>Send turn</span><b aria-hidden="true">↗</b>
+            </button>
+          </div>
+        </form>
+      </main>
+
+      <aside class="activity-panel" aria-label="Live collaboration">
+        <header>
+          <span class="eyebrow">Live room</span>
+          <h2>Who’s here</h2>
+        </header>
+        <div class="signal-rail" aria-hidden="true"></div>
+        <div id="presence" class="presence-list"></div>
+        <section class="room-note">
+          <span>Names, not mystery prompts</span>
+          <p>Every remote turn is attributed and saved in the host’s audit trail.</p>
+        </section>
+        <section class="provider-key">
+          <span class="eyebrow">Works where you work</span>
+          <div><i class="codex-dot"></i> Codex</div>
+          <div><i class="claude-dot"></i> Claude Code</div>
+        </section>
+      </aside>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="/app.js" defer></script>
+  </body>
+</html>

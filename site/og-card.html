@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <style>
+      * { box-sizing: border-box; }
+      html, body { width: 1200px; height: 630px; margin: 0; overflow: hidden; }
+      body {
+        position: relative;
+        padding: 58px 64px;
+        color: #f4f1e8;
+        background:
+          radial-gradient(circle at 70% 20%, rgba(118, 135, 255, .18), transparent 35%),
+          radial-gradient(circle at 93% 70%, rgba(255, 143, 107, .12), transparent 30%),
+          #0b0d12;
+        font-family: "Manrope", sans-serif;
+      }
+      body::after {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 350px;
+        height: 350px;
+        opacity: .28;
+        content: "";
+        background-image: linear-gradient(rgba(244,241,232,.12) 1px, transparent 1px), linear-gradient(90deg, rgba(244,241,232,.12) 1px, transparent 1px);
+        background-size: 36px 36px;
+      }
+      .top { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 21px; }
+      .mark { position: relative; width: 31px; height: 31px; display: inline-flex; align-items: center; justify-content: center; }
+      .mark::after { width: 6px; height: 6px; content: ""; background: #f4f1e8; border-radius: 50%; }
+      .mark i { position: absolute; width: 14px; height: 24px; border-style: solid; border-width: 2px; }
+      .mark i:first-child { left: 0; border-color: #7687ff transparent #7687ff #7687ff; }
+      .mark i:last-child { right: 0; border-color: #ff8f6b #ff8f6b #ff8f6b transparent; }
+      .alpha { margin-left: 4px; padding: 5px 8px; color: #9fa7b4; border: 1px solid rgba(244,241,232,.15); border-radius: 999px; font: 400 9px "DM Mono"; text-transform: uppercase; }
+      h1 { width: 590px; margin: 66px 0 0; font-size: 76px; font-weight: 500; line-height: .98; letter-spacing: -.065em; }
+      h1 em { color: transparent; font-style: normal; -webkit-text-stroke: 1px rgba(244,241,232,.72); }
+      .deck { width: 500px; margin: 25px 0 0; color: #aeb5c0; font-size: 17px; line-height: 1.55; letter-spacing: -.02em; }
+      .terminal {
+        position: absolute;
+        right: 58px;
+        bottom: 52px;
+        width: 488px;
+        height: 376px;
+        overflow: hidden;
+        background: #11151c;
+        border: 1px solid rgba(244,241,232,.18);
+        border-radius: 16px;
+        box-shadow: 0 30px 70px rgba(0,0,0,.4);
+      }
+      .chrome { height: 42px; padding: 0 15px; display: flex; align-items: center; justify-content: space-between; color: #7b8491; background: #181c25; border-bottom: 1px solid rgba(244,241,232,.12); font: 400 9px "DM Mono"; }
+      .dots { display: flex; gap: 6px; }
+      .dots i { width: 7px; height: 7px; background: #414754; border-radius: 50%; }
+      .connected { display: flex; align-items: center; gap: 7px; }
+      .connected i { width: 6px; height: 6px; background: #72d9ac; border-radius: 50%; box-shadow: 0 0 10px rgba(114,217,172,.7); }
+      .room { padding: 22px 25px; font-family: "DM Mono", monospace; }
+      .session { display: flex; align-items: center; justify-content: space-between; padding-bottom: 15px; border-bottom: 1px solid rgba(244,241,232,.12); }
+      .provider { padding: 5px 7px; color: #aeb6ff; background: rgba(118,135,255,.12); border: 1px solid rgba(118,135,255,.2); border-radius: 4px; font-size: 7px; }
+      .session strong { margin-left: 10px; color: #dfe2e8; font: 600 11px "Manrope"; }
+      .live { margin-left: auto; color: #7c8591; font-size: 7px; letter-spacing: .1em; }
+      .turn { position: relative; margin-top: 20px; padding-left: 31px; color: #aeb5bf; font-size: 9px; line-height: 1.6; }
+      .turn .avatar { position: absolute; top: 0; left: 0; width: 21px; height: 21px; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 7px; }
+      .maya { color: #642713; background: #ff8f6b; }
+      .alex { color: #1d275f; background: #7687ff; }
+      .turn header { color: #c9ced6; font-size: 8px; }
+      .turn p { margin: 7px 0 0; }
+      .remote { margin-left: -5px; padding: 12px 12px 12px 35px; background: linear-gradient(90deg, rgba(118,135,255,.14), transparent); border-left: 2px solid #7687ff; border-radius: 0 8px 8px 0; }
+      .remote .avatar { top: 11px; left: -1px; transform: translateX(-50%); }
+      .remote b { margin-left: 6px; color: #9da8ff; font-weight: 400; }
+      .receipt { margin: 15px 0 0 30px; color: #66717e; font-size: 7px; }
+      .receipt i { display: inline-block; width: 5px; height: 5px; margin-right: 6px; background: #72d9ac; border-radius: 50%; }
+      .footer { position: absolute; left: 64px; bottom: 55px; color: #7f8895; font: 400 9px "DM Mono"; text-transform: uppercase; letter-spacing: .08em; }
+    </style>
+  </head>
+  <body>
+    <div class="top"><span class="mark"><i></i><i></i></span><span>mpai</span><span class="alpha">open source alpha</span></div>
+    <h1>Your teammate’s AI session.<br><em>On your terminal.</em></h1>
+    <p class="deck">Step into the exact Codex or Claude Code conversation. Arrive with the context. Prompt as yourself.</p>
+    <div class="terminal">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span>mpai @maya</span><span class="connected"><i></i> tailnet connected</span></div>
+      <div class="room">
+        <div class="session"><span><small class="provider">CODEX</small><strong>Release hardening</strong></span><span class="live">● LIVE</span></div>
+        <div class="turn"><span class="avatar maya">M</span><header>MAYA</header><p>Trace the invite boundary before we cut the alpha. I want direct session IDs to fail closed.</p></div>
+        <div class="turn"><span class="avatar" style="color:#7687ff;background:rgba(118,135,255,.12)">✦</span><header>CODEX</header><p>I found the shared access check. The direct-read test is the one missing assertion.</p></div>
+        <div class="turn remote"><span class="avatar alex">A</span><header>ALEX <b>via mpai</b></header><p>Add the test, then run only the server suite.</p></div>
+        <div class="receipt"><i></i>Alex’s turn was attributed in Maya’s native session</div>
+      </div>
+    </div>
+    <div class="footer">Terminal native · named prompts · tailnet private</div>
+  </body>
+</html>

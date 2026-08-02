@@ -1,0 +1,46 @@
+name: Bug report
+description: Report a reproducible mpai defect without sensitive data
+title: "[bug] "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Never include an invite URL, token, real transcript, tailnet address, or account identifier.
+        Report security issues through private vulnerability reporting instead.
+  - type: input
+    id: version
+    attributes:
+      label: mpai version
+      placeholder: 0.4.0
+    validations:
+      required: true
+  - type: dropdown
+    id: provider
+    attributes:
+      label: Provider
+      options:
+        - Codex managed / proxy
+        - Codex standalone
+        - Claude Code
+        - Provider-neutral
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Minimal reproduction
+      description: Use synthetic session names and redact all private data.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected and observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: checks
+    attributes:
+      label: Relevant doctor output
+      description: Include versions and statuses only. Remove paths, IPs, identities, and tokens.

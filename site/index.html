@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Open your teammate's live Codex or Claude Code session from your own terminal. Keep the context, prompt as yourself, and make AI work multiplayer.">
+    <meta name="theme-color" content="#0b0d12">
+    <meta property="og:title" content="mpai — AI coding is multiplayer now">
+    <meta property="og:description" content="Step into your teammate's Codex or Claude Code session from the terminal you already use.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://reaganroo22.github.io/multiplayer-ai/">
+    <meta property="og:image" content="https://reaganroo22.github.io/multiplayer-ai/og-card.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>mpai — AI coding is multiplayer now</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="mpai home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
+        <span>mpai</span>
+        <em>alpha 0.4</em>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#how">How it works</a>
+        <a href="#security">Security</a>
+        <a href="https://github.com/reaganroo22/multiplayer-ai#readme">Docs</a>
+      </nav>
+      <a class="github-link" href="https://github.com/reaganroo22/multiplayer-ai" data-github-link>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .8a11.4 11.4 0 0 0-3.6 22.2c.6.1.8-.2.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.4-1.3-5.4-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0C15.7 5 16.7 5.3 16.7 5.3c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.4 5.7.4.4.8 1.1.8 2.1v3.1c0 .4.2.7.8.6A11.4 11.4 0 0 0 12 .8Z"/></svg>
+        <span class="github-label">Star on GitHub</span>
+        <span class="star-count" data-star-count hidden></span>
+      </a>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top">
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> Open source · terminal native · tailnet private</p>
+          <h1>Your teammate’s AI session.<br><em>On your terminal.</em></h1>
+          <p class="hero-deck">See the exact Codex or Claude Code conversation already in motion. Arrive with the context. Prompt as yourself. Keep the tools your team already chose.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://github.com/reaganroo22/multiplayer-ai" data-github-link>
+              <span>Star the repo</span><b aria-hidden="true">↗</b>
+            </a>
+            <a class="button button-quiet" href="#quickstart"><span>Install the alpha</span><b aria-hidden="true">↓</b></a>
+          </div>
+        </div>
+
+        <div class="hero-aside" aria-label="Product principles">
+          <div><span>01</span><p>No new IDE</p></div>
+          <div><span>02</span><p>No mystery prompts</p></div>
+          <div><span>03</span><p>No public relay</p></div>
+        </div>
+
+        <div class="terminal-stage" aria-label="Interactive mpai terminal demonstration">
+          <div class="terminal-chrome">
+            <div class="window-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="terminal-title"><span>~/studio</span><b>mpai @maya</b></div>
+            <div class="connection"><i></i> tailnet connected</div>
+          </div>
+
+          <div class="terminal-body">
+            <aside class="session-rail" aria-label="Shared sessions">
+              <div class="rail-heading">
+                <span>Maya’s sessions</span>
+                <kbd>/sessions</kbd>
+              </div>
+              <button class="session active" type="button" data-demo-session="0" aria-pressed="true">
+                <i class="provider codex"></i>
+                <span><strong>Release hardening</strong><small>Codex · 2m</small></span>
+                <b>2</b>
+              </button>
+              <button class="session" type="button" data-demo-session="1" aria-pressed="false">
+                <i class="provider claude"></i>
+                <span><strong>Auth handoff</strong><small>Claude Code · 18m</small></span>
+              </button>
+              <button class="session" type="button" data-demo-session="2" aria-pressed="false">
+                <i class="provider codex"></i>
+                <span><strong>Billing refactor</strong><small>Codex · 1h</small></span>
+              </button>
+              <div class="rail-presence">
+                <span class="avatar avatar-maya">M</span>
+                <span class="avatar avatar-alex">A</span>
+                <p><b>Maya + Alex</b><br>in this room</p>
+              </div>
+            </aside>
+
+            <div class="transcript-wrap">
+              <div class="transcript-header">
+                <div>
+                  <span class="demo-provider">CODEX</span>
+                  <h2 data-demo-title>Release hardening</h2>
+                </div>
+                <span class="live-pill"><i></i> LIVE</span>
+              </div>
+
+              <div class="transcript" data-demo-transcript aria-live="polite">
+                <article class="turn human maya">
+                  <header><span class="avatar avatar-maya">M</span><strong>Maya</strong><time>10:41</time></header>
+                  <p>Trace the invite boundary before we cut the alpha. I want direct session IDs to fail closed.</p>
+                </article>
+                <article class="turn agent">
+                  <header><span class="agent-glyph">✦</span><strong>Codex</strong><time>10:42</time></header>
+                  <p>I found the access check shared by list, transcript, presence, audit, and prompt routes. The direct-read test is the one missing assertion.</p>
+                  <pre><code><span>+</span> assert.equal(directRead.status, 404)
+<span>+</span> assert.equal(prompt.status, 404)</code></pre>
+                </article>
+                <article class="turn human alex remote-turn">
+                  <header><span class="avatar avatar-alex">A</span><strong>Alex</strong><span class="from-peer">via mpai</span><time>10:44</time></header>
+                  <p>Add the test, then run only the server suite. Don’t broaden the sharing default.</p>
+                </article>
+                <article class="system-turn"><i></i><span>Alex’s turn was attributed in Maya’s native Codex transcript</span></article>
+              </div>
+
+              <div class="terminal-composer">
+                <div class="send-as"><span class="avatar avatar-alex">A</span><span>Sending as <b>Alex</b></span></div>
+                <div class="fake-input"><span>Ask inside this exact session…</span><kbd>return ↵</kbd></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="hero-caption"><span>Product demo</span> One terminal command opens a teammate’s explicitly shared native session—with authorship intact.</p>
+      </section>
+
+      <section class="quickstart section" id="quickstart">
+        <div class="section-kicker">00 / QUICKSTART</div>
+        <div class="quickstart-copy">
+          <h2>Two Macs.<br>Three commands.</h2>
+          <p>Install from GitHub, name yourself, then enter a teammate’s room. The alpha uses your existing Tailscale network and your local Codex or Claude Code sessions.</p>
+        </div>
+        <div class="command-stack">
+          <div class="command-row"><span>1</span><code>npm install -g github:reaganroo22/multiplayer-ai</code><button type="button" data-copy="npm install -g github:reaganroo22/multiplayer-ai" aria-label="Copy install command">copy</button></div>
+          <div class="command-row"><span>2</span><code>mpai setup --name "Alex"</code><button type="button" data-copy='mpai setup --name "Alex"' aria-label="Copy setup command">copy</button></div>
+          <div class="command-row accent"><span>3</span><code>mpai @maya</code><button type="button" data-copy="mpai @maya" aria-label="Copy join command">copy</button></div>
+        </div>
+        <p class="requirements">Public alpha · macOS · Node 20+ · Tailscale · Codex and/or Claude Code</p>
+      </section>
+
+      <section class="manifesto section" id="how">
+        <div class="manifesto-lead">
+          <p class="section-kicker">01 / THE MISSING LAYER</p>
+          <h2>AI got fast.<br><em>Context stayed lonely.</em></h2>
+        </div>
+        <div class="manifesto-body">
+          <p class="large-copy">Your cofounder is three hours deep in a Claude Code session. The useful context is not in Slack, not in a ticket, and not in the latest commit. It’s alive in the conversation.</p>
+          <p>mpai lets you enter that exact conversation from your own terminal—without screen sharing, transcript paste, or asking them to re-explain the last 40 turns.</p>
+        </div>
+        <div class="stat-row">
+          <a href="https://www.microsoft.com/en-us/investor/events/fy-2026/earnings-fy-2026-q2" target="_blank" rel="noreferrer">
+            <strong>4.7M+</strong><span>paid GitHub Copilot subscribers <b>Microsoft FY26 Q2 ↗</b></span>
+          </a>
+          <a href="https://cloud.google.com/blog/products/ai-machine-learning/announcing-the-2025-dora-report" target="_blank" rel="noreferrer">
+            <strong>90%</strong><span>of surveyed tech professionals use AI at work <b>DORA 2025 ↗</b></span>
+          </a>
+          <div><strong>1 → 2</strong><span>the product shift: AI sessions become a shared team surface</span></div>
+        </div>
+      </section>
+
+      <section class="steps section">
+        <p class="section-kicker">02 / STAY WHERE THE WORK IS</p>
+        <div class="steps-grid">
+          <article>
+            <span class="step-number">01</span>
+            <div class="step-visual host-visual" aria-hidden="true">
+              <div class="mini-terminal"><b>Maya</b><code>claude</code><i></i></div>
+              <div class="pulse-ring"></div>
+            </div>
+            <h3>Work normally.</h3>
+            <p>Keep using Codex or Claude Code in the terminal or surface you already chose. mpai discovers the native sessions on your Mac.</p>
+          </article>
+          <article>
+            <span class="step-number">02</span>
+            <div class="step-visual join-visual" aria-hidden="true">
+              <code>$ mpai @maya<span>_</span></code>
+              <div class="identity-line"><i class="avatar avatar-maya">M</i><b></b><i class="avatar avatar-alex">A</i></div>
+            </div>
+            <h3>Join the context.</h3>
+            <p>See each shared session separately. Open one and follow the real transcript as new native turns are persisted.</p>
+          </article>
+          <article>
+            <span class="step-number">03</span>
+            <div class="step-visual prompt-visual" aria-hidden="true">
+              <span class="name-tag alex-tag">Alex</span><p>Check the retry boundary.</p>
+              <span class="receipt">✓ attributed</span>
+            </div>
+            <h3>Prompt as you.</h3>
+            <p>Your turn lands in that exact agent session with your identity attached. Everyone knows who asked for what.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="architecture section" id="security">
+        <div class="architecture-copy">
+          <p class="section-kicker">03 / OWNER-CONTROLLED</p>
+          <h2>The context moves.<br><em>Control does not.</em></h2>
+          <p>mpai is a small coordination layer above the agents—not a transcript cloud and not a remote shell. Your machine stays the host. Sharing is explicit. Tailscale supplies the private device network.</p>
+          <a class="text-link" href="https://github.com/reaganroo22/multiplayer-ai/blob/main/SECURITY.md">Read the security model <span>↗</span></a>
+        </div>
+        <div class="architecture-map" role="img" aria-label="Alex connects through Tailscale and mpai to Maya's explicitly shared Codex and Claude Code sessions">
+          <div class="map-person person-alex"><span class="avatar avatar-alex">A</span><strong>Alex</strong><small>your terminal</small></div>
+          <div class="map-line line-one"><span>named turn</span></div>
+          <div class="map-core"><div class="brand-mark" aria-hidden="true"><i></i><i></i></div><strong>mpai</strong><small>identity · access · presence</small></div>
+          <div class="map-line line-two"><span>Tailscale</span></div>
+          <div class="map-person person-maya"><span class="avatar avatar-maya">M</span><strong>Maya’s Mac</strong><small>owner + host</small></div>
+          <div class="map-agents">
+            <div><i class="provider codex"></i><span>Codex</span></div>
+            <div><i class="provider claude"></i><span>Claude Code</span></div>
+          </div>
+          <span class="map-note note-one">no public listener</span>
+          <span class="map-note note-two">shared sessions only</span>
+        </div>
+        <div class="guardrails">
+          <article><span>↗</span><h3>Explicit sharing</h3><p>New invites see only sessions the host intentionally shares. List, read, prompt, presence, and audit use the same rule.</p></article>
+          <article><span>◎</span><h3>Human identity</h3><p>Invites bind to the first Tailscale identity that uses them. Remote turns keep the teammate’s chosen name.</p></article>
+          <article><span>⌁</span><h3>Narrow authority</h3><p>No arbitrary shell execution, deletion, archival, or remote approval delegation. A denied approval stays denied.</p></article>
+        </div>
+      </section>
+
+      <section class="alpha-section section" id="alpha">
+        <div class="alpha-heading">
+          <p class="section-kicker">04 / HONEST ALPHA</p>
+          <h2>Useful now.<br><em>Clear about the edge.</em></h2>
+        </div>
+        <div class="alpha-columns">
+          <div class="alpha-list works">
+            <h3><span>●</span> Works today</h3>
+            <ul>
+              <li>Separate Codex and Claude Code session discovery</li>
+              <li>Live terminal transcript and session switching</li>
+              <li>Named teammate prompts and presence</li>
+              <li>Viewer / participant roles and revocation</li>
+              <li>Private-by-default session sharing</li>
+              <li>Append-only prompt audit trail</li>
+            </ul>
+          </div>
+          <div class="alpha-list limits">
+            <h3><span>◐</span> Current boundary</h3>
+            <ul>
+              <li>macOS and an existing Tailscale network</li>
+              <li>Managed Codex mode for safe remote prompting</li>
+              <li>Standalone Codex sessions are view-only by default</li>
+              <li>Claude support targets the local Claude Code CLI store</li>
+              <li>Keychain storage and Homebrew distribution are next</li>
+              <li>Not yet certified for large organizations</li>
+            </ul>
+          </div>
+        </div>
+        <a class="alpha-roadmap" href="https://github.com/reaganroo22/multiplayer-ai/blob/main/docs/PUBLIC-ALPHA.md"><span>See every public-alpha gate</span><b>PUBLIC-ALPHA.md ↗</b></a>
+      </section>
+
+      <section class="oss-cta section" id="open-source">
+        <div class="oss-orbit" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <p class="section-kicker">05 / BUILT IN THE OPEN</p>
+        <h2>Make AI<br><em>multiplayer.</em></h2>
+        <p>Star the project, install it on two Macs, and tell us exactly where the shared session breaks. The fastest path to a great product is a real teammate on the other end.</p>
+        <div class="hero-actions centered">
+          <a class="button button-primary light" href="https://github.com/reaganroo22/multiplayer-ai" data-github-link><span>Star on GitHub</span><b aria-hidden="true">↗</b></a>
+          <a class="button button-outline" href="https://github.com/reaganroo22/multiplayer-ai/issues/new?template=feature.yml"><span>Shape the roadmap</span><b aria-hidden="true">＋</b></a>
+        </div>
+        <code class="final-command">npm install -g github:reaganroo22/multiplayer-ai</code>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand footer-brand" href="#top"><span class="brand-mark" aria-hidden="true"><i></i><i></i></span><span>mpai</span></a>
+      <p>Multiplayer infrastructure for humans working with agents.</p>
+      <div>
+        <a href="https://github.com/reaganroo22/multiplayer-ai">GitHub</a>
+        <a href="https://github.com/reaganroo22/multiplayer-ai/blob/main/README.md">Docs</a>
+        <a href="https://github.com/reaganroo22/multiplayer-ai/blob/main/SECURITY.md">Security</a>
+        <a href="https://github.com/reaganroo22/multiplayer-ai/blob/main/LICENSE">MIT License</a>
+      </div>
+    </footer>
+
+    <div class="copy-toast" role="status" aria-live="polite">Copied to clipboard</div>
+  </body>
+</html>

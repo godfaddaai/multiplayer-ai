@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+coverage/
+*.log
+*.tgz
+.env
+.env.*
+!.env.example
+.multiplayer-ai/
