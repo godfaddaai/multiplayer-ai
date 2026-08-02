@@ -26,7 +26,7 @@ import {
 import { tailscaleIPv4 } from "./tailscale.js";
 
 const execFileAsync = promisify(execFile);
-const VERSION = "0.4.0";
+const VERSION = "0.4.1";
 
 const HELP = `Multiplayer AI (mpai)
 
@@ -59,7 +59,7 @@ Joining and collaborating:
   mpai @PEER [TASK_ID]              live terminal attach
   mpai pair @PEER [TASK_ID]         same as above
   mpai list [@PEER] [--limit 25] [--cwd PATH]
-  mpai show [@PEER] THREAD_ID
+  mpai show [@PEER] THREAD_ID [--tail 6]
   mpai prompt @PEER THREAD_ID "message"
   mpai audit @PEER [--limit 100]
 
@@ -411,6 +411,23 @@ async function runList(store, positionals, options) {
 }
 
 async function runShow(store, positionals, options) {
+  const tail = options.tail === undefined ? null : Number(options.tail);
+  if (tail !== null && (!Number.isInteger(tail) || tail < 1 || tail > 100)) {
+    throw new MpaiError("--tail must be an integer from 1 to 100", {
+      code: "INVALID_ARGUMENT",
+      status: 400,
+    });
+  }
+  const limitMessages = (thread) => {
+    if (tail === null) return thread;
+    if (Array.isArray(thread.messages)) {
+      return { ...thread, messages: thread.messages.slice(-tail) };
+    }
+    if (Array.isArray(thread.turns)) {
+      return { ...thread, turns: thread.turns.slice(-tail) };
+    }
+    return thread;
+  };
   const hasPeer = positionals[0]?.startsWith("@");
   if (hasPeer) {
     const { client } = await peerClient(store, positionals[0]);
@@ -420,7 +437,7 @@ async function runShow(store, positionals, options) {
     );
     const threadId = await resolveThreadId(client, input);
     const result = await client.readThread(threadId);
-    console.log(formatThread(result.thread));
+    console.log(formatThread(limitMessages(result.thread)));
     return;
   }
   const input = required(positionals[0], "Usage: mpai show THREAD_ID");
@@ -448,7 +465,7 @@ async function runShow(store, positionals, options) {
       threadId = matches[0].id;
     }
     const result = await hub.readTask(threadId);
-    console.log(formatThread(result.task));
+    console.log(formatThread(limitMessages(result.task)));
   });
 }
 
@@ -467,8 +484,11 @@ async function runPrompt(store, positionals) {
   );
   const { client } = await peerClient(store, peerName);
   const threadId = await resolveThreadId(client, input);
+  let sawAgentDelta = false;
   await client.prompt(threadId, text, {
     onEvent(event) {
+      if (event.type === "agent.delta") sawAgentDelta = true;
+      if (event.type === "agent.message" && sawAgentDelta) return;
       const output = formatStreamEvent(event);
       if (output) process.stdout.write(output);
     },

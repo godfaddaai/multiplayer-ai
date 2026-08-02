@@ -2,6 +2,26 @@
 
 All notable project changes are documented here.
 
+## [0.4.1] - 2026-08-02
+
+Launch-proof patch.
+
+### Added
+
+- `mpai show @peer SESSION_ID --tail N` for focused transcript reads.
+
+### Fixed
+
+- Suppress duplicate Claude output when the CLI emits both streamed deltas and
+  a final assistant message.
+- Correct public package metadata to the live GitHub repository and Pages URL.
+
+### Proven
+
+- Sent a named Reagan prompt from one Mac into Hudson's existing Claude Code
+  session over Tailscale; Claude received the teammate label and answered in
+  the exact session.
+
 ## [0.4.0] - 2026-08-02
 
 First public alpha.

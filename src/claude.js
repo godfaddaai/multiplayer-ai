@@ -306,6 +306,7 @@ export class ClaudeProvider {
     let stderr = "";
     let finalText = "";
     let completion = null;
+    let sawTextDelta = false;
     proc.stderr.on("data", (chunk) => {
       stderr = `${stderr}${chunk}`.slice(-16_384);
     });
@@ -319,7 +320,14 @@ export class ClaudeProvider {
       }
       const event = normalizeClaudeStreamEvent(raw, { taskId, requestId });
       if (!event) return;
-      if (event.type === "agent.delta") finalText += event.text || "";
+      if (event.type === "agent.delta") {
+        sawTextDelta = true;
+        finalText += event.text || "";
+      }
+      if (event.type === "agent.message") {
+        if (sawTextDelta) return;
+        finalText = event.text || "";
+      }
       if (event.type === "turn.completed") completion = event;
       onEvent?.(event);
     });

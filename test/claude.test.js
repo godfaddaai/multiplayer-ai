@@ -59,6 +59,7 @@ const args = process.argv.slice(2);
 if (!args.includes("--resume") || !args.includes("dontAsk")) process.exit(2);
 console.log(JSON.stringify({type:"stream_event",event:{type:"content_block_delta",delta:{type:"text_delta",text:"Shared "}}}));
 console.log(JSON.stringify({type:"stream_event",event:{type:"content_block_delta",delta:{type:"text_delta",text:"reply"}}}));
+console.log(JSON.stringify({type:"assistant",message:{content:[{type:"text",text:"Shared reply"}]}}));
 console.log(JSON.stringify({type:"result",is_error:false,session_id:"${sessionId}",result:"Shared reply"}));
 `,
   );
@@ -102,6 +103,7 @@ test("Claude adapter resumes the exact session and streams a named teammate turn
   assert.equal(result.turn.status, "completed");
   assert.equal(events[0].type, "turn.accepted");
   assert.equal(events.filter((event) => event.type === "agent.delta").length, 2);
+  assert.equal(events.filter((event) => event.type === "agent.message").length, 0);
   assert.equal(events.at(-1).type, "turn.completed");
 });
 

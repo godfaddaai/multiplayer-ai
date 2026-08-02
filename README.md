@@ -109,7 +109,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4
+## What works in 0.4.1
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
@@ -139,7 +139,7 @@ Scriptable commands are available too:
 
 ~~~bash
 mpai list @maya
-mpai show @maya 1234abcd
+mpai show @maya 1234abcd --tail 6
 mpai prompt @maya 1234abcd "Check the retry boundary."
 mpai audit @maya
 ~~~

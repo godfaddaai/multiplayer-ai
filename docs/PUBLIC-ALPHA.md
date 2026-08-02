@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4, August 2, 2026.
+Status: public source alpha 0.4.1, August 2, 2026.
 
 ## Product promise
 
@@ -38,7 +38,7 @@ brew install mpai/tap/mpai
 mpai setup --name Alex
 ```
 
-## Implemented in 0.4
+## Implemented in 0.4.1
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -53,7 +53,8 @@ mpai setup --name Alex
 - One-command macOS service setup and provider-aware health checks.
 - Packaged 0.4 installs on two separate Macs.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
-  Claude Code sessions and open a real Claude Code transcript.
+  Claude Code sessions, open a real Claude Code transcript, and send an
+  attributed Reagan prompt from one Mac into Hudson's existing session.
 
 ## Public-alpha exit gates
 

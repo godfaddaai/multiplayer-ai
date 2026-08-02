@@ -149,7 +149,7 @@ export class CodexClient extends EventEmitter {
         clientInfo: {
           name: "multiplayer_ai",
           title: "Multiplayer AI",
-          version: "0.4.0",
+          version: "0.4.1",
         },
         capabilities: {
           experimentalApi: false,

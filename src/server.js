@@ -138,7 +138,7 @@ export function createMpaiServer({
         sendJson(response, 200, {
           ok: true,
           service: "multiplayer-ai",
-          version: "0.4.0",
+          version: "0.4.1",
           providers: hub.status(),
           codexTransport: hub.status().find((provider) => provider.id === "codex")?.transport || null,
         });

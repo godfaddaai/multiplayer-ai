@@ -1,6 +1,6 @@
 {
   "name": "multiplayer-ai",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Make Codex and Claude Code sessions multiplayer from the terminal.",
   "type": "module",
   "private": false,
@@ -26,12 +26,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexroo22/multiplayer-ai.git"
+    "url": "git+https://github.com/reaganroo22/multiplayer-ai.git"
   },
   "bugs": {
-    "url": "https://github.com/alexroo22/multiplayer-ai/issues"
+    "url": "https://github.com/reaganroo22/multiplayer-ai/issues"
   },
-  "homepage": "https://alexroo22.github.io/multiplayer-ai/",
+  "homepage": "https://reaganroo22.github.io/multiplayer-ai/",
   "keywords": [
     "ai",
     "codex",
