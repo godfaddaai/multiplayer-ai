@@ -17,8 +17,10 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/reaganroo22/multiplayer-ai/main/site/og-card.png" alt="mpai shows Alex joining Maya's native Codex session from a separate terminal" width="100%">
+  <img src="./docs/demo.gif" alt="Real mpai recording: Reagan prompts Hudson's existing Claude Code session from a separate Mac and Claude preserves Reagan's name" width="100%">
 </p>
+
+<p align="center"><sub>Real two-Mac receipt · Reagan’s Mac → Hudson’s existing Claude Code session · August 2, 2026</sub></p>
 
 > [!IMPORTANT]
 > mpai is a public alpha for trusted teammates on macOS. It uses your existing

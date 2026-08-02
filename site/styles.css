@@ -426,6 +426,90 @@ kbd { font: inherit; }
 .hero-caption { margin-top: 17px; color: #7f8794; font: 400 10px/1.6 var(--mono); }
 .hero-caption span { margin-right: 8px; color: #aeb6c0; text-transform: uppercase; }
 
+.proof-section {
+  padding: 112px max(32px, calc((100vw - 1320px) / 2));
+  background: var(--paper-deep);
+  border-bottom: 1px solid var(--line-light);
+}
+.proof-shell { width: 100%; max-width: 1320px; margin: 0 auto; }
+.proof-heading {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr) 330px;
+  gap: 34px;
+  align-items: end;
+  margin-bottom: 42px;
+}
+.proof-heading .section-kicker { margin: 0 0 8px; }
+.proof-heading h2 {
+  margin: 0;
+  font-size: clamp(42px, 5vw, 68px);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.065em;
+}
+.proof-heading h2 em {
+  color: transparent;
+  font-style: normal;
+  -webkit-text-stroke: 1px rgba(11, 13, 18, 0.56);
+}
+.proof-route {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  color: #3f4248;
+  font: 500 9px/1.4 var(--mono);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.proof-route i { height: 1px; background: linear-gradient(90deg, var(--alex), var(--maya)); }
+.proof-route small { grid-column: 1 / -1; margin-top: 9px; color: #85857f; font: inherit; text-align: right; }
+.proof-media {
+  position: relative;
+  margin: 0;
+  padding: 18px;
+  overflow: hidden;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid rgba(11, 13, 18, 0.28);
+  border-radius: 18px;
+  box-shadow: 0 28px 70px rgba(28, 25, 18, 0.18);
+}
+.proof-media::before {
+  position: absolute;
+  top: 0;
+  left: 58px;
+  z-index: 2;
+  width: 1px;
+  height: 18px;
+  content: "";
+  background: var(--alex);
+  box-shadow: 12px 0 0 var(--maya);
+}
+.proof-media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 5.2;
+  object-fit: contain;
+  background: #0b0d12;
+  border: 1px solid var(--line-dark);
+  border-radius: 10px;
+}
+.proof-media figcaption {
+  min-height: 72px;
+  padding: 18px 4px 0;
+  display: grid;
+  grid-template-columns: 220px 1fr auto;
+  gap: 24px;
+  align-items: start;
+  color: #838c99;
+  font: 400 9px/1.6 var(--mono);
+}
+.proof-media figcaption > span { display: flex; align-items: center; gap: 8px; color: #abb2bd; text-transform: uppercase; }
+.proof-media figcaption > span i { width: 6px; height: 6px; background: var(--signal); border-radius: 50%; box-shadow: 0 0 0 5px rgba(114, 217, 172, 0.08); }
+.proof-media figcaption p { max-width: 590px; margin: 0; }
+.proof-media figcaption b { color: #aeb7ff; font-weight: 500; letter-spacing: 0.08em; }
+
 .section { width: var(--page); max-width: 1320px; margin: 0 auto; padding: 128px 0; }
 .quickstart {
   display: grid;
@@ -780,6 +864,10 @@ footer > div { justify-self: end; display: flex; gap: 22px; font-size: 10px; }
   .site-header { grid-template-columns: 1fr 1fr; }
   .hero-aside { display: none; }
   .terminal-body { grid-template-columns: 245px 1fr; }
+  .proof-heading { grid-template-columns: 100px 1fr; }
+  .proof-route { grid-column: 2; }
+  .proof-media figcaption { grid-template-columns: 180px 1fr; }
+  .proof-media figcaption b { grid-column: 2; }
   .quickstart { grid-template-columns: 100px 1fr; }
   .command-stack, .requirements { grid-column: 2; }
   .manifesto, .architecture, .alpha-section { grid-template-columns: 1fr; }
@@ -818,6 +906,14 @@ footer > div { justify-self: end; display: flex; gap: 22px; font-size: 10px; }
   .turn p { font-size: 10px; }
   .terminal-composer { margin: 0 14px 14px; }
   .hero-caption { font-size: 8px; }
+  .proof-section { padding: 76px 14px; }
+  .proof-heading { display: block; }
+  .proof-heading h2 { margin-top: 28px; }
+  .proof-route { margin-top: 34px; }
+  .proof-media { margin-top: 30px; padding: 9px; border-radius: 12px; }
+  .proof-media video { aspect-ratio: 16 / 8.5; }
+  .proof-media figcaption { padding: 14px 3px 3px; display: block; }
+  .proof-media figcaption p, .proof-media figcaption b { display: block; margin-top: 12px; }
   .section { padding: 88px 0; }
   .quickstart, .manifesto, .alpha-section { display: block; }
   .quickstart-copy, .command-stack { margin-top: 36px; }
