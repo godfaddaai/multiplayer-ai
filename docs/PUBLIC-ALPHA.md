@@ -25,7 +25,7 @@ warehouse.
 Install directly from GitHub, then let one command finish the machine setup:
 
 ```bash
-npm install --global github:reaganroo22/multiplayer-ai
+npm install --global github:godfaddaai/multiplayer-ai
 mpai setup --name Alex
 ```
 

@@ -19,7 +19,7 @@ accepted.
 ## Local setup
 
 ~~~bash
-git clone https://github.com/reaganroo22/multiplayer-ai.git
+git clone https://github.com/godfaddaai/multiplayer-ai.git
 cd multiplayer-ai
 npm install
 npm run verify

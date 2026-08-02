@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/reaganroo22/multiplayer-ai/main/site/favicon.svg" width="72" height="72" alt="mpai logo">
+  <img src="https://raw.githubusercontent.com/godfaddaai/multiplayer-ai/main/site/favicon.svg" width="72" height="72" alt="mpai logo">
 </p>
 
 <h1 align="center">mpai</h1>
@@ -10,10 +10,10 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/reaganroo22/multiplayer-ai/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/reaganroo22/multiplayer-ai/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://github.com/reaganroo22/multiplayer-ai/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/reaganroo22/multiplayer-ai?include_prereleases&style=flat"></a>
+  <a href="https://github.com/godfaddaai/multiplayer-ai/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/godfaddaai/multiplayer-ai/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/godfaddaai/multiplayer-ai/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/godfaddaai/multiplayer-ai?include_prereleases&style=flat"></a>
   <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0d12.svg"></a>
-  <a href="https://reaganroo22.github.io/multiplayer-ai/"><img alt="View landing page" src="https://img.shields.io/badge/see_the_product-7687ff.svg"></a>
+  <a href="https://godfaddaai.github.io/multiplayer-ai/"><img alt="View landing page" src="https://img.shields.io/badge/see_the_product-7687ff.svg"></a>
 </p>
 
 <p align="center">
@@ -70,7 +70,7 @@ context and can add a turn with their own name attached.
 ### 1. Install on both Macs
 
 ~~~bash
-npm install --global github:reaganroo22/multiplayer-ai
+npm install --global github:godfaddaai/multiplayer-ai
 mpai setup --name "Your Name"
 ~~~
 
@@ -230,7 +230,7 @@ Every release gate is tracked in [PUBLIC-ALPHA.md](./docs/PUBLIC-ALPHA.md).
 ## Development
 
 ~~~bash
-git clone https://github.com/reaganroo22/multiplayer-ai.git
+git clone https://github.com/godfaddaai/multiplayer-ai.git
 cd multiplayer-ai
 npm install
 npm run verify

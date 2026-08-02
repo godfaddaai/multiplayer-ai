@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://reaganroo22.github.io/multiplayer-ai/sitemap.xml
+Sitemap: https://godfaddaai.github.io/multiplayer-ai/sitemap.xml

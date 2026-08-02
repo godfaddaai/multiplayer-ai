@@ -109,7 +109,7 @@ document.querySelectorAll("[data-copy]").forEach((button) => {
 
 async function loadStars() {
   try {
-    const response = await fetch("https://api.github.com/repos/reaganroo22/multiplayer-ai", {
+    const response = await fetch("https://api.github.com/repos/godfaddaai/multiplayer-ai", {
       headers: { Accept: "application/vnd.github+json" }
     });
     if (!response.ok) return;

@@ -26,12 +26,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reaganroo22/multiplayer-ai.git"
+    "url": "git+https://github.com/godfaddaai/multiplayer-ai.git"
   },
   "bugs": {
-    "url": "https://github.com/reaganroo22/multiplayer-ai/issues"
+    "url": "https://github.com/godfaddaai/multiplayer-ai/issues"
   },
-  "homepage": "https://reaganroo22.github.io/multiplayer-ai/",
+  "homepage": "https://godfaddaai.github.io/multiplayer-ai/",
   "keywords": [
     "ai",
     "codex",

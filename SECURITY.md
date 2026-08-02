@@ -17,7 +17,7 @@ Only the newest prerelease receives security fixes.
 Do not open a public issue for a suspected vulnerability.
 
 Use the repository's
-[private vulnerability reporting](https://github.com/reaganroo22/multiplayer-ai/security/advisories/new)
+[private vulnerability reporting](https://github.com/godfaddaai/multiplayer-ai/security/advisories/new)
 flow. Include:
 
 - affected version and commit;
