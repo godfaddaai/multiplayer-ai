@@ -159,6 +159,16 @@ contained only elapsed minutes and a count. Both disposable proof invites were
 revoked, while the founders' older invites correctly remained unmeasured. This
 proves the instrumentation and migration guard, not non-founder demand.
 
+The public 0.4.19 large-session release upgraded both hosts from the exact
+public asset. Reagan restarted on PID 92398 and Hudson on PID 28692; both
+doctor receipts reported matching endpoints with Codex and Claude Code
+available. Reciprocal session lists passed. Hudson then read Reagan's exact
+170.6 MB Codex task through the existing peer connection with `--tail 100` in
+1.83 seconds. The command returned successfully with no stderr, and a
+content-free marker scan found no Codex internal context, ambient app/browser
+context, or tool records in the bounded transcript. This proves the large
+native-session fix across the real tailnet; it is still founder dogfood.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
