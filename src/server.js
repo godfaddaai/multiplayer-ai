@@ -5,6 +5,8 @@ import { errorPayload, MpaiError } from "./errors.js";
 import { resolveTailscaleIdentity } from "./tailscale.js";
 import { VERSION } from "./version.js";
 
+const MAX_BEARER_TOKEN_LENGTH = 128;
+
 function sendJson(response, status, payload) {
   if (response.writableEnded) return;
   const body = `${JSON.stringify(payload)}\n`;
@@ -41,9 +43,15 @@ async function readJson(request, { limit = 1024 * 1024 } = {}) {
 }
 
 function bearerToken(request) {
-  const header = request.headers.authorization || "";
-  const match = /^Bearer\s+(.+)$/iu.exec(header);
-  return match?.[1] || "";
+  const header = request.headers.authorization;
+  if (
+    typeof header !== "string" ||
+    header.length > "Bearer ".length + MAX_BEARER_TOKEN_LENGTH
+  ) return "";
+  if (header.slice(0, 7).toLowerCase() !== "bearer ") return "";
+  const token = header.slice(7);
+  if (!token || !/^[a-zA-Z0-9_-]+$/u.test(token)) return "";
+  return token;
 }
 
 function requireRole(session, role) {

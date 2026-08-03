@@ -133,6 +133,21 @@ test("viewer can list and read real tasks", async () => {
   assert.equal(result.thread.id, "thread_123456789");
 });
 
+test("malformed and oversized bearer credentials are rejected", async () => {
+  const { client } = await fixture("viewer");
+  for (const authorization of [
+    `Bearer ${" ".repeat(1024)}`,
+    "Bearer token with spaces",
+    "Basic dGVzdDp0ZXN0",
+  ]) {
+    const response = await fetch(`${client.baseUrl}/v1/whoami`, {
+      headers: { authorization },
+    });
+    assert.equal(response.status, 401);
+  }
+  assert.equal((await client.whoami()).role, "viewer");
+});
+
 test("viewer cannot prompt", async () => {
   const { client } = await fixture("viewer");
   await assert.rejects(
