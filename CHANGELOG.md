@@ -18,6 +18,12 @@ Participant-first onboarding without broader sharing.
 
 - A CLI regression test exercises fresh setup output and requires the exact
   private participant invite command.
+- The exact public release asset matched SHA-256
+  `352eda0c4215d5ee5588aa0476e6b5c59a6ba9f9f6241e34c5beb6c15714073f`,
+  installed into an isolated prefix, and printed the collaboration-ready next
+  step from the packaged CLI.
+- Homebrew formula-install jobs passed on macOS 26 and Linux, and both live
+  Macs restarted on matching 0.4.7 services with reciprocal reads intact.
 
 ## [0.4.6] - 2026-08-03
 

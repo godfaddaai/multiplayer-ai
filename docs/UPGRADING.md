@@ -78,6 +78,12 @@ release asset. Their services restarted with matching 0.4.6 doctor receipts,
 reciprocal read-only session access remained intact, and `mpai alpha-receipt`
 produced a local mode-0600, `not-sent` receipt on each host.
 
+Both hosts then upgraded from the exact public 0.4.7 release asset. Their
+services restarted with matching 0.4.7 doctor receipts and reciprocal
+read-only session access remained intact. The patch changes only setup's
+printed first-invite guidance; stored identities, invitations, and audit state
+were preserved.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.

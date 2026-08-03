@@ -86,10 +86,13 @@ and prints the exact attach command.
   restarted with matching 0.4.6 doctor receipts, reciprocal session reads
   remained intact, and each host produced a local mode-0600 alpha receipt that
   was not transmitted.
-- The exact public 0.4.6 release asset matched SHA-256
-  `b8d7e561b4fd64db7a01b597e8fa42fbdeb24346b520b6627da813da99175b34`,
-  installed into an isolated prefix, reported 0.4.6 from both binaries, and
-  generated a valid mode-0600 alpha receipt.
+- Live 0.4.6 → 0.4.7 public-asset upgrades on Reagan and Hudson: both services
+  restarted with matching 0.4.7 doctor receipts and reciprocal session reads
+  remained intact.
+- The exact public 0.4.7 release asset matched SHA-256
+  `352eda0c4215d5ee5588aa0476e6b5c59a6ba9f9f6241e34c5beb6c15714073f`,
+  installed into an isolated prefix, reported 0.4.7 from both binaries, and
+  printed the private participant invite as setup's exact next step.
 - Disposable public-artifact lifecycle proof: install 0.4.4, preserve configured
   state while rolling back to 0.4.3, recover forward to 0.4.4, then uninstall
   the package with both installed binaries removed and state retained.
@@ -100,7 +103,7 @@ and prints the exact attach command.
   tailnet identities. Per-invite visibility, simultaneous named presence,
   same-task prompt collision, unaffected-peer continuity, and revocation pass;
   a physical third-Mac receipt remains open.
-- Packaged 0.4.6 installs on two separate Macs with matching live services.
+- Packaged 0.4.7 installs on two separate Macs with matching live services.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
   attributed Reagan prompt from one Mac into Hudson's existing session.
