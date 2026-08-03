@@ -150,6 +150,15 @@ the following receipt, comment 5167164038, as founder dogfood excluded from
 the 0/10 non-founder cohort. This proves the networked consent path without
 claiming outside activation.
 
+The public 0.4.18 timing release upgraded both hosts from the exact public
+asset. Reagan restarted on PID 33192 and Hudson on PID 8635; both doctor
+receipts reported matching endpoints and reciprocal session lists passed. A
+fresh selected-session viewer invite joined from isolated Hudson state and
+completed its first authorized Reagan room read in 0.07 minutes. The receipt
+contained only elapsed minutes and a count. Both disposable proof invites were
+revoked, while the founders' older invites correctly remained unmeasured. This
+proves the instrumentation and migration guard, not non-founder demand.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
