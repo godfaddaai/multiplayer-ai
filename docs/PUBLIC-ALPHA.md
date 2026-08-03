@@ -126,9 +126,6 @@ and prints the exact attach command.
   mpai service PID stayed unchanged and shared reads fell back safely. After
   the daemon returned, Reagan's next named remote prompt promoted that same
   service back to managed proxy and completed without reinstall or rejoin.
-- The Homebrew formula uses the supported Node 22 runtime. Clean macOS 26 and
-  Linux runners installed the exact formula, executed 0.4.8, passed its formula
-  test, uninstalled it, and verified both CLI links were absent afterward.
 - Disposable public-artifact lifecycle proof: install 0.4.4, preserve configured
   state while rolling back to 0.4.3, recover forward to 0.4.4, then uninstall
   the package with both installed binaries removed and state retained.
@@ -152,7 +149,7 @@ and prints the exact attach command.
    sessions are view-only by default. We need a documented managed-daemon path
    for each supported surface rather than imply every active session is safely
    writable.
-2. **Complete distribution (closed in 0.4.8).** The public GitHub source, versioned release, and
+2. **Complete distribution (current 0.4.9 proof).** The public GitHub source, versioned release, and
    Homebrew tap are available, and services launch through the stable installed
    CLI instead of a versioned package source or Node executable. Service
    stop/remove/reinstall is live-verified. Public release-asset rollback and

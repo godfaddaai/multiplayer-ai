@@ -26,7 +26,7 @@ August 3, 2026.
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.9 public asset hash plus isolated install verified; CI run 30794006889 proves the Node 22 Homebrew formula installs, executes 0.4.9, tests, uninstalls, and leaves both CLI links absent on clean macOS 26 and Linux |
-| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.8 doctor receipts on the live Reagan and Hudson hosts; setup prints an explicit participant invite with selected-session sharing |
+| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.9 doctor receipts on the live Reagan and Hudson hosts; setup prints an explicit participant invite with selected-session sharing |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join names the share command; connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps while established prompt streams remain open |
 | Upgrade, rollback, and uninstall path | 3/3 | Stable launcher and live service reinstall receipt plus a disposable public-asset 0.4.4 → 0.4.3 → 0.4.4 rollback and full package uninstall with state preserved |
@@ -47,7 +47,7 @@ August 3, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Automated behavioral and syntax suite | 4/4 | 41/41 tests and syntax checks |
+| Automated behavioral and syntax suite | 4/4 | 43/43 tests and syntax checks |
 | Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.9 public-asset installs, service restarts, matching doctor receipts, reciprocal session reads, and Hudson's managed-provider restart with post-turn health |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex auth-error replay returned an actionable turn failure without changing the host PID; standalone-block and Claude permission behavior suites pass |
 | Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 2/5 | On public 0.4.9, Hudson's managed Codex daemon stopped while mpai PID 38042 stayed up and reads fell back safely; after the daemon returned, Reagan's next named prompt promoted the same service back to proxy and completed without reinstall or rejoin. Sleep/wake, Wi-Fi, and relay transitions remain open |
