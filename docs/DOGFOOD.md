@@ -83,6 +83,15 @@ because its ChatGPT refresh token was stale, while mpai kept the host service
 healthy. Reauthenticate that daemon before attempting the reciprocal receipt;
 do not weaken the standalone prompting boundary to manufacture a pass.
 
+The subsequent public 0.4.9 lifecycle replay closed the provider-restart
+subcase. Hudson's managed daemon stopped while mpai service PID 38042 stayed
+running; the same remote list remained readable through the safe standalone
+fallback. After the daemon returned, Reagan's next named remote prompt caused
+that unchanged service to promote back to `proxy` and completed with the exact
+expected response. No mpai reinstall or peer rejoin occurred. The native
+transcript and audit contained the matching Reagan turn, and the task was
+unshared and denied again after verification.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP

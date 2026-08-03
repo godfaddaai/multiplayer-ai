@@ -5,10 +5,11 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **75/100** after the public 0.4.8 deployment,
+Current evidence score: **76/100** after the public 0.4.9 deployment,
 release-artifact lifecycle/100-cycle soak receipts, deterministic
 one-host/two-teammate concurrency proof, a live cross-Mac managed-Codex turn,
-and the privacy-safe local alpha receipt on August 3, 2026.
+managed-provider restart recovery, and the privacy-safe local alpha receipt on
+August 3, 2026.
 
 ## 1. Core multiplayer usefulness — 18/20
 
@@ -24,7 +25,7 @@ and the privacy-safe local alpha receipt on August 3, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.8 public asset hash plus isolated install verified; the Node 22 Homebrew formula explicitly installs, executes, tests, uninstalls, and leaves both CLI links absent on clean macOS 26 and Linux |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.9 public asset hash plus isolated install verified; CI run 30794006889 proves the Node 22 Homebrew formula installs, executes 0.4.9, tests, uninstalls, and leaves both CLI links absent on clean macOS 26 and Linux |
 | Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.8 doctor receipts on the live Reagan and Hudson hosts; setup prints an explicit participant invite with selected-session sharing |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join names the share command; connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps while established prompt streams remain open |
@@ -42,14 +43,14 @@ and the privacy-safe local alpha receipt on August 3, 2026.
 | Redacted diagnostics | 2/2 | Real mode-0600 bundle plus sensitive-fixture exclusion suite |
 | Public policy surface | 2/3 | MIT, contribution, conduct, security reporting, privacy, and acceptable-use policies exist; the preliminary name screen found material adjacent MPAI standards use, so qualified trademark clearance remains open |
 
-## 4. Reliability and lifecycle — 15/20
+## 4. Reliability and lifecycle — 16/20
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Automated behavioral and syntax suite | 4/4 | 41/41 tests and syntax checks |
-| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.8 public-asset installs, service restarts, matching doctor receipts, reciprocal session reads, and Hudson's standalone → managed-proxy restart with post-turn health |
+| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.9 public-asset installs, service restarts, matching doctor receipts, reciprocal session reads, and Hudson's managed-provider restart with post-turn health |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex auth-error replay returned an actionable turn failure without changing the host PID; standalone-block and Claude permission behavior suites pass |
-| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson 0.4.4 migration failed safely then recovered; both hosts upgraded through 0.4.8 and restarted with reciprocal access intact; other lifecycle transitions remain open |
+| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 2/5 | On public 0.4.9, Hudson's managed Codex daemon stopped while mpai PID 38042 stayed up and reads fell back safely; after the daemon returned, Reagan's next named prompt promoted the same service back to proxy and completed without reinstall or rejoin. Sleep/wake, Wi-Fi, and relay transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
 | One host plus two simultaneous teammates | 2/3 | Real local HTTP server with two isolated simulated tailnet identities passes per-invite visibility, simultaneous named presence, prompt collision, unaffected-peer continuity, and revocation; physical third-Mac certification remains open |
 
@@ -68,7 +69,7 @@ and the privacy-safe local alpha receipt on August 3, 2026.
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.8 installs, executes, tests, and uninstalls on clean
+1. **Closed:** Homebrew 0.4.9 installs, executes, tests, and uninstalls on clean
    macOS and Linux, with both CLI links absent afterward.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.

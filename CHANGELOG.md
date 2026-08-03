@@ -25,6 +25,16 @@ Recover managed Codex prompting after a provider restart.
   happen before the prompt safety check.
 - The full suite passes 43/43 behavioral tests and syntax checks on Node 20 and
   Node 22.
+- The exact public release asset matched SHA-256
+  `83c230402a7a1d10defee9f1a869dd1141ba569278cca201979b408a70847fb5`,
+  installed into an isolated prefix, and reported 0.4.9 from both binaries.
+- Both live Macs upgraded to matching 0.4.9 services. Hudson then repeated the
+  provider restart: the mpai PID stayed unchanged, reads fell back safely, and
+  Reagan's next named prompt promoted the same host back to managed proxy and
+  completed without reinstall or rejoin.
+- Homebrew lifecycle run 30794006889 installed the exact formula, executed
+  0.4.9, passed its formula test, uninstalled it, and verified both CLI links
+  were absent on clean macOS 26 and Linux.
 
 ## [0.4.8] - 2026-08-03
 
