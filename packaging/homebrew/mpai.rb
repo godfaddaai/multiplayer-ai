@@ -1,8 +1,8 @@
 class Mpai < Formula
   desc "Make Codex and Claude Code sessions multiplayer from the terminal"
   homepage "https://godfaddaai.github.io/multiplayer-ai/"
-  url "https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.15/multiplayer-ai-0.4.15.tgz"
-  sha256 "5d444f115324013e24cdc317a2b05407c9f249c596a7f9085176c62bf9eec523"
+  url "https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz"
+  sha256 "2e5a464497319166e9f44510ab186f950122a35dad2c1a1b15037e9feb96966b"
   license "MIT"
 
   livecheck do

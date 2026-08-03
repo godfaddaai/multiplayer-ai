@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.15, August 3, 2026.
+Status: public source alpha 0.4.16, August 3, 2026.
 
 ## Product promise
 
@@ -38,7 +38,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.15/multiplayer-ai-0.4.15.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -54,7 +54,7 @@ no LaunchAgent. The invite also prints the permanent Homebrew path for a
 teammate who intentionally wants to host sessions back. Older, empty, or
 multi-session invites still print the exact next command.
 
-## Implemented in 0.4.15
+## Implemented in 0.4.16
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -110,6 +110,10 @@ multi-session invites still print the exact next command.
   provider reliability. It sends nothing and excludes prompts, transcripts,
   names, task identifiers, paths, credentials, network addresses, and event
   timestamps.
+- `mpai cohort-report`: a local preview of fixed-choice cohort metadata. It
+  sends nothing by default; `--submit` requires an authenticated GitHub CLI
+  and interactive confirmation, while automation must also pass `--yes`.
+  Arbitrary self-report text is rejected before the public comment boundary.
 - Per-peer credential backend routing and a mode-0600 file fallback when a
   non-interactive macOS host cannot access Keychain.
 - Live 0.4.0 → 0.4.4 Hudson upgrade proof: initial Keychain failure left the

@@ -42,6 +42,15 @@ reliability outcomes. It excludes names, identifiers, prompts, transcripts,
 task metadata, paths, credentials, network addresses, and event timestamps.
 The command writes the receipt locally with mode 0600 and does not upload it.
 
+`mpai cohort-report` converts those counts plus four fixed-choice self-reported
+fields into an exact public preview. It sends nothing by default. If you pass
+`--submit`, mpai asks for confirmation before invoking your authenticated
+GitHub CLI to publish exactly that preview to the public first-10-team issue.
+Non-interactive use also requires `--yes`. GitHub associates the comment with
+your GitHub account and processes it under GitHub's terms. Free-form values are
+not accepted at this boundary, preventing prompts, tokens, names, paths, or
+other arbitrary collaboration data from entering the report.
+
 ## Website and third-party services
 
 The project website is a static GitHub Pages site and does not include mpai
@@ -61,10 +70,10 @@ teammate already viewed or copied.
 ## Alpha measurement
 
 The current release has no automatic product telemetry. Creating an alpha
-receipt is an explicit local action; sharing it is a separate user choice. If
-networked opt-in measurement is added later, it must be off by default,
-documented before collection, and limited to activation and reliability
-metadata. Prompt and transcript content must not be collected for product
+receipt or cohort preview is an explicit local action. Public cohort submission
+is a separate, review-first user choice through GitHub and remains off by
+default. It is limited to activation and reliability counts plus fixed-choice
+self-report fields. Prompt and transcript content is not collected for product
 analytics.
 
 ## Your choices
@@ -76,6 +85,7 @@ You can:
 - revoke an invite or unshare a session at any time;
 - inspect the source and local data before use;
 - avoid creating or sharing a support bundle or alpha receipt;
+- preview a cohort report without submitting it, or decline at confirmation;
 - uninstall mpai when you no longer want the service running.
 
 For a privacy or security concern, use GitHub's

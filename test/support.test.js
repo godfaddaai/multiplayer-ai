@@ -6,6 +6,7 @@ import { join } from "node:path";
 import {
   buildAlphaReceipt,
   buildSupportBundle,
+  formatCohortReport,
   writeAlphaReceipt,
   writeSupportBundle,
 } from "../src/support.js";
@@ -198,4 +199,46 @@ test("alpha receipt measures activation and reliability without leaking collabor
   await assert.rejects(writeAlphaReceipt(receipt, { outputPath: path }), {
     code: "EEXIST",
   });
+});
+
+test("cohort report is copy-ready public metadata with explicit unknowns", () => {
+  const receipt = buildAlphaReceipt({
+    config: {
+      identity: { name: "Private Founder" },
+      invites: [{
+        claimedBy: "private-user",
+        taskAccess: { mode: "selected", taskIds: ["claude:private"] },
+      }],
+    },
+    auditEvents: [{
+      type: "prompt.failed",
+      target: "claude",
+      error: "connection failed at /Users/private/project",
+    }],
+  });
+  const report = formatCohortReport(receipt, {
+    joinMethod: "npx",
+    minutesToRoom: 4,
+    namedPrompt: "no",
+    useAgain: "unsure",
+  });
+  assert.match(report, /mpai version:/u);
+  assert.match(report, /join method: npx guest/u);
+  assert.match(report, /minutes to first shared room: 4/u);
+  assert.match(report, /first failure category, if any: connection_failed/u);
+  assert.match(report, /claimed invites: 1/u);
+  assert.doesNotMatch(report, /Private Founder|private-user|claude:private|Users\/private/u);
+
+  const injection = formatCohortReport(receipt, {
+    joinMethod: "invite token mpai://private",
+    namedPrompt: "yes, private project",
+    useAgain: "yes, call me at 555-0100",
+    minutesToRoom: "4 minutes at /Users/private",
+  });
+  assert.doesNotMatch(injection, /private|555|Users/u);
+  assert.match(injection, /join method: not reported/u);
+
+  const unknown = formatCohortReport(buildAlphaReceipt({}));
+  assert.match(unknown, /join method: not reported/u);
+  assert.match(unknown, /would use this again next week: not reported/u);
 });

@@ -2,6 +2,30 @@
 
 All notable project changes are documented here.
 
+## [0.4.16] - 2026-08-03
+
+Make public-alpha learning reviewable and explicitly consented from the CLI.
+
+### Added
+
+- `mpai cohort-report` renders a copy-ready, metadata-only cohort report from
+  the existing local alpha receipt plus fixed-choice self-report fields.
+- `--submit` posts exactly the displayed preview to cohort issue #7 through
+  the user's authenticated GitHub CLI after interactive confirmation;
+  non-interactive use must additionally pass `--yes`.
+
+### Safety
+
+- Nothing is sent by default. Arbitrary self-report values are rejected or
+  reduced to `not reported`, and regression fixtures prove names, tokens,
+  task IDs, paths, prompts, and other free-form content cannot cross the
+  submission boundary.
+
+### Proven
+
+- The packed 0.4.16 artifact has SHA-256
+  `2e5a464497319166e9f44510ab186f950122a35dad2c1a1b15037e9feb96966b`.
+
 ## [0.4.15] - 2026-08-03
 
 Release shared rooms promptly when a teammate leaves or a provider stalls.

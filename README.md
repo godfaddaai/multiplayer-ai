@@ -89,7 +89,7 @@ mpai start --name "Your Name" --with "Teammate Name"
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.15/multiplayer-ai-0.4.15.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz
 ~~~
 
 <code>mpai start</code> configures identity, installs and verifies the background
@@ -115,7 +115,7 @@ issue, terminal recording, or public chat. On the teammate's Mac with Node.js
 20+, that one paste opens the room without a global install or setup step:
 
 ~~~bash
-npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.15/multiplayer-ai-0.4.15.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
+npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
 ~~~
 
 The invite establishes Alex's attributed identity, stores the peer credential
@@ -142,7 +142,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.15
+## What works in 0.4.16
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
@@ -167,6 +167,8 @@ mpai share SESSION_ID --with Alex
 - Upgrade-stable background-service launchers
 - Metadata-only redacted support bundles
 - Review-before-sharing alpha activation receipts that are never sent automatically
+- Review-first, explicitly consented cohort reporting through an authenticated
+  GitHub CLI, using fixed-choice metadata that cannot contain collaboration data
 
 ## Room commands
 
@@ -206,6 +208,18 @@ mpai alpha-receipt
 The command writes a mode-0600 JSON file locally and sends nothing. Review it
 before sharing; it excludes prompts, transcripts, names, task identifiers,
 paths, credentials, network addresses, and event timestamps.
+
+Turn that evidence into a copy-ready public report without sending anything:
+
+~~~bash
+mpai cohort-report --join-method npx --minutes-to-room 4 \
+  --named-prompt yes --use-again yes
+~~~
+
+After reviewing the exact preview, rerun with `--submit`. mpai asks for final
+confirmation and posts only the displayed fixed-choice counts to cohort issue
+#7 through your authenticated GitHub CLI. Automation must additionally pass
+`--yes`; nothing is submitted by default.
 
 ## How it works
 
