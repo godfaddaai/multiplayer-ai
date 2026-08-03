@@ -89,7 +89,7 @@ mpai setup --name "Your Name"
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.12/multiplayer-ai-0.4.12.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz
 ~~~
 
 <code>mpai setup</code> configures identity, discovers available providers,
@@ -104,23 +104,24 @@ mpai list
 mpai invite --name Alex --role participant --session SESSION_ID
 ~~~
 
-Send the two lines printed by <code>mpai invite</code> to Alex through a channel
-you trust. The invite contains a secret. Do not paste it into an issue,
-terminal recording, or public chat.
+Send the recommended one-line command printed by <code>mpai invite</code> to
+Alex through a channel you trust. The invite contains a secret. Do not paste it
+into an issue, terminal recording, or public chat.
 
 ### 3. Teammate joins
 
-On a fresh Alex Mac, no separate setup step is needed:
+On a fresh Alex Mac with Node.js 20+, one paste opens the room without a global
+install or separate setup step:
 
 ~~~bash
-brew install godfaddaai/tap/mpai
-mpai join 'mpai://100.x.y.z:7337/join?token=...' --attach
+npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
 ~~~
 
 The invite establishes Alex's attributed identity, stores the peer credential
-outside config, makes Alex's Mac ready to host in return, checks for shared
-sessions, and opens the explicitly shared ready room. An older or deliberately
-empty invite still prints the exact next command instead.
+outside config, checks for shared sessions, and opens the explicitly shared
+ready room. Installing with Homebrew first remains the permanent path when Alex
+also wants to host sessions back; the invite output prints both choices. An
+older or deliberately empty invite still prints the exact next command instead.
 
 Testing this with a real teammate? Join the
 [first 10-team public-alpha cohort](https://github.com/godfaddaai/multiplayer-ai/issues/7)
@@ -140,7 +141,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.10
+## What works in 0.4.13
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading

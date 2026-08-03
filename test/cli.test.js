@@ -215,7 +215,13 @@ test("a host can create an invite already scoped to one explicit session", async
     },
   );
 
-  assert.match(stdout, /Send Maya these two lines:/u);
+  assert.match(stdout, /Send Maya this one line \(Node\.js 20\+; no global install\):/u);
+  assert.match(
+    stdout,
+    /npx --yes https:\/\/github\.com\/godfaddaai\/multiplayer-ai\/releases\/download\/v0\.4\.13\/multiplayer-ai-0\.4\.13\.tgz join 'mpai:\/\/[^']+' --no-service --attach/u,
+  );
+  assert.match(stdout, /For a permanent install that can host sessions back:/u);
+  assert.match(stdout, /brew install godfaddaai\/tap\/mpai/u);
   assert.match(stdout, /mpai join 'mpai:\/\/[^']+' --attach/u);
   assert.match(stdout, new RegExp(`claude:${sessionId} is shared with Maya as part of this invite\\.`, "u"));
   assert.doesNotMatch(stdout, /mpai share SESSION_ID/u);

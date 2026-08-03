@@ -48,7 +48,7 @@
       <a class="brand" href="#top" aria-label="mpai home">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
         <span>mpai</span>
-        <em>alpha 0.4.12</em>
+        <em>alpha 0.4.13</em>
       </a>
       <nav aria-label="Primary navigation">
         <a href="#how">How it works</a>
@@ -70,7 +70,7 @@
           </a>
           <p class="eyebrow"><span></span> Open source · terminal native · tailnet private</p>
           <h1>Your teammate’s AI session.<br><em>On your terminal.</em></h1>
-          <p class="hero-deck">Remote control lets you continue your own AI work. mpai lets a named teammate enter the exact Codex or Claude Code conversation already in motion—without changing tools.</p>
+          <p class="hero-deck">Remote control lets you continue your own AI work. mpai lets a named teammate enter the exact Codex or Claude Code conversation already in motion—without changing tools. One host install. One teammate paste.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#quickstart">
               <span>Install mpai</span><b aria-hidden="true">↓</b>
@@ -184,17 +184,17 @@
         <div class="section-kicker">00 / QUICKSTART</div>
         <div class="quickstart-copy">
           <h2>Two Macs.<br>One invite.</h2>
-          <p>Install mpai on both Macs. The host creates a named invite already scoped to one explicit session; the teammate pastes it and enters that session immediately—no separate account or new IDE. Run step 1 on both Macs, 2–4 on the host, and 5–6 on the teammate. Homebrew blocked by outdated Apple tools? Copy the exact Node 20+ fallback beside step 1.</p>
+          <p>Install mpai once on the host. The host creates a named invite already scoped to one explicit session; a teammate with Node.js 20+ pastes the printed command and enters immediately—no global install, separate account, or new IDE. Install permanently on both Macs only when both people want to host sessions.</p>
         </div>
         <div class="command-stack">
           <div class="command-row"><span>1</span><code>brew install godfaddaai/tap/mpai</code><button type="button" data-copy="brew install godfaddaai/tap/mpai" aria-label="Copy install command">copy</button></div>
-          <div class="command-row alternative"><span>or</span><code>npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.12/multiplayer-ai-0.4.12.tgz</code><button type="button" data-copy="npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.12/multiplayer-ai-0.4.12.tgz" aria-label="Copy exact Node.js fallback install command">copy</button></div>
+          <div class="command-row alternative"><span>or</span><code>npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz</code><button type="button" data-copy="npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz" aria-label="Copy exact Node.js fallback install command">copy</button></div>
           <div class="command-row"><span>2</span><code>mpai setup --name "Maya"</code><button type="button" data-copy='mpai setup --name "Maya"' aria-label="Copy setup command">copy</button></div>
           <div class="command-row"><span>3</span><code>mpai list</code><button type="button" data-copy="mpai list" aria-label="Copy session-list command">copy</button></div>
           <div class="command-row"><span>4</span><code>mpai invite --name Alex --role participant --session SESSION_ID</code><button type="button" data-copy="mpai invite --name Alex --role participant --session SESSION_ID" aria-label="Copy session-scoped invite command">copy</button></div>
-          <div class="command-row"><span>5</span><code>paste the printed join command — the room opens</code></div>
+          <div class="command-row"><span>5</span><code>teammate pastes the printed npx command — the room opens</code></div>
         </div>
-        <p class="requirements">Public alpha · macOS · Tailscale · Homebrew or Node.js 20+ · Codex and/or Claude Code</p>
+        <p class="requirements">Public alpha · macOS · Tailscale · Homebrew on the host · Node.js 20+ for the no-global-install guest · Codex and/or Claude Code</p>
       </section>
 
       <section class="manifesto section" id="how">

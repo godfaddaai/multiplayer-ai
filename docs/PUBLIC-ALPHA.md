@@ -1,12 +1,13 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.12, August 3, 2026.
+Status: public source alpha 0.4.13, August 3, 2026.
 
 ## Product promise
 
-Install once, run `mpai @teammate`, and join an explicitly shared Codex or
-Claude Code session with its existing context. Both people keep their normal AI
-tool and every human prompt carries a durable identity.
+Install once on the host, paste once on the teammate Mac, and join an
+explicitly shared Codex or Claude Code session with its existing context. Both
+people keep their normal AI tool and every human prompt carries a durable
+identity.
 
 The public alpha is terminal-first. It is not a browser product, replacement
 IDE, raw shell-sharing tool, employee-monitoring product, or hosted transcript
@@ -37,21 +38,23 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.12/multiplayer-ai-0.4.12.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
 Tools are outdated. Update them through System Settings, or use the exact npm
 fallback above when Node.js 20+ is already installed.
 
-An invited teammate can start from a completely fresh install. `mpai join`
-creates their attributed local identity, stores the peer credential outside
-config, installs their host service on macOS, checks shared-session readiness,
-and, when the invite is scoped to one session, opens that ready room from the
-same pasted command. Older, empty, or multi-session invites still print the
-exact attach command.
+An invited teammate with Node.js 20+ can start without a global install. The
+recommended `npx` handoff creates their attributed local identity, stores the
+peer credential outside config, checks shared-session readiness, and, when the
+invite is scoped to one session, opens that ready room from the same pasted
+command. It uses `--no-service`, so the guest gains no hosting capability and
+no LaunchAgent. The invite also prints the permanent Homebrew path for a
+teammate who intentionally wants to host sessions back. Older, empty, or
+multi-session invites still print the exact next command.
 
-## Implemented in 0.4.12
+## Implemented in 0.4.13
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -82,6 +85,9 @@ exact attach command.
 - One-command Homebrew installation and macOS Keychain-backed peer tokens,
   including automatic migration from the legacy inline format.
 - Fresh-install invite bootstrap and peer-specific attributed identity.
+- A session-scoped invitation leads with one version-pinned `npx` command that
+  enters the room without a global package install or background host service;
+  the permanent Homebrew path remains available underneath.
 - Setup's printed next step lists sessions and creates an explicit participant
   invite already scoped to the chosen session, so the safest collaboration
   path is immediately useful without broadening access.
