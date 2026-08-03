@@ -17,6 +17,10 @@
 </p>
 
 <p align="center">
+  <a href="https://www.producthunt.com/products/mpai?launch=mpai&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-mpai"><img alt="mpai on Product Hunt" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1213234&amp;theme=light" width="250" height="54"></a>
+</p>
+
+<p align="center">
   <img src="./docs/demo.gif" alt="Real mpai recording: Reagan prompts Hudson's existing Claude Code session from a separate Mac and Claude preserves Reagan's name" width="100%">
 </p>
 
