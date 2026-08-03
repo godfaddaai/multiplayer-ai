@@ -24,7 +24,7 @@ receipt on August 3, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.8 public asset hash plus isolated install verified; Homebrew test-bot installs the formula on clean macOS 26 and Linux |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.8 public asset hash plus isolated install verified; the Node 22 Homebrew formula explicitly installs, executes, tests, uninstalls, and leaves both CLI links absent on clean macOS 26 and Linux |
 | Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.8 doctor receipts on the live Reagan and Hudson hosts; setup prints an explicit participant invite with selected-session sharing |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join names the share command; connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps while established prompt streams remain open |
@@ -68,7 +68,8 @@ receipt on August 3, 2026.
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.8 installs and tests on clean macOS and Linux.
+1. **Closed:** Homebrew 0.4.8 installs, executes, tests, and uninstalls on clean
+   macOS and Linux, with both CLI links absent afterward.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.
 3. Ten people who did not build mpai install it; median existing-tailnet time

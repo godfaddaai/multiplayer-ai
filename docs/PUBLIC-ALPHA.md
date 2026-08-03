@@ -106,6 +106,9 @@ and prints the exact attach command.
 - The exact public 0.4.8 release asset matched SHA-256
   `78eb0d4e6f3c5cdc9d3149472fb28719857d7df83d91bb92083a0a5abf8f1af5`,
   installed into an isolated prefix, and reported 0.4.8 from both binaries.
+- The Homebrew formula uses the supported Node 22 runtime. Clean macOS 26 and
+  Linux runners installed the exact formula, executed 0.4.8, passed its formula
+  test, uninstalled it, and verified both CLI links were absent afterward.
 - Disposable public-artifact lifecycle proof: install 0.4.4, preserve configured
   state while rolling back to 0.4.3, recover forward to 0.4.4, then uninstall
   the package with both installed binaries removed and state retained.
@@ -129,12 +132,13 @@ and prints the exact attach command.
    sessions are view-only by default. We need a documented managed-daemon path
    for each supported surface rather than imply every active session is safely
    writable.
-2. **Complete distribution.** The public GitHub source, versioned release, and
+2. **Complete distribution (closed in 0.4.8).** The public GitHub source, versioned release, and
    Homebrew tap are available, and services launch through the stable installed
    CLI instead of a versioned package source or Node executable. Service
    stop/remove/reinstall is live-verified. Public release-asset rollback and
-   full package uninstall are disposable-prefix verified; a full disposable
-   Homebrew removal remains a distribution-specific follow-up.
+   full package uninstall are disposable-prefix verified. The supported Node 22
+   Homebrew formula installs, executes, tests, and uninstalls on clean macOS and
+   Linux, with both installed CLI links verified absent afterward.
 3. **Credential storage (closed in 0.4.4).** Peer bearer tokens live in macOS
    Keychain when available. Non-interactive hosts fall back to a mode-0600
    local store, config retains only a routed reference and non-secret metadata,
