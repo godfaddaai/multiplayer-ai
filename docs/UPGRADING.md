@@ -66,6 +66,13 @@ Code health. A separate Hudson 0.4.0 → 0.4.4 candidate upgrade failed safely
 when Keychain was unavailable, then succeeded through the protected fallback
 without losing reciprocal access.
 
+The exact public 0.4.5 asset was then installed on Reagan and Hudson. Both
+services restarted with matching 0.4.5 doctor receipts and reciprocal session
+reads remained intact. Hudson's interactive shell still had a legacy 0.4.0
+prototype symlink ahead of the stable install; the two explicit launcher
+symlinks were repaired after verifying their exact targets, so both the shell
+and LaunchAgent now resolve the same 0.4.5 package.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.

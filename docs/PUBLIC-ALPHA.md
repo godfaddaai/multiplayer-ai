@@ -71,6 +71,13 @@ and prints the exact attach command.
 - Live 0.4.0 → 0.4.4 Hudson upgrade proof: initial Keychain failure left the
   old service intact; fallback migration removed the inline token, preserved
   reciprocal access, and produced a redacted mode-0600 support receipt.
+- Live 0.4.4 → 0.4.5 public-asset upgrades on Reagan and Hudson: both services
+  restarted with matching doctor receipts, Hudson's shadowing 0.4.0 shell
+  launcher was replaced, and reciprocal session reads remained intact.
+- The exact public 0.4.5 release asset matched SHA-256
+  `24b493d9842fbc3c3022cadebf98678f08732867a42b384fb590ed2c8cf10279`,
+  installed into an isolated prefix, reported 0.4.5 from both binaries, and
+  uninstalled while configured state remained.
 - Disposable public-artifact lifecycle proof: install 0.4.4, preserve configured
   state while rolling back to 0.4.3, recover forward to 0.4.4, then uninstall
   the package with both installed binaries removed and state retained.
@@ -81,7 +88,7 @@ and prints the exact attach command.
   tailnet identities. Per-invite visibility, simultaneous named presence,
   same-task prompt collision, unaffected-peer continuity, and revocation pass;
   a physical third-Mac receipt remains open.
-- Packaged 0.4 installs on two separate Macs.
+- Packaged 0.4.5 installs on two separate Macs with matching live services.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
   attributed Reagan prompt from one Mac into Hudson's existing session.

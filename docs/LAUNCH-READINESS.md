@@ -5,7 +5,7 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **74/100** after the public 0.4.4 deployment,
+Current evidence score: **74/100** after the public 0.4.5 deployment,
 release-artifact lifecycle/100-cycle soak receipts, and deterministic
 one-host/two-teammate concurrency proof on August 2, 2026.
 
@@ -23,10 +23,10 @@ one-host/two-teammate concurrency proof on August 2, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.4 asset hash and isolated install verified; Homebrew test-bot installs pass on clean macOS 26 and Linux |
-| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version doctor receipts on the live Reagan host and Hudson's public 0.4.4 host |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.5 public asset hash plus isolated install/uninstall verified; Homebrew test-bot passes on clean macOS 26 and Linux |
+| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.5 doctor receipts on the live Reagan and Hudson hosts; Hudson's shadowing legacy launcher was repaired |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
-| Empty-share and offline recovery print exact next action | 2/2 | Join and room paths name the host command required |
+| Empty-share and offline recovery print exact next action | 2/2 | Join names the share command; connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps while established prompt streams remain open |
 | Upgrade, rollback, and uninstall path | 3/3 | Stable launcher and live service reinstall receipt plus a disposable public-asset 0.4.4 → 0.4.3 → 0.4.4 rollback and full package uninstall with state preserved |
 | Ten stranger installs with median time-to-room below five minutes | 0/3 | No external cohort yet |
 
@@ -45,10 +45,10 @@ one-host/two-teammate concurrency proof on August 2, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Automated behavioral and syntax suite | 4/4 | 35/35 tests and syntax checks |
-| Real service restart and matching-version health | 2/2 | Live Reagan restart and Hudson public 0.4.4 upgrade receipts |
+| Automated behavioral and syntax suite | 4/4 | 38/38 tests and syntax checks |
+| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.5 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex, standalone-block, and Claude permission behavior suites |
-| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson upgrade failed safely, then migrated and restarted with reciprocal access intact; other lifecycle transitions remain open |
+| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson 0.4.4 migration failed safely then recovered; both hosts upgraded to 0.4.5 and restarted with reciprocal access intact; other lifecycle transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
 | One host plus two simultaneous teammates | 2/3 | Real local HTTP server with two isolated simulated tailnet identities passes per-invite visibility, simultaneous named presence, prompt collision, unaffected-peer continuity, and revocation; physical third-Mac certification remains open |
 
@@ -67,7 +67,7 @@ one-host/two-teammate concurrency proof on August 2, 2026.
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.4 installs and tests on clean macOS and Linux.
+1. **Closed:** Homebrew 0.4.5 installs and tests on clean macOS and Linux.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.
 3. Ten people who did not build mpai install it; median existing-tailnet time
