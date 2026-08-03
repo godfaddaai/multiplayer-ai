@@ -122,6 +122,13 @@ exact attach command.
 - Live 0.4.10 → 0.4.11 public-asset upgrades on Reagan and Hudson: both services
   restarted with matching 0.4.11 doctor receipts and reciprocal session reads
   remained intact without rejoining or changing the existing share state.
+- Live 0.4.11 → 0.4.12 public-asset upgrades on Reagan and Hudson: both services
+  restarted with matching 0.4.12 doctor receipts and reciprocal session reads
+  remained intact without rejoining or changing the existing share state.
+- Live paste-once receipt: Hudson used a fresh isolated state and the printed
+  `mpai join '…' --attach` handoff to enter one viewer-only Reagan Codex room,
+  render its persisted context, and leave. The invitation was then revoked and
+  the disposable credential state deleted.
 - A disposable Hudson → Reagan managed-Codex prompt reproduced an expired-token
   failure after the attributed turn reached the native transcript. On 0.4.8,
   the replay returned the actionable auth error while the host PID and both
@@ -138,9 +145,12 @@ exact attach command.
 - The exact public 0.4.11 release asset matched SHA-256
   `bff743c95d37219b0ad663294b13f8e040ca376a60c359f8733a6b261bc2f77c`,
   installed into an isolated prefix, and reported 0.4.11 from both binaries.
-- Clean macOS 26 and Linux runners installed the exact 0.4.11 Homebrew formula,
-  executed 0.4.11, passed its formula test, uninstalled it, and verified both
-  CLI links were absent afterward in run 30800846625.
+- The exact public 0.4.12 release asset matched SHA-256
+  `d925f1890964d8fe04c53ee181afff240b8945a3be5df0356d271979d055b513`,
+  installed into an isolated prefix, and reported 0.4.12 from both binaries.
+- Clean macOS 26 and Linux runners installed the exact 0.4.12 Homebrew formula,
+  executed 0.4.12, passed its formula test, uninstalled it, and verified both
+  CLI links were absent afterward in run 30802423567.
 - On the public 0.4.9 artifact, Hudson's managed Codex daemon stopped while the
   mpai service PID stayed unchanged and shared reads fell back safely. After
   the daemon returned, Reagan's next named remote prompt promoted that same
@@ -155,7 +165,7 @@ exact attach command.
   tailnet identities. Per-invite visibility, simultaneous named presence,
   same-task prompt collision, unaffected-peer continuity, and revocation pass;
   a physical third-Mac receipt remains open.
-- Packaged 0.4.11 installs on two separate Macs with matching live services.
+- Packaged 0.4.12 installs on two separate Macs with matching live services.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
   attributed Reagan prompt from one Mac into Hudson's existing session.
@@ -168,7 +178,7 @@ exact attach command.
    sessions are view-only by default. We need a documented managed-daemon path
    for each supported surface rather than imply every active session is safely
    writable.
-2. **Complete distribution (current 0.4.11 proof).** The public GitHub source, versioned release, and
+2. **Complete distribution (current 0.4.12 proof).** The public GitHub source, versioned release, and
    Homebrew tap are available, and services launch through the stable installed
    CLI instead of a versioned package source or Node executable. Service
    stop/remove/reinstall is live-verified. Public release-asset rollback and

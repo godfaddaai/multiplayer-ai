@@ -104,6 +104,13 @@ still worked without rejoining or changing the existing share configuration.
 The release adds an atomic session-scoped invite; it does not broaden any
 previous invitation.
 
+The public 0.4.12 release upgraded both hosts again with matching doctor
+receipts and reciprocal reads. A fresh isolated Hudson state then consumed a
+viewer-only invitation to one Reagan proof session. The printed
+`mpai join '…' --attach` command stored the credential outside config, rendered
+the persisted Codex context, entered the room, and left cleanly. The invite was
+revoked and its disposable local state deleted immediately afterward.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
