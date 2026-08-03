@@ -170,6 +170,16 @@ multi-session invites still print the exact next command.
   matching provider-aware endpoints, and retained reciprocal session reads.
   A live Hudson → Reagan Claude prompt was disconnected after acceptance; the
   exact resumed child disappeared and the audit recorded `prompt.failed`.
+- The exact public 0.4.16 release asset matched SHA-256
+  `2e5a464497319166e9f44510ab186f950122a35dad2c1a1b15037e9feb96966b`,
+  installed into an isolated prefix, reported 0.4.16, and exposed
+  `cohort-report`. Homebrew test-bot run 30819579277 passed install, test, and
+  uninstall on macOS 26 and Linux.
+- Reagan and Hudson installed that exact public 0.4.16 artifact, restarted on
+  matching provider-aware endpoints, and retained reciprocal session reads.
+  Reagan previewed a fixed-choice report locally, then explicitly submitted
+  exactly that preview to issue #7. A preceding public label marks it as
+  founder dogfood excluded from the 0/10 non-founder cohort.
 - Live paste-once receipt: Hudson used a fresh isolated state and the printed
   `mpai join '…' --attach` handoff to enter one viewer-only Reagan Codex room,
   render its persisted context, and leave. The invitation was then revoked and
