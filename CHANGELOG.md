@@ -2,6 +2,23 @@
 
 All notable project changes are documented here.
 
+## [0.4.7] - 2026-08-03
+
+Participant-first onboarding without broader sharing.
+
+### Fixed
+
+- `mpai setup` now prints an explicit participant invite command with
+  selected-session sharing. Following the CLI's own next step no longer
+  creates a view-only invite that blocks the first named teammate prompt.
+- Viewer remains the default role for bare `mpai invite` commands, preserving
+  least privilege when the host has not explicitly chosen collaboration.
+
+### Proven
+
+- A CLI regression test exercises fresh setup output and requires the exact
+  private participant invite command.
+
 ## [0.4.6] - 2026-08-03
 
 Privacy-safe cohort measurement.

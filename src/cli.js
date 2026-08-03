@@ -206,7 +206,9 @@ async function runSetup(store, options) {
   }
   console.log("\nChecking this Mac…");
   await runDoctor(store, options);
-  console.log("\nNext: invite a teammate with `mpai invite --name TEAMMATE`.");
+  console.log(
+    "\nNext: invite a teammate who can collaborate with `mpai invite --name TEAMMATE --role participant --share selected`.",
+  );
 }
 
 async function runInvite(store, options) {

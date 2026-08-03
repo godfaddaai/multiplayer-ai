@@ -69,6 +69,39 @@ test("a fresh install can paste an invite and reach a ready room", async () => {
   }
 });
 
+test("setup points a new host to a private participant invite", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mpai-setup-"));
+  roots.push(root);
+  let stdout = "";
+  try {
+    const result = await execFileAsync(
+      process.execPath,
+      [
+        join(projectRoot, "src", "cli.js"),
+        "setup",
+        "--name",
+        "Alex",
+        "--no-service",
+        "--codex-bin",
+        "/mpai-test/missing-codex",
+        "--claude-bin",
+        "/mpai-test/missing-claude",
+      ],
+      {
+        cwd: projectRoot,
+        env: { ...process.env, MULTIPLAYER_AI_HOME: root },
+      },
+    );
+    stdout = result.stdout;
+  } catch (error) {
+    stdout = error.stdout || "";
+  }
+  assert.match(
+    stdout,
+    /Next: invite a teammate who can collaborate with `mpai invite --name TEAMMATE --role participant --share selected`\./u,
+  );
+});
+
 test("two isolated identities join and send an attributed prompt through the real server", async () => {
   const hostRoot = await mkdtemp(join(tmpdir(), "mpai-host-"));
   const guestRoot = await mkdtemp(join(tmpdir(), "mpai-guest-"));

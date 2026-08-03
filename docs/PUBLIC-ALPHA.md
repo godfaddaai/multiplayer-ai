@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.6, August 3, 2026.
+Status: public source alpha 0.4.7, August 3, 2026.
 
 ## Product promise
 
@@ -42,7 +42,7 @@ creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
 and prints the exact attach command.
 
-## Implemented in 0.4.6
+## Implemented in 0.4.7
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -61,6 +61,9 @@ and prints the exact attach command.
 - One-command Homebrew installation and macOS Keychain-backed peer tokens,
   including automatic migration from the legacy inline format.
 - Fresh-install invite bootstrap and peer-specific attributed identity.
+- Setup's printed next step creates an explicit participant invite with
+  selected-session sharing, so the safest collaboration path does not
+  accidentally strand a new team in view-only mode.
 - A stable service launcher path that survives package/runtime upgrades, plus
   a doctor check for the reachable host version.
 - `mpai support-bundle`: mode-0600, metadata-only diagnostics that exclude
