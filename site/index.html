@@ -48,7 +48,7 @@
       <a class="brand" href="#top" aria-label="mpai home">
         <span class="brand-mark" aria-hidden="true"><i></i><i></i></span>
         <span>mpai</span>
-        <em>alpha 0.4.2</em>
+        <em>alpha 0.4.3</em>
       </a>
       <nav aria-label="Primary navigation">
         <a href="#how">How it works</a>
@@ -180,13 +180,15 @@
       <section class="quickstart section" id="quickstart">
         <div class="section-kicker">00 / QUICKSTART</div>
         <div class="quickstart-copy">
-          <h2>Two Macs.<br>Three commands.</h2>
-          <p>Install with Homebrew, name yourself, then enter a teammate’s room. The alpha uses your existing Tailscale network and your local Codex or Claude Code sessions.</p>
+          <h2>Two Macs.<br>One invite.</h2>
+          <p>The host installs once and creates a named invite. The teammate pastes it on a fresh install and enters the exact shared session—no separate account or new IDE.</p>
         </div>
         <div class="command-stack">
           <div class="command-row"><span>1</span><code>brew install godfaddaai/tap/mpai</code><button type="button" data-copy="brew install godfaddaai/tap/mpai" aria-label="Copy install command">copy</button></div>
-          <div class="command-row"><span>2</span><code>mpai setup --name "Alex"</code><button type="button" data-copy='mpai setup --name "Alex"' aria-label="Copy setup command">copy</button></div>
-          <div class="command-row accent"><span>3</span><code>mpai @maya</code><button type="button" data-copy="mpai @maya" aria-label="Copy join command">copy</button></div>
+          <div class="command-row"><span>2</span><code>mpai setup --name "Maya"</code><button type="button" data-copy='mpai setup --name "Maya"' aria-label="Copy setup command">copy</button></div>
+          <div class="command-row"><span>3</span><code>mpai invite --name Alex --role participant --share all</code><button type="button" data-copy="mpai invite --name Alex --role participant --share all" aria-label="Copy invite command">copy</button></div>
+          <div class="command-row"><span>4</span><code>paste the printed mpai join command</code></div>
+          <div class="command-row accent"><span>5</span><code>mpai @maya</code><button type="button" data-copy="mpai @maya" aria-label="Copy attach command">copy</button></div>
         </div>
         <p class="requirements">Public alpha · macOS · Homebrew · Tailscale · Codex and/or Claude Code</p>
       </section>
@@ -286,6 +288,7 @@
               <li>Viewer / participant roles and revocation</li>
               <li>Private-by-default session sharing</li>
               <li>Append-only prompt audit trail</li>
+              <li>Keychain credentials and redacted support bundles</li>
             </ul>
           </div>
           <div class="alpha-list limits">
@@ -295,7 +298,7 @@
               <li>Managed Codex mode for safe remote prompting</li>
               <li>Standalone Codex sessions are view-only by default</li>
               <li>Claude support targets the local Claude Code CLI store</li>
-              <li>Versioned upgrade and rollback automation are next</li>
+              <li>Full rollback and lifecycle certification are next</li>
               <li>Not yet certified for large organizations</li>
             </ul>
           </div>

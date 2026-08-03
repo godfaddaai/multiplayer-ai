@@ -353,7 +353,7 @@ export class ConfigStore {
     };
   }
 
-  async addPeer({ name, baseUrl, token, hostIdentity }) {
+  async addPeer({ name, baseUrl, token, hostIdentity, actorIdentity }) {
     const config = await this.load({ required: true });
     const normalizedName = cleanName(name || hostIdentity?.name, "peer name");
     const peerId = hostIdentity?.id || randomUUID();
@@ -363,6 +363,14 @@ export class ConfigStore {
       name: normalizedName,
       baseUrl: String(baseUrl).replace(/\/+$/u, ""),
       credential: this.secretStore.reference(peerId),
+      ...(actorIdentity?.name
+        ? {
+            joinedAs: {
+              id: String(actorIdentity.id || ""),
+              name: cleanName(actorIdentity.name, "joined identity"),
+            },
+          }
+        : {}),
       addedAt: new Date().toISOString(),
     };
     const index = config.peers.findIndex(

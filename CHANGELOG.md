@@ -2,6 +2,35 @@
 
 All notable project changes are documented here.
 
+## [0.4.3] - 2026-08-02
+
+First-use reliability and supportability.
+
+### Added
+
+- Fresh-install invite bootstrap: `mpai join` can establish local identity,
+  secure peer storage, reciprocal hosting, and shared-session readiness.
+- Peer-specific joined identity so the local prompt label matches the name the
+  host records.
+- `mpai support-bundle` with metadata-only health and categorized failures.
+- Running service reachability and version checks in `mpai doctor`.
+
+### Fixed
+
+- Launch agents now execute the stable installed `mpai` launcher rather than
+  pinning a version-specific package source or Node executable.
+- Setup preserves an existing custom host port.
+- Invite output contains the exact receiver commands and exact selected-share
+  recovery step.
+
+### Proven
+
+- A fresh isolated state directory joined a mock teammate, stored no token in
+  config, found a shared session, and printed the attach command.
+- A real mode-0600 support bundle retained provider/service diagnostics while
+  excluding prompts, transcripts, identities, paths, credentials, task IDs,
+  and network addresses.
+
 ## [0.4.2] - 2026-08-02
 
 Launch-readiness hardening.

@@ -4,8 +4,7 @@ import { renderLaunchAgent, SERVICE_LABEL } from "../src/service.js";
 
 test("launch agent contains only runtime paths and no invite credentials", () => {
   const plist = renderLaunchAgent({
-    nodePath: "/opt/node/bin/node",
-    cliPath: "/opt/mpai/src/cli.js",
+    cliPath: "/opt/homebrew/bin/mpai",
     stateRoot: "/Users/test/.multiplayer-ai",
     codexBin: "/Applications/Codex.app/Contents/Resources/codex",
     claudeBin: "/Users/test/.local/bin/claude",
@@ -14,7 +13,9 @@ test("launch agent contains only runtime paths and no invite credentials", () =>
   });
   assert.match(plist, new RegExp(SERVICE_LABEL));
   assert.match(plist, /MULTIPLAYER_AI_HOME/u);
+  assert.match(plist, /<string>\/opt\/homebrew\/bin\/mpai<\/string>/u);
   assert.match(plist, /<string>serve<\/string>/u);
+  assert.doesNotMatch(plist, /\/Cellar\/|\/opt\/node\/bin\/node/u);
   assert.match(plist, /<string>--codex-bin<\/string>/u);
   assert.match(plist, /Codex\.app\/Contents\/Resources\/codex/u);
   assert.match(plist, /<string>--claude-bin<\/string>/u);
@@ -28,7 +29,6 @@ test("launch agent contains only runtime paths and no invite credentials", () =>
 
 test("launch agent XML-escapes paths", () => {
   const plist = renderLaunchAgent({
-    nodePath: "/A&B/node",
     cliPath: "/A<B/cli.js",
     stateRoot: "/Users/test/one>two",
     codexBin: "/A&B/codex",

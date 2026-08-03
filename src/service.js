@@ -1,12 +1,14 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import {
+  access,
   chmod,
   mkdir,
   readFile,
   unlink,
   writeFile,
 } from "node:fs/promises";
+import { constants } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { MpaiError } from "./errors.js";
@@ -27,7 +29,6 @@ export function launchAgentPath() {
 }
 
 export function renderLaunchAgent({
-  nodePath,
   cliPath,
   stateRoot,
   codexBin = "codex",
@@ -44,7 +45,6 @@ export function renderLaunchAgent({
   <string>${SERVICE_LABEL}</string>
   <key>ProgramArguments</key>
   <array>
-    <string>${xml(nodePath)}</string>
     <string>${xml(cliPath)}</string>
     <string>serve</string>
     <string>--codex-bin</string>
@@ -91,7 +91,6 @@ async function bootout(path) {
 }
 
 export async function installService({
-  nodePath,
   cliPath,
   stateRoot,
   codexBin = "codex",
@@ -105,13 +104,20 @@ export async function installService({
       status: 400,
     });
   }
+  try {
+    await access(cliPath, constants.X_OK);
+  } catch (error) {
+    throw new MpaiError(`Multiplayer AI launcher is not executable: ${cliPath}`, {
+      code: "CLI_NOT_EXECUTABLE",
+      cause: error,
+    });
+  }
   const path = launchAgentPath();
   await mkdir(dirname(path), { recursive: true });
   await mkdir(stateRoot, { recursive: true, mode: 0o700 });
   await writeFile(
     path,
     renderLaunchAgent({
-      nodePath,
       cliPath,
       stateRoot,
       codexBin,

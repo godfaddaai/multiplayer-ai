@@ -78,6 +78,7 @@ test("peer bearer tokens are stored outside config and hydrated on use", async (
     baseUrl: "http://100.64.0.2:7337",
     token: "peer-secret-token",
     hostIdentity: { id: "maya-id", name: "Maya" },
+    actorIdentity: { id: "tailscale:42", name: "Alex from invite" },
   });
 
   const rawConfig = await readFile(config.configPath, "utf8");
@@ -85,6 +86,10 @@ test("peer bearer tokens are stored outside config and hydrated on use", async (
   const loaded = await config.load({ required: true });
   assert.equal(loaded.peers[0].credential.storage, "file");
   assert.equal(Object.hasOwn(loaded.peers[0], "token"), false);
+  assert.deepEqual(loaded.peers[0].joinedAs, {
+    id: "tailscale:42",
+    name: "Alex from invite",
+  });
 
   const { peer } = await config.findPeer("Maya");
   assert.equal(peer.token, "peer-secret-token");

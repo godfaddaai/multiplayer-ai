@@ -1,0 +1,165 @@
+import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { createServer } from "node:http";
+import { promisify } from "node:util";
+import { afterEach, test } from "node:test";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { AuditStore, ConfigStore } from "../src/config.js";
+import { createMpaiServer, listen } from "../src/server.js";
+
+const execFileAsync = promisify(execFile);
+const roots = [];
+const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
+
+afterEach(async () => {
+  await Promise.all(
+    roots.splice(0).map((root) => rm(root, { recursive: true, force: true })),
+  );
+});
+
+test("a fresh install can paste an invite and reach a ready room", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mpai-cli-"));
+  roots.push(root);
+  const server = createServer((request, response) => {
+    response.setHeader("content-type", "application/json");
+    if (request.url === "/v1/whoami") {
+      response.end(JSON.stringify({
+        host: { id: "maya-host", name: "Maya" },
+        actor: { id: "tailscale:alex", name: "Alex" },
+        role: "participant",
+      }));
+      return;
+    }
+    if (request.url?.startsWith("/v1/tasks?")) {
+      response.end(JSON.stringify({
+        data: [{ id: "claude:one", title: "Ship the alpha" }],
+      }));
+      return;
+    }
+    response.statusCode = 404;
+    response.end(JSON.stringify({ error: { message: "not found" } }));
+  });
+  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const address = server.address();
+  try {
+    const invite = `mpai://127.0.0.1:${address.port}/join?token=fresh-secret&host=Maya`;
+    const { stdout } = await execFileAsync(
+      process.execPath,
+      [join(projectRoot, "src", "cli.js"), "join", invite, "--no-service"],
+      {
+        cwd: projectRoot,
+        env: { ...process.env, MULTIPLAYER_AI_HOME: root },
+      },
+    );
+    assert.match(stdout, /Joined Maya as Alex \(participant\)/u);
+    assert.match(stdout, /1 shared session is ready/u);
+    assert.match(stdout, /Next: mpai @Maya/u);
+
+    const config = JSON.parse(await readFile(join(root, "config.json"), "utf8"));
+    assert.equal(config.identity.name, "Alex");
+    assert.equal(config.peers[0].name, "Maya");
+    assert.equal(config.peers[0].joinedAs.name, "Alex");
+    assert.doesNotMatch(JSON.stringify(config), /fresh-secret/u);
+    assert.match(await readFile(join(root, "credentials.json"), "utf8"), /fresh-secret/u);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});
+
+test("two isolated identities join and send an attributed prompt through the real server", async () => {
+  const hostRoot = await mkdtemp(join(tmpdir(), "mpai-host-"));
+  const guestRoot = await mkdtemp(join(tmpdir(), "mpai-guest-"));
+  roots.push(hostRoot, guestRoot);
+  const hostStore = new ConfigStore({ root: hostRoot });
+  await hostStore.setup({ name: "Maya", port: 7337 });
+  const received = [];
+  const task = {
+    id: "claude:shared-one",
+    nativeId: "shared-one",
+    provider: "claude",
+    providerName: "Claude Code",
+    title: "Ship the alpha",
+    cwd: "/private/project",
+    canPrompt: true,
+    messages: [],
+  };
+  const hub = {
+    status() {
+      return [{
+        id: "claude",
+        name: "Claude Code",
+        available: true,
+        transport: "test-resume",
+      }];
+    },
+    async listTasks() { return [task]; },
+    async readTask() { return { task }; },
+    resolve() {
+      return { provider: { id: "claude", name: "Claude Code", transport: "test-resume" } };
+    },
+    async prompt({ taskId, text, actor, onEvent }) {
+      received.push({ taskId, text, actor });
+      onEvent({ type: "agent.message", text: "Attributed reply" });
+      return {
+        turnId: "turn-one",
+        turn: { status: "completed" },
+      };
+    },
+  };
+  const server = createMpaiServer({
+    configStore: hostStore,
+    hub,
+    identityResolver: async () => ({
+      userId: "alex-tailnet",
+      displayName: "Alex Real",
+      loginName: "alex@example.com",
+      device: "Alex Mac",
+    }),
+  });
+  const address = await listen(server, { host: "127.0.0.1", port: 0 });
+  try {
+    const { url } = await hostStore.createInvite({
+      name: "Alex",
+      role: "participant",
+      share: "all",
+      address: "127.0.0.1",
+      port: address.port,
+    });
+    const environment = { ...process.env, MULTIPLAYER_AI_HOME: guestRoot };
+    const joined = await execFileAsync(
+      process.execPath,
+      [join(projectRoot, "src", "cli.js"), "join", url, "--no-service"],
+      { cwd: projectRoot, env: environment },
+    );
+    assert.match(joined.stdout, /Joined Maya as Alex \(participant\)/u);
+
+    const prompted = await execFileAsync(
+      process.execPath,
+      [
+        join(projectRoot, "src", "cli.js"),
+        "prompt",
+        "@Maya",
+        "shared-one",
+        "Ship it safely.",
+      ],
+      { cwd: projectRoot, env: environment },
+    );
+    assert.match(prompted.stdout, /Attributed reply/u);
+    assert.equal(received.length, 1);
+    assert.equal(received[0].taskId, "claude:shared-one");
+    assert.equal(received[0].text, "Ship it safely.");
+    assert.equal(received[0].actor.name, "Alex");
+
+    const audit = await new AuditStore({ path: hostStore.auditPath }).list();
+    assert.deepEqual(audit.map((event) => event.type), [
+      "prompt.received",
+      "prompt.completed",
+    ]);
+    assert.equal(audit[0].actor.name, "Alex");
+  } finally {
+    await new Promise((resolveClose) => server.close(resolveClose));
+  }
+});

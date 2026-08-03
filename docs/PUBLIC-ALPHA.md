@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.2, August 2, 2026.
+Status: public source alpha 0.4.3, August 2, 2026.
 
 ## Product promise
 
@@ -37,7 +37,12 @@ The GitHub install remains available for machines without Homebrew:
 npm install --global github:godfaddaai/multiplayer-ai
 ```
 
-## Implemented in 0.4.2
+An invited teammate can start from a completely fresh install. `mpai join`
+creates their attributed local identity, stores the peer credential outside
+config, installs their host service on macOS, checks shared-session readiness,
+and prints the exact attach command.
+
+## Implemented in 0.4.3
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -52,6 +57,12 @@ npm install --global github:godfaddaai/multiplayer-ai
 - One-command macOS service setup and provider-aware health checks.
 - One-command Homebrew installation and macOS Keychain-backed peer tokens,
   including automatic migration from the legacy inline format.
+- Fresh-install invite bootstrap and peer-specific attributed identity.
+- A stable service launcher path that survives package/runtime upgrades, plus
+  a doctor check for the reachable host version.
+- `mpai support-bundle`: mode-0600, metadata-only diagnostics that exclude
+  prompts, transcripts, identities, credentials, paths, task metadata, and
+  network addresses.
 - Packaged 0.4 installs on two separate Macs.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
@@ -66,8 +77,9 @@ npm install --global github:godfaddaai/multiplayer-ai
    for each supported surface rather than imply every active session is safely
    writable.
 2. **Complete distribution.** The public GitHub source, versioned release, and
-   Homebrew tap are available. Add versioned upgrade automation, a rollback
-   path, and uninstall verification.
+   Homebrew tap are available, and services launch through the stable installed
+   CLI instead of a versioned package source or Node executable. Complete
+   automated rollback and uninstall verification.
 3. **Credential storage (closed in 0.4.2).** Peer bearer tokens live in macOS
    Keychain. Config retains only references and non-secret metadata, and legacy
    inline tokens migrate on first load.
@@ -79,8 +91,9 @@ npm install --global github:godfaddaai/multiplayer-ai
    events, and service upgrades while a room is open.
 6. **Three-person concurrency.** Dogfood one host plus two teammates, including
    presence, prompt collision, revocation, and per-invite sharing.
-7. **Redacted diagnostics.** Add `mpai support-bundle` with versions, health,
-   recent structured errors, and no tokens or transcript contents.
+7. **Redacted diagnostics (closed in 0.4.3).** `mpai support-bundle` includes
+   versions, service/provider health, aggregate task/audit counts, and
+   categorized recent failures without tokens or transcript contents.
 8. **Release identity and policy.** The public name, repository, MIT license,
    contribution policy, and responsible disclosure path exist. Complete a
    trademark check, privacy notice, and acceptable-use policy before a hosted

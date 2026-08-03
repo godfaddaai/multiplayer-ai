@@ -108,7 +108,7 @@ export class TerminalRoom {
     await this.loadTasks();
     if (!this.tasks.length) {
       throw new MpaiError(
-        `${this.peer.name} has not shared any AI sessions with you yet`,
+        `${this.peer.name} has not shared any AI sessions with you yet. Ask them to run: mpai share SESSION_ID --with ${remote.actor.name}`,
         {
         code: "NO_TASKS",
         status: 404,

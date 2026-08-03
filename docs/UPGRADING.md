@@ -1,0 +1,60 @@
+# Upgrade, rollback, and uninstall
+
+The newest public alpha is the only supported version. Keep configuration and
+audit state under `~/.multiplayer-ai`; Homebrew upgrades do not rewrite it.
+Joined-peer tokens remain in macOS Keychain.
+
+## Upgrade
+
+```bash
+brew update
+brew upgrade godfaddaai/tap/mpai
+mpai service install
+mpai doctor
+```
+
+The service launch agent points at the stable installed `mpai` launcher rather
+than a versioned package source path or Node executable. Homebrew installations
+therefore keep `/opt/homebrew/bin/mpai` stable across formula versions.
+Reinstalling the service after an upgrade restarts it immediately on the new
+version. `mpai doctor` fails the host-endpoint check when the CLI and running
+service versions differ.
+
+Before asking for help, create and review a metadata-only bundle:
+
+```bash
+mpai support-bundle
+```
+
+## Roll back temporarily
+
+Homebrew can extract a previous formula from the tap's Git history into a
+personal local tap:
+
+```bash
+brew tap-new local/mpai-rollback
+brew extract --version=0.4.2 godfaddaai/tap/mpai local/mpai-rollback
+brew unlink mpai
+brew install local/mpai-rollback/mpai@0.4.2
+brew link --overwrite --force mpai@0.4.2
+mpai service install
+mpai doctor
+```
+
+Replace `0.4.2` with the intended released version. This preserves state. Move
+forward again by unlinking and uninstalling the extracted formula, then linking
+or reinstalling `godfaddaai/tap/mpai` and reinstalling the service.
+
+## Uninstall
+
+Stop the always-on host before removing the package:
+
+```bash
+mpai service uninstall
+brew uninstall godfaddaai/tap/mpai
+```
+
+This intentionally preserves `~/.multiplayer-ai` and joined-peer Keychain
+items so a reinstall can recover. Review and remove those separately only when
+you intentionally want to destroy local identity, invitations, audit history,
+and peer access.

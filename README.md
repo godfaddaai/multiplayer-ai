@@ -69,7 +69,7 @@ context and can add a turn with their own name attached.
 - Tailscale connected on both Macs
 - An authenticated current <code>codex</code> and/or <code>claude</code> CLI
 
-### 1. Install on both Macs
+### 1. Host setup
 
 ~~~bash
 brew install godfaddaai/tap/mpai
@@ -83,7 +83,7 @@ npm install --global github:godfaddaai/multiplayer-ai
 ~~~
 
 <code>mpai setup</code> configures identity, discovers available providers,
-installs the background service, and runs health checks.
+installs the background service, and verifies its reachable version.
 
 ### 2. Invite a teammate
 
@@ -94,16 +94,23 @@ mpai invite --name Alex --role participant --share selected
 mpai share SESSION_ID --with Alex
 ~~~
 
-Send the printed <code>mpai://...</code> invite URL to Alex through a channel
-you trust. It contains a secret. Do not paste it into an issue, terminal
-recording, or public chat.
+Send the two lines printed by <code>mpai invite</code> to Alex through a channel
+you trust. The invite contains a secret. Do not paste it into an issue,
+terminal recording, or public chat.
 
-On Alex's Mac:
+### 3. Teammate joins
+
+On a fresh Alex Mac, no separate setup step is needed:
 
 ~~~bash
+brew install godfaddaai/tap/mpai
 mpai join 'mpai://100.x.y.z:7337/join?token=...'
 mpai @maya
 ~~~
+
+The invite establishes Alex's attributed identity, stores the peer credential
+outside config, makes Alex's Mac ready to host in return, checks for shared
+sessions, and prints the exact next command.
 
 For a trusted cofounder relationship where both people intentionally share all
 present and future sessions:
@@ -119,7 +126,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.2
+## What works in 0.4.3
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
@@ -133,6 +140,9 @@ mpai share SESSION_ID --with Alex
 - One remote turn at a time per task
 - Append-only prompt audit trail
 - A macOS background service and provider-aware health checks
+- Paste-an-invite setup from a fresh install
+- Upgrade-stable background-service launchers
+- Metadata-only redacted support bundles
 
 ## Room commands
 
@@ -153,6 +163,13 @@ mpai list @maya
 mpai show @maya 1234abcd --tail 6
 mpai prompt @maya 1234abcd "Check the retry boundary."
 mpai audit @maya
+~~~
+
+When something breaks, create a reviewable diagnostic without session content
+or secrets:
+
+~~~bash
+mpai support-bundle
 ~~~
 
 ## How it works
@@ -231,8 +248,8 @@ This is useful enough to dogfood and early enough to break:
 - Safe Codex prompting depends on the managed-daemon path. Standalone Codex is
   view-only by default.
 - The Claude integration targets the local CLI session store.
-- Versioned upgrade/rollback, sleep/wake certification, three-person
-  concurrency proof, and redacted support bundles remain open.
+- Full rollback certification, sleep/wake certification, and three-person
+  concurrency proof remain open.
 - It is not yet certified for 100-person organizations.
 
 Every release gate is tracked in [PUBLIC-ALPHA.md](./docs/PUBLIC-ALPHA.md).
@@ -257,13 +274,17 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
 
 - [x] macOS Keychain-backed peer credentials
 - [x] One-command Homebrew tap install
+- [x] Fresh-install invite bootstrap and upgrade-stable service launcher
+- [x] Redacted <code>mpai support-bundle</code>
 - [ ] Versioned upgrade, rollback, and uninstall verification
 - [ ] Safe attachment across supported active Codex surfaces
-- [ ] Redacted <code>mpai support-bundle</code>
 - [ ] Three-person concurrency certification
 - [ ] Linux support
 - [ ] Provider SDK and additional coding agents
 - [ ] Organization directory, RBAC, SSO/SCIM, policy, and audit export
+
+See [UPGRADING.md](./docs/UPGRADING.md) for the current update, rollback, and
+uninstall procedures.
 
 ## Why this can matter
 

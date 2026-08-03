@@ -5,7 +5,7 @@ import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { ClaudeProvider } from "./claude.js";
 import { CodexClient } from "./codex.js";
-import { ConfigStore } from "./config.js";
+import { AuditStore, ConfigStore } from "./config.js";
 import { createDashboardServer, listenDashboard } from "./dashboard.js";
 import { MpaiClient } from "./client.js";
 import { MpaiError } from "./errors.js";
@@ -25,8 +25,19 @@ import {
 } from "./service.js";
 import { tailscaleIPv4 } from "./tailscale.js";
 import { VERSION } from "./version.js";
+import { buildSupportBundle, writeSupportBundle } from "./support.js";
+import { stableCliPath } from "./runtime.js";
 
 const execFileAsync = promisify(execFile);
+const SOURCE_CLI_PATH = fileURLToPath(import.meta.url);
+
+async function serviceCliPath() {
+  return stableCliPath({
+    sourcePath: SOURCE_CLI_PATH,
+    invokedPath: process.argv[1],
+    pathEnv: process.env.PATH,
+  });
+}
 
 const HELP = `Multiplayer AI (mpai)
 
@@ -49,6 +60,7 @@ Setup and hosting:
              [--allow-standalone-prompts]
   mpai service install|status|logs|uninstall
   mpai doctor
+  mpai support-bundle [--output PATH]
 
 Optional diagnostics:
   mpai dashboard [--port 7338] [--no-open]
@@ -166,7 +178,7 @@ async function runSetup(store, options) {
       options.name || existing?.identity?.name,
       "Usage: mpai setup --name YOUR_NAME",
     ),
-    port: options.port || 7337,
+    port: options.port || existing?.host?.port || 7337,
   });
   console.log(`Configured ${config.identity.name}`);
   console.log(`State: ${store.root}`);
@@ -174,8 +186,7 @@ async function runSetup(store, options) {
     try {
       const bindAddress = await tailscaleIPv4();
       const path = await installService({
-        nodePath: process.execPath,
-        cliPath: fileURLToPath(import.meta.url),
+        cliPath: await serviceCliPath(),
         stateRoot: store.root,
         codexBin: options["codex-bin"] || "codex",
         claudeBin: options["claude-bin"] || "claude",
@@ -205,10 +216,18 @@ async function runInvite(store, options) {
   console.log(
     `${result.invitation.name} · ${result.invitation.role} · ${result.invitation.taskAccess.mode} sessions`,
   );
-  console.log(result.url);
-  console.log("This token binds to the first Tailscale identity that uses it.");
+  console.log(`\nSend ${result.invitation.name} these two lines:`);
+  console.log("brew install godfaddaai/tap/mpai");
+  console.log(`mpai join '${result.url}'`);
+  console.log("\nThe invite is a secret and binds to the first Tailscale identity that uses it.");
   if (result.invitation.taskAccess.mode === "selected") {
-    console.log(`Sessions are private until you run: mpai share SESSION_ID --with ${result.invitation.name}`);
+    console.log("\nYour sessions remain private. Choose one with `mpai list`, then share it:");
+    console.log(`mpai share SESSION_ID --with ${result.invitation.name}`);
+  } else {
+    console.log(`\n${result.invitation.name} can access all current and future sessions until you unshare or revoke this invite.`);
+  }
+  if (result.invitation.role === "viewer") {
+    console.log(`${result.invitation.name} can view shared sessions but cannot prompt them.`);
   }
 }
 
@@ -283,18 +302,55 @@ async function runShare(store, positionals, options, action) {
   });
 }
 
-async function runJoin(store, positionals) {
+async function runJoin(store, positionals, options) {
   const invite = required(positionals[0], "Usage: mpai join 'mpai://...'");
-  const config = await store.load({ required: true });
-  const client = MpaiClient.fromInvite(invite, { identity: config.identity });
+  let config = await store.load();
+  const client = MpaiClient.fromInvite(invite, { identity: config?.identity });
   const remote = await client.whoami();
+  const initialized = !config;
+  if (initialized) {
+    config = await store.setup({ name: remote.actor.name, port: 7337 });
+  }
   const peer = await store.addPeer({
     name: remote.host.name,
     baseUrl: client.baseUrl,
     token: client.token,
     hostIdentity: remote.host,
+    actorIdentity: remote.actor,
   });
   console.log(`Joined ${peer.name} as ${remote.actor.name} (${remote.role})`);
+  if (initialized && process.platform === "darwin" && !options["no-service"]) {
+    try {
+      const bindAddress = await tailscaleIPv4();
+      const path = await installService({
+        cliPath: await serviceCliPath(),
+        stateRoot: store.root,
+        codexBin: options["codex-bin"] || "codex",
+        claudeBin: options["claude-bin"] || "claude",
+        pathEnv: process.env.PATH,
+        bindAddress,
+      });
+      await fetchHostHealth(bindAddress, config.host.port, { attempts: 5 });
+      console.log(`This Mac is ready to host too: ${path}`);
+    } catch (error) {
+      console.log(`Hosting is not running yet: ${error.message}`);
+      console.log("Run `mpai service install` when you want to share your sessions back.");
+    }
+  }
+  try {
+    const result = await client.listTasks({ limit: 100 });
+    const count = result.data?.length || 0;
+    if (count) {
+      console.log(`${count} shared session${count === 1 ? " is" : "s are"} ready.`);
+      console.log(`Next: mpai @${peer.name}`);
+    } else {
+      console.log(`${peer.name} has not shared a session with you yet.`);
+      console.log(`Ask ${peer.name} to run: mpai share SESSION_ID --with ${remote.actor.name}`);
+    }
+  } catch (error) {
+    console.log(`Connected, but the first session check failed: ${error.message}`);
+    console.log(`Retry with: mpai @${peer.name}`);
+  }
 }
 
 async function runPeers(store) {
@@ -318,7 +374,7 @@ async function runPair(store, positionals) {
   await runTerminalRoom({
     client,
     peer,
-    identity: config.identity,
+    identity: peer.joinedAs || config.identity,
     taskInput: positionals[1],
   });
 }
@@ -513,16 +569,44 @@ async function runAudit(store, positionals, options) {
 async function runDoctor(store, options) {
   const checks = [];
   const config = await store.load();
+  let tailnetAddress = null;
   checks.push({
     name: "configuration",
     ok: Boolean(config?.identity?.name),
     detail: config?.identity?.name || "not configured",
   });
   try {
-    const address = await tailscaleIPv4();
-    checks.push({ name: "tailscale", ok: true, detail: address });
+    tailnetAddress = await tailscaleIPv4();
+    checks.push({ name: "tailscale", ok: true, detail: tailnetAddress });
   } catch (error) {
     checks.push({ name: "tailscale", ok: false, detail: error.message });
+  }
+  if (process.platform === "darwin") {
+    const status = await serviceStatus();
+    checks.push({
+      name: "background service",
+      ok: status.loaded && status.state === "running",
+      required: !options["no-service"],
+      detail: status.loaded
+        ? `${status.state}${status.pid ? `; pid ${status.pid}` : ""}`
+        : "not installed",
+    });
+    if (status.loaded && tailnetAddress && config?.host?.port) {
+      try {
+        const health = await fetchHostHealth(tailnetAddress, config.host.port, {
+          attempts: 5,
+        });
+        checks.push({
+          name: "host endpoint",
+          ok: health.ok && health.version === VERSION,
+          detail: health.ok
+            ? `v${health.version}; ${health.providers.filter((provider) => provider.available).map((provider) => provider.name).join(", ") || "no provider"}`
+            : "unhealthy",
+        });
+      } catch (error) {
+        checks.push({ name: "host endpoint", ok: false, detail: error.message });
+      }
+    }
   }
   try {
     const { stdout } = await execFileAsync(
@@ -572,14 +656,90 @@ async function runDoctor(store, options) {
   if (checks.some((check) => !check.ok && check.required !== false)) process.exitCode = 1;
 }
 
+async function fetchHostHealth(address, port, { attempts = 1 } = {}) {
+  let lastError;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      const response = await fetch(`http://${address}:${port}/v1/health`, {
+        signal: AbortSignal.timeout(2_000),
+      });
+      if (!response.ok) throw new Error(`health returned ${response.status}`);
+      return await response.json();
+    } catch (error) {
+      lastError = error;
+      if (attempt < attempts) {
+        await new Promise((resolveDelay) => setTimeout(resolveDelay, 250));
+      }
+    }
+  }
+  throw new MpaiError(`service is not reachable: ${lastError?.message || "unknown error"}`, {
+    code: "SERVICE_UNREACHABLE",
+    cause: lastError,
+  });
+}
+
+async function runSupportBundle(store, options) {
+  const config = await store.load();
+  let tailscale;
+  try {
+    await tailscaleIPv4();
+    tailscale = { ready: true };
+  } catch (error) {
+    tailscale = { ready: false, error: error.message };
+  }
+  const service = process.platform === "darwin"
+    ? await serviceStatus()
+    : { supported: false, loaded: false, state: "unsupported", pid: null };
+  if (service.loaded && tailscale.ready && config?.host?.port) {
+    try {
+      service.health = await fetchHostHealth(
+        await tailscaleIPv4(),
+        config.host.port,
+      );
+    } catch (error) {
+      service.healthError = error.message;
+    }
+  }
+  let providers = [];
+  let tasks = [];
+  try {
+    await withLocalHub(options, async (hub) => {
+      providers = hub.status();
+      tasks = await hub.listTasks({ limit: 100 });
+    });
+  } catch (error) {
+    providers = [{
+      id: "provider-hub",
+      available: false,
+      transport: null,
+      error: error.message,
+    }];
+  }
+  const auditEvents = await new AuditStore({ path: store.auditPath }).list({
+    limit: 1000,
+  });
+  const bundle = buildSupportBundle({
+    config,
+    service,
+    tailscale,
+    providers,
+    tasks,
+    auditEvents,
+  });
+  const path = await writeSupportBundle(bundle, {
+    outputPath: options.output,
+  });
+  console.log(`Redacted support bundle: ${path}`);
+  console.log("Review it before sharing. It contains metadata only—never prompts, transcripts, tokens, names, paths, or network addresses.");
+}
+
 async function runService(store, positionals, options) {
   const action = positionals[0] || "status";
   await store.load({ required: true });
   if (action === "install") {
     const bindAddress = options.bind || (await tailscaleIPv4());
     const path = await installService({
-      nodePath: process.execPath,
-      cliPath: fileURLToPath(import.meta.url),
+      cliPath: await serviceCliPath(),
       stateRoot: store.root,
       codexBin: options["codex-bin"] || "codex",
       claudeBin: options["claude-bin"] || "claude",
@@ -656,7 +816,7 @@ async function main() {
       console.log("Invite revoked.");
       break;
     case "join":
-      await runJoin(store, positionals);
+      await runJoin(store, positionals, options);
       break;
     case "peers":
       await runPeers(store);
@@ -691,6 +851,10 @@ async function main() {
       break;
     case "doctor":
       await runDoctor(store, options);
+      break;
+    case "support-bundle":
+    case "support":
+      await runSupportBundle(store, options);
       break;
     default:
       if (command.startsWith("@")) {

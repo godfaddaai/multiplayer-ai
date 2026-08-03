@@ -1,15 +1,30 @@
 class Mpai < Formula
   desc "Make Codex and Claude Code sessions multiplayer from the terminal"
   homepage "https://godfaddaai.github.io/multiplayer-ai/"
-  url "https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.2/multiplayer-ai-0.4.2.tgz"
-  sha256 "77964c00ac6b890edcf6e34ab899b4a0914ece1d987c27b8776a5e1d5e9db92e"
+  url "https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.3/multiplayer-ai-0.4.3.tgz"
+  sha256 "24dc3d8adfff3c6d77d503c3e25ea47e985b0e116cd472666085516360695478"
   license "MIT"
+
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
 
   depends_on "node@20"
 
   def install
     system formula_opt_bin("node@20")/"npm", "install", *std_npm_args
     bin.install_symlink libexec.glob("bin/*")
+  end
+
+  def caveats
+    <<~EOS
+      Restart the host after upgrades with:
+        mpai service install
+
+      Before uninstalling, stop the host with:
+        mpai service uninstall
+    EOS
   end
 
   test do
