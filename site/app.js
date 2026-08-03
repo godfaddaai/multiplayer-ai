@@ -65,6 +65,21 @@ const demoTitle = document.querySelector("[data-demo-title]");
 const providerLabel = document.querySelector(".demo-provider");
 const sessionButtons = [...document.querySelectorAll("[data-demo-session]")];
 
+const productHuntLaunchAt = Date.parse("2026-08-03T07:01:00Z");
+const launchBanner = document.querySelector("[data-launch-banner]");
+
+function refreshLaunchBanner() {
+  if (!launchBanner || Date.now() < productHuntLaunchAt) return;
+  launchBanner.querySelector("[data-launch-status]").textContent = "mpai is live now on Product Hunt";
+  launchBanner.querySelector("[data-launch-action]").textContent = "Support the launch ↗";
+  launchBanner.classList.add("is-live");
+}
+
+refreshLaunchBanner();
+if (Date.now() < productHuntLaunchAt) {
+  window.setTimeout(refreshLaunchBanner, productHuntLaunchAt - Date.now());
+}
+
 function selectSession(index) {
   const session = demoSessions[index];
   if (!session || !transcript) return;
