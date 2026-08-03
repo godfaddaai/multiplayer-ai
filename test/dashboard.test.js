@@ -103,6 +103,7 @@ test("dashboard serves a CSP-protected app without exposing peer credentials", a
   assert.equal(payload.identity.name, "Alex");
   assert.equal(payload.peers[0].name, "Maya");
   assert.equal(Object.hasOwn(payload.peers[0], "token"), false);
+  assert.equal(Object.hasOwn(payload.peers[0], "credential"), false);
 });
 
 test("dashboard proxies provider-neutral tasks, presence, and prompt streams", async () => {

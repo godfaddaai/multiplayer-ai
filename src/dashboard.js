@@ -84,20 +84,7 @@ function cleanSegment(value, label) {
 }
 
 async function peerContext(configStore, clientFactory, peerId) {
-  const config = await configStore.load({ required: true });
-  const normalized = String(peerId).toLowerCase();
-  const peer = config.peers.find(
-    (candidate) =>
-      candidate.id.toLowerCase() === normalized ||
-      candidate.id.toLowerCase().startsWith(normalized) ||
-      candidate.name.toLowerCase() === normalized,
-  );
-  if (!peer) {
-    throw new MpaiError(`Unknown teammate ${peerId}`, {
-      code: "PEER_NOT_FOUND",
-      status: 404,
-    });
-  }
+  const { config, peer } = await configStore.findPeer(peerId);
   return { config, peer, client: clientFactory(config, peer) };
 }
 
@@ -145,7 +132,11 @@ export function createDashboardServer({
         const config = await configStore.load({ required: true });
         sendJson(response, 200, {
           identity: config.identity,
-          peers: config.peers.map(({ token: _token, ...peer }) => peer),
+          peers: config.peers.map(({
+            token: _token,
+            credential: _credential,
+            ...peer
+          }) => peer),
           privacy: "tailnet-only",
         });
         return;
@@ -156,7 +147,8 @@ export function createDashboardServer({
         const peers = await Promise.all(
           config.peers.map(async (peer) => {
             try {
-              const remote = await clientFactory(config, peer).whoami();
+              const { peer: resolvedPeer } = await configStore.findPeer(peer.id);
+              const remote = await clientFactory(config, resolvedPeer).whoami();
               return {
                 id: peer.id,
                 name: peer.name,

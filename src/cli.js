@@ -24,9 +24,9 @@ import {
   uninstallService,
 } from "./service.js";
 import { tailscaleIPv4 } from "./tailscale.js";
+import { VERSION } from "./version.js";
 
 const execFileAsync = promisify(execFile);
-const VERSION = "0.4.1";
 
 const HELP = `Multiplayer AI (mpai)
 

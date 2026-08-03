@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { AuditStore, invitationCanAccess } from "./config.js";
 import { errorPayload, MpaiError } from "./errors.js";
 import { resolveTailscaleIdentity } from "./tailscale.js";
+import { VERSION } from "./version.js";
 
 function sendJson(response, status, payload) {
   if (response.writableEnded) return;
@@ -138,7 +139,7 @@ export function createMpaiServer({
         sendJson(response, 200, {
           ok: true,
           service: "multiplayer-ai",
-          version: "0.4.1",
+          version: VERSION,
           providers: hub.status(),
           codexTransport: hub.status().find((provider) => provider.id === "codex")?.transport || null,
         });

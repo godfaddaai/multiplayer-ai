@@ -2,6 +2,28 @@
 
 All notable project changes are documented here.
 
+## [0.4.2] - 2026-08-02
+
+Launch-readiness hardening.
+
+### Added
+
+- One-command installation through `brew install godfaddaai/tap/mpai`.
+- macOS Keychain storage for joined-peer bearer tokens.
+- Automatic migration of legacy inline peer tokens into Keychain.
+
+### Changed
+
+- Sharpen the product promise around cross-person, named collaboration rather
+  than same-account remote control.
+- Keep credential references and non-secret peer metadata in `config.json`.
+
+### Proven
+
+- Round-tripped a disposable credential through macOS Keychain and deleted it.
+- Installed the tagged npm artifact into an isolated prefix and verified both
+  `mpai` and `multiplayer-ai` report the release version.
+
 ## [0.4.1] - 2026-08-02
 
 Launch-proof patch.

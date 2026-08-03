@@ -15,6 +15,7 @@ import {
   timingSafeEqual,
 } from "node:crypto";
 import { MpaiError } from "./errors.js";
+import { FileSecretStore, KeychainSecretStore } from "./secrets.js";
 
 const VERSION = 1;
 
@@ -76,10 +77,18 @@ export function defaultStateRoot() {
 }
 
 export class ConfigStore {
-  constructor({ root = defaultStateRoot() } = {}) {
+  constructor({ root = defaultStateRoot(), secretStore } = {}) {
     this.root = root;
     this.configPath = join(root, "config.json");
     this.auditPath = join(root, "audit.jsonl");
+    const productionRoot = join(homedir(), ".multiplayer-ai");
+    this.secretStore = secretStore || (
+      process.platform === "darwin" &&
+      !process.env.MULTIPLAYER_AI_HOME &&
+      root === productionRoot
+        ? new KeychainSecretStore()
+        : new FileSecretStore({ root })
+    );
     this.mutationQueue = Promise.resolve();
   }
 
@@ -99,7 +108,16 @@ export class ConfigStore {
         });
       }
       parsed.peers ||= [];
+      let migratedCredential = false;
+      for (const peer of parsed.peers) {
+        if (!peer.token) continue;
+        await this.secretStore.set(peer.id, peer.token);
+        delete peer.token;
+        peer.credential = this.secretStore.reference(peer.id);
+        migratedCredential = true;
+      }
       parsed.host ||= { port: 7337 };
+      if (migratedCredential) await this.save(parsed);
       return parsed;
     } catch (error) {
       if (error?.code === "ENOENT" && !required) return null;
@@ -338,11 +356,13 @@ export class ConfigStore {
   async addPeer({ name, baseUrl, token, hostIdentity }) {
     const config = await this.load({ required: true });
     const normalizedName = cleanName(name || hostIdentity?.name, "peer name");
+    const peerId = hostIdentity?.id || randomUUID();
+    await this.secretStore.set(peerId, token);
     const peer = {
-      id: hostIdentity?.id || randomUUID(),
+      id: peerId,
       name: normalizedName,
       baseUrl: String(baseUrl).replace(/\/+$/u, ""),
-      token,
+      credential: this.secretStore.reference(peerId),
       addedAt: new Date().toISOString(),
     };
     const index = config.peers.findIndex(
@@ -370,7 +390,13 @@ export class ConfigStore {
         status: 404,
       });
     }
-    return { config, peer };
+    return {
+      config,
+      peer: {
+        ...peer,
+        token: await this.secretStore.get(peer.id),
+      },
+    };
   }
 
   #mutate(operation) {

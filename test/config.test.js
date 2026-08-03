@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ConfigStore, invitationCanAccess } from "../src/config.js";
@@ -68,6 +68,45 @@ test("revoked invite is rejected", async () => {
     }),
     { code: "UNAUTHORIZED" },
   );
+});
+
+test("peer bearer tokens are stored outside config and hydrated on use", async () => {
+  const config = await store();
+  await config.setup({ name: "Alex", port: 7337 });
+  await config.addPeer({
+    name: "Maya",
+    baseUrl: "http://100.64.0.2:7337",
+    token: "peer-secret-token",
+    hostIdentity: { id: "maya-id", name: "Maya" },
+  });
+
+  const rawConfig = await readFile(config.configPath, "utf8");
+  assert.doesNotMatch(rawConfig, /peer-secret-token/u);
+  const loaded = await config.load({ required: true });
+  assert.equal(loaded.peers[0].credential.storage, "file");
+  assert.equal(Object.hasOwn(loaded.peers[0], "token"), false);
+
+  const { peer } = await config.findPeer("Maya");
+  assert.equal(peer.token, "peer-secret-token");
+});
+
+test("legacy inline peer tokens migrate out of config on first load", async () => {
+  const config = await store();
+  const state = await config.setup({ name: "Alex", port: 7337 });
+  state.peers.push({
+    id: "legacy-maya",
+    name: "Maya",
+    baseUrl: "http://100.64.0.2:7337",
+    token: "legacy-inline-token",
+    addedAt: new Date().toISOString(),
+  });
+  await config.save(state);
+
+  const migrated = await config.load({ required: true });
+  assert.equal(Object.hasOwn(migrated.peers[0], "token"), false);
+  assert.equal(migrated.peers[0].credential.storage, "file");
+  assert.doesNotMatch(await readFile(config.configPath, "utf8"), /legacy-inline-token/u);
+  assert.equal((await config.findPeer("Maya")).peer.token, "legacy-inline-token");
 });
 
 test("new invites are private by default and can share selected sessions", async () => {

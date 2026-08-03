@@ -39,15 +39,16 @@ as soon as practical and coordinate disclosure after a fix is available.
 - New invites default to selected-session access.
 - The host remains the source of truth for task access.
 - The host stores only a SHA-256 hash of issued invite tokens.
-- The peer currently stores its raw token in a mode-<code>0600</code> config
-  file. Moving it to macOS Keychain is an open alpha gate.
+- Joined-peer bearer tokens are stored in macOS Keychain under a per-peer
+  account. The config contains only the credential reference and non-secret
+  peer metadata. Legacy inline alpha tokens migrate on first load.
 - The service has no arbitrary shell, task deletion, archival, or remote
   approval endpoint.
 - Codex approvals from remote turns are declined.
 - Claude remote turns use <code>dontAsk</code>; operations that require an
   interactive permission prompt are denied.
-- The optional diagnostic web view binds to loopback and does not receive raw
-  peer tokens.
+- The optional diagnostic web view binds to loopback and receives neither raw
+  peer tokens nor credential references.
 
 ## Not yet certified
 

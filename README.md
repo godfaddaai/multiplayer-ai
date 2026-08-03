@@ -119,7 +119,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.1
+## What works in 0.4.2
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
@@ -129,6 +129,7 @@ mpai share SESSION_ID --with Alex
 - Viewer and participant roles
 - Private-by-default session sharing and invite revocation
 - Tailscale identity binding
+- macOS Keychain-backed peer credentials with legacy migration
 - One remote turn at a time per task
 - Append-only prompt audit trail
 - A macOS background service and provider-aware health checks
@@ -217,9 +218,10 @@ codex --remote unix://
   <code>dontAsk</code>, so an operation that needs an interactive permission
   prompt is denied.
 
-Peer tokens currently live in a mode-<code>0600</code> local config file.
-macOS Keychain storage is a public-alpha gate, not a completed feature. Read
-[SECURITY.md](./SECURITY.md) for threat boundaries and reporting.
+Joined-peer bearer tokens live in macOS Keychain. The local config stores only
+a credential reference and non-secret peer metadata; existing inline alpha
+tokens migrate on first load. Read [SECURITY.md](./SECURITY.md) for threat
+boundaries and reporting.
 
 ## Alpha limits
 
@@ -229,8 +231,8 @@ This is useful enough to dogfood and early enough to break:
 - Safe Codex prompting depends on the managed-daemon path. Standalone Codex is
   view-only by default.
 - The Claude integration targets the local CLI session store.
-- Homebrew distribution, Keychain storage, sleep/wake certification,
-  three-person concurrency proof, and redacted support bundles remain open.
+- Versioned upgrade/rollback, sleep/wake certification, three-person
+  concurrency proof, and redacted support bundles remain open.
 - It is not yet certified for 100-person organizations.
 
 Every release gate is tracked in [PUBLIC-ALPHA.md](./docs/PUBLIC-ALPHA.md).
@@ -253,7 +255,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
 
 ## Roadmap
 
-- [ ] macOS Keychain-backed peer credentials
+- [x] macOS Keychain-backed peer credentials
 - [x] One-command Homebrew tap install
 - [ ] Versioned upgrade, rollback, and uninstall verification
 - [ ] Safe attachment across supported active Codex surfaces

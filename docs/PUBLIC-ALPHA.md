@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.1, August 2, 2026.
+Status: public source alpha 0.4.2, August 2, 2026.
 
 ## Product promise
 
@@ -37,7 +37,7 @@ The GitHub install remains available for machines without Homebrew:
 npm install --global github:godfaddaai/multiplayer-ai
 ```
 
-## Implemented in 0.4.1
+## Implemented in 0.4.2
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -50,6 +50,8 @@ npm install --global github:godfaddaai/multiplayer-ai
   knows an exact task ID.
 - Selected-session and intentional all-session sharing.
 - One-command macOS service setup and provider-aware health checks.
+- One-command Homebrew installation and macOS Keychain-backed peer tokens,
+  including automatic migration from the legacy inline format.
 - Packaged 0.4 installs on two separate Macs.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
@@ -66,8 +68,9 @@ npm install --global github:godfaddaai/multiplayer-ai
 2. **Complete distribution.** The public GitHub source, versioned release, and
    Homebrew tap are available. Add versioned upgrade automation, a rollback
    path, and uninstall verification.
-3. **Credential storage.** Move peer bearer tokens from a mode-0600 JSON file to
-   macOS Keychain; keep only references and non-secret metadata in config.
+3. **Credential storage (closed in 0.4.2).** Peer bearer tokens live in macOS
+   Keychain. Config retains only references and non-secret metadata, and legacy
+   inline tokens migrate on first load.
 4. **Two-way provider certification.** Run harmless attributed prompt receipts
    in both directions for Claude Code and managed Codex, with the native
    transcript visible on the host.

@@ -6,6 +6,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import WebSocket from "ws";
 import { MpaiError } from "./errors.js";
+import { VERSION } from "./version.js";
 
 const SOURCE_KINDS = ["cli", "vscode", "appServer", "exec", "unknown"];
 
@@ -149,7 +150,7 @@ export class CodexClient extends EventEmitter {
         clientInfo: {
           name: "multiplayer_ai",
           title: "Multiplayer AI",
-          version: "0.4.1",
+          version: VERSION,
         },
         capabilities: {
           experimentalApi: false,
