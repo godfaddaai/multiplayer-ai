@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.5, August 2, 2026.
+Status: public source alpha 0.4.6, August 3, 2026.
 
 ## Product promise
 
@@ -42,7 +42,7 @@ creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
 and prints the exact attach command.
 
-## Implemented in 0.4.5
+## Implemented in 0.4.6
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.

@@ -2,7 +2,7 @@
 
 All notable project changes are documented here.
 
-## [Unreleased]
+## [0.4.6] - 2026-08-03
 
 Privacy-safe cohort measurement.
 

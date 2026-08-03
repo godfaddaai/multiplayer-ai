@@ -79,7 +79,7 @@ mpai setup --name "Your Name"
 Without Homebrew:
 
 ~~~bash
-npm install --global github:godfaddaai/multiplayer-ai
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.6/multiplayer-ai-0.4.6.tgz
 ~~~
 
 <code>mpai setup</code> configures identity, discovers available providers,
@@ -130,7 +130,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.5
+## What works in 0.4.6
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
