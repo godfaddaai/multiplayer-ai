@@ -36,6 +36,12 @@ credentials, paths, task metadata, and network addresses. Review any file
 before sharing it. Do not send real invitation URLs, tokens, or unredacted
 transcripts in a public issue.
 
+`mpai alpha-receipt` is a separate review-before-sharing file containing only
+counts, elapsed minutes, active day/week totals, provider names, and categorized
+reliability outcomes. It excludes names, identifiers, prompts, transcripts,
+task metadata, paths, credentials, network addresses, and event timestamps.
+The command writes the receipt locally with mode 0600 and does not upload it.
+
 ## Website and third-party services
 
 The project website is a static GitHub Pages site and does not include mpai
@@ -54,10 +60,12 @@ teammate already viewed or copied.
 
 ## Alpha measurement
 
-The current release has no product telemetry. If opt-in measurement is added,
-it must be off by default, documented before collection, and limited to
-activation and reliability metadata. Prompt and transcript content must not be
-collected for product analytics.
+The current release has no automatic product telemetry. Creating an alpha
+receipt is an explicit local action; sharing it is a separate user choice. If
+networked opt-in measurement is added later, it must be off by default,
+documented before collection, and limited to activation and reliability
+metadata. Prompt and transcript content must not be collected for product
+analytics.
 
 ## Your choices
 
@@ -67,7 +75,7 @@ You can:
 - grant viewer access instead of participant access;
 - revoke an invite or unshare a session at any time;
 - inspect the source and local data before use;
-- avoid creating or sharing a support bundle;
+- avoid creating or sharing a support bundle or alpha receipt;
 - uninstall mpai when you no longer want the service running.
 
 For a privacy or security concern, use GitHub's

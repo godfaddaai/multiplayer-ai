@@ -25,7 +25,12 @@ import {
 } from "./service.js";
 import { tailscaleIPv4 } from "./tailscale.js";
 import { VERSION } from "./version.js";
-import { buildSupportBundle, writeSupportBundle } from "./support.js";
+import {
+  buildAlphaReceipt,
+  buildSupportBundle,
+  writeAlphaReceipt,
+  writeSupportBundle,
+} from "./support.js";
 import { stableCliPath } from "./runtime.js";
 
 const execFileAsync = promisify(execFile);
@@ -61,6 +66,7 @@ Setup and hosting:
   mpai service install|status|logs|uninstall
   mpai doctor
   mpai support-bundle [--output PATH]
+  mpai alpha-receipt [--output PATH]
 
 Optional diagnostics:
   mpai dashboard [--port 7338] [--no-open]
@@ -736,6 +742,20 @@ async function runSupportBundle(store, options) {
   console.log("Review it before sharing. It contains metadata only—never prompts, transcripts, tokens, names, paths, or network addresses.");
 }
 
+async function runAlphaReceipt(store, options) {
+  const config = await store.load();
+  const auditEvents = await new AuditStore({ path: store.auditPath }).list({
+    limit: 1000,
+  });
+  const receipt = buildAlphaReceipt({ config, auditEvents });
+  const path = await writeAlphaReceipt(receipt, {
+    outputPath: options.output,
+  });
+  console.log(`Private alpha receipt: ${path}`);
+  console.log("Nothing was sent. Review the JSON before sharing it with the first-10-team cohort.");
+  console.log("The receipt contains counts and elapsed minutes only—never prompts, transcripts, names, task IDs, paths, tokens, addresses, or event timestamps.");
+}
+
 async function runService(store, positionals, options) {
   const action = positionals[0] || "status";
   await store.load({ required: true });
@@ -858,6 +878,10 @@ async function main() {
     case "support-bundle":
     case "support":
       await runSupportBundle(store, options);
+      break;
+    case "alpha-receipt":
+    case "cohort-receipt":
+      await runAlphaReceipt(store, options);
       break;
     default:
       if (command.startsWith("@")) {

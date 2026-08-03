@@ -150,6 +150,7 @@ mpai share SESSION_ID --with Alex
 - Paste-an-invite setup from a fresh install
 - Upgrade-stable background-service launchers
 - Metadata-only redacted support bundles
+- Review-before-sharing alpha activation receipts that are never sent automatically
 
 ## Room commands
 
@@ -178,6 +179,17 @@ or secrets:
 ~~~bash
 mpai support-bundle
 ~~~
+
+Testing with the first-10-team cohort? Generate a separate privacy-safe receipt
+of activation timing, named-prompt outcomes, active days/weeks, and reliability:
+
+~~~bash
+mpai alpha-receipt
+~~~
+
+The command writes a mode-0600 JSON file locally and sends nothing. Review it
+before sharing; it excludes prompts, transcripts, names, task identifiers,
+paths, credentials, network addresses, and event timestamps.
 
 ## How it works
 

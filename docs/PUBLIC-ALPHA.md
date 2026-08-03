@@ -66,6 +66,11 @@ and prints the exact attach command.
 - `mpai support-bundle`: mode-0600, metadata-only diagnostics that exclude
   prompts, transcripts, identities, credentials, paths, task metadata, and
   network addresses.
+- `mpai alpha-receipt`: an explicit, local-only, mode-0600 cohort receipt with
+  activation elapsed minutes, collaboration counts, active days/weeks, and
+  provider reliability. It sends nothing and excludes prompts, transcripts,
+  names, task identifiers, paths, credentials, network addresses, and event
+  timestamps.
 - Per-peer credential backend routing and a mode-0600 file fallback when a
   non-interactive macOS host cannot access Keychain.
 - Live 0.4.0 → 0.4.4 Hudson upgrade proof: initial Keychain failure left the
@@ -165,3 +170,6 @@ and prints the exact attach command.
 - Reliability by provider, transport, and reconnect reason.
 
 No transcript contents should be collected for product analytics.
+The local `mpai alpha-receipt` covers the machine-verifiable subset without
+automatic collection. Install-to-room time and context-transfer value remain
+self-reported in the first-10-team cohort.

@@ -3,7 +3,12 @@ import { afterEach, test } from "node:test";
 import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { buildSupportBundle, writeSupportBundle } from "../src/support.js";
+import {
+  buildAlphaReceipt,
+  buildSupportBundle,
+  writeAlphaReceipt,
+  writeSupportBundle,
+} from "../src/support.js";
 import { VERSION } from "../src/version.js";
 
 const roots = [];
@@ -93,6 +98,104 @@ test("support bundle keeps useful health metadata and strips sensitive state", a
   assert.deepEqual(JSON.parse(await readFile(path, "utf8")), bundle);
   assert.equal((await stat(path)).mode & 0o777, 0o600);
   await assert.rejects(writeSupportBundle(bundle, { outputPath: path }), {
+    code: "EEXIST",
+  });
+});
+
+test("alpha receipt measures activation and reliability without leaking collaboration data", async () => {
+  const receipt = buildAlphaReceipt({
+    generatedAt: "2026-08-10T18:00:00.000Z",
+    runtime: { node: "v22.0.0", platform: "darwin", arch: "arm64" },
+    config: {
+      identity: {
+        id: "private-host-id",
+        name: "Secret Person",
+        createdAt: "2026-08-03T17:00:00.000Z",
+      },
+      host: { port: 7337 },
+      peers: [{
+        id: "private-peer-id",
+        name: "Private Peer",
+        baseUrl: "http://100.64.0.2:7337",
+        addedAt: "2026-08-03T17:04:30.000Z",
+      }],
+      invites: [{
+        name: "Invite Name",
+        role: "participant",
+        tokenHash: "private-token-hash",
+        claimedBy: "private-tailnet-user",
+        claimedAt: "2026-08-03T17:03:00.000Z",
+        taskAccess: { mode: "selected", taskIds: ["claude:private"] },
+      }],
+    },
+    auditEvents: [
+      {
+        type: "prompt.received",
+        at: "2026-08-03T17:05:00.000Z",
+        target: "claude",
+        text: "do not leak this prompt",
+        taskId: "claude:private",
+        actor: { name: "Secret Person" },
+      },
+      {
+        type: "prompt.completed",
+        at: "2026-08-03T17:05:05.000Z",
+        target: "claude",
+        taskId: "claude:private",
+      },
+      {
+        type: "prompt.received",
+        at: "2026-08-10T17:00:00.000Z",
+        target: "codex",
+        text: "another private prompt",
+      },
+      {
+        type: "prompt.failed",
+        at: "2026-08-10T17:00:01.000Z",
+        target: "codex",
+        error: "connection failed at 100.64.0.2 /Users/private/project",
+      },
+    ],
+  });
+  const serialized = JSON.stringify(receipt);
+  for (const sensitive of [
+    "Secret Person",
+    "Private Peer",
+    "Invite Name",
+    "private-host-id",
+    "private-peer-id",
+    "private-token-hash",
+    "private-tailnet-user",
+    "100.64.0.2",
+    "claude:private",
+    "/Users/private",
+    "do not leak",
+    "2026-08-03T17:05:00.000Z",
+  ]) {
+    assert.doesNotMatch(serialized, new RegExp(sensitive.replaceAll(".", "\\."), "u"));
+  }
+  assert.equal(receipt.submission, "not-sent");
+  assert.equal(receipt.activation.minutesToFirstPeer, 5);
+  assert.equal(receipt.activation.minutesToFirstClaimedInvite, 3);
+  assert.equal(receipt.activation.minutesToFirstNamedPrompt, 5);
+  assert.equal(receipt.activation.selectedSessionsShared, 1);
+  assert.equal(receipt.engagement.promptAttempts, 2);
+  assert.equal(receipt.engagement.promptsCompleted, 1);
+  assert.equal(receipt.engagement.promptsFailed, 1);
+  assert.equal(receipt.engagement.activeDays, 2);
+  assert.equal(receipt.engagement.activeWeeks, 2);
+  assert.deepEqual(receipt.engagement.providersUsed, ["claude", "codex"]);
+  assert.equal(receipt.reliability.successRate, 0.5);
+  assert.deepEqual(receipt.reliability.failureKinds, { connection_failed: 1 });
+
+  const root = await mkdtemp(join(tmpdir(), "mpai-alpha-receipt-"));
+  roots.push(root);
+  const path = await writeAlphaReceipt(receipt, {
+    outputPath: join(root, "receipt.json"),
+  });
+  assert.deepEqual(JSON.parse(await readFile(path, "utf8")), receipt);
+  assert.equal((await stat(path)).mode & 0o777, 0o600);
+  await assert.rejects(writeAlphaReceipt(receipt, { outputPath: path }), {
     code: "EEXIST",
   });
 });

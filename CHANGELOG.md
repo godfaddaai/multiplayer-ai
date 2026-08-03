@@ -2,6 +2,27 @@
 
 All notable project changes are documented here.
 
+## [Unreleased]
+
+Privacy-safe cohort measurement.
+
+### Added
+
+- `mpai alpha-receipt` writes a mode-0600, review-before-sharing JSON receipt
+  with activation elapsed minutes, collaboration counts, active days/weeks,
+  provider outcomes, and categorized reliability.
+- The receipt is never transmitted automatically and excludes prompts,
+  transcripts, names, task identifiers, paths, credentials, network addresses,
+  and event timestamps.
+
+### Proven
+
+- Synthetic sensitive fixtures confirm the receipt retains useful activation
+  and reliability evidence without serializing collaboration content or
+  identifiers.
+- An isolated CLI run produced a valid mode-0600 receipt and explicitly
+  reported that nothing was sent.
+
 ## [0.4.5] - 2026-08-02
 
 Fast, actionable teammate-offline recovery.

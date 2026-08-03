@@ -27,6 +27,115 @@ function invitationState(invitation) {
   return "unclaimed";
 }
 
+function elapsedMinutes(origin, values) {
+  const startedAt = Date.parse(origin || "");
+  const candidates = values
+    .map((value) => Date.parse(value || ""))
+    .filter((value) => Number.isFinite(value) && value >= startedAt);
+  if (!Number.isFinite(startedAt) || !candidates.length) return null;
+  return Math.round((Math.min(...candidates) - startedAt) / 60_000);
+}
+
+function weekKey(value) {
+  const date = new Date(value || "");
+  if (!Number.isFinite(date.getTime())) return null;
+  date.setUTCHours(0, 0, 0, 0);
+  date.setUTCDate(date.getUTCDate() + 4 - (date.getUTCDay() || 7));
+  const year = date.getUTCFullYear();
+  const yearStart = new Date(Date.UTC(year, 0, 1));
+  const week = Math.ceil((((date - yearStart) / 86_400_000) + 1) / 7);
+  return `${year}-W${String(week).padStart(2, "0")}`;
+}
+
+export function buildAlphaReceipt({
+  config,
+  auditEvents = [],
+  generatedAt = new Date().toISOString(),
+  runtime = {},
+} = {}) {
+  const invitations = config?.invites || [];
+  const peers = config?.peers || [];
+  const promptReceived = auditEvents.filter((event) => event.type === "prompt.received");
+  const promptCompleted = auditEvents.filter((event) => event.type === "prompt.completed");
+  const promptFailed = auditEvents.filter((event) => event.type === "prompt.failed");
+  const promptOutcomes = [...promptCompleted, ...promptFailed];
+  const providerIds = [...new Set(
+    promptOutcomes.map((event) => event.target).filter(Boolean),
+  )].sort();
+  const byProvider = {};
+  for (const provider of providerIds) {
+    const completed = promptCompleted.filter((event) => event.target === provider).length;
+    const failed = promptFailed.filter((event) => event.target === provider).length;
+    byProvider[provider] = { completed, failed };
+  }
+  const activeDays = new Set(
+    promptReceived.map((event) => String(event.at || "").slice(0, 10)).filter(Boolean),
+  );
+  const activeWeeks = new Set(promptReceived.map((event) => weekKey(event.at)).filter(Boolean));
+  const setupAt = config?.identity?.createdAt;
+  const selectedSessionsShared = new Set(
+    invitations.flatMap((invitation) => invitation.taskAccess?.taskIds || []),
+  ).size;
+  const outcomeCount = promptOutcomes.length;
+  return {
+    schema: "mpai.alpha-receipt.v1",
+    generatedAt,
+    submission: "not-sent",
+    redaction: {
+      transcriptContents: "excluded",
+      promptContents: "excluded",
+      credentials: "excluded",
+      identities: "excluded",
+      taskIdentifiers: "excluded",
+      taskMetadata: "excluded",
+      filesystemPaths: "excluded",
+      networkAddresses: "excluded",
+      eventTimestamps: "excluded",
+    },
+    runtime: {
+      mpai: VERSION,
+      node: runtime.node || process.version,
+      platform: runtime.platform || process.platform,
+      arch: runtime.arch || process.arch,
+    },
+    activation: {
+      configured: Boolean(config?.identity?.name),
+      peersConfigured: peers.length,
+      invitationsClaimed: invitations.filter((invitation) => invitation.claimedBy).length,
+      participantInvitations: invitations.filter((invitation) => invitation.role === "participant").length,
+      selectedSessionsShared,
+      allSessionShares: invitations.filter((invitation) =>
+        !invitation.revokedAt && invitation.taskAccess?.mode === "all"
+      ).length,
+      minutesToFirstPeer: elapsedMinutes(setupAt, peers.map((peer) => peer.addedAt)),
+      minutesToFirstClaimedInvite: elapsedMinutes(
+        setupAt,
+        invitations.map((invitation) => invitation.claimedAt),
+      ),
+      minutesToFirstNamedPrompt: elapsedMinutes(
+        setupAt,
+        promptReceived.map((event) => event.at),
+      ),
+    },
+    engagement: {
+      promptAttempts: promptReceived.length,
+      promptsCompleted: promptCompleted.length,
+      promptsFailed: promptFailed.length,
+      activeDays: activeDays.size,
+      activeWeeks: activeWeeks.size,
+      providersUsed: providerIds,
+    },
+    reliability: {
+      completedOutcomes: outcomeCount,
+      successRate: outcomeCount
+        ? Number((promptCompleted.length / outcomeCount).toFixed(4))
+        : null,
+      byProvider,
+      failureKinds: counts(promptFailed.map((event) => errorKind(event.error))),
+    },
+  };
+}
+
 export function buildSupportBundle({
   config,
   service,
@@ -118,6 +227,18 @@ export async function writeSupportBundle(bundle, { outputPath } = {}) {
   const timestamp = bundle.generatedAt.replaceAll(/[:.]/gu, "-");
   const path = resolve(outputPath || `mpai-support-${timestamp}.json`);
   await writeFile(path, `${JSON.stringify(bundle, null, 2)}\n`, {
+    encoding: "utf8",
+    mode: 0o600,
+    flag: "wx",
+  });
+  await chmod(path, 0o600);
+  return path;
+}
+
+export async function writeAlphaReceipt(receipt, { outputPath } = {}) {
+  const timestamp = receipt.generatedAt.replaceAll(/[:.]/gu, "-");
+  const path = resolve(outputPath || `mpai-alpha-receipt-${timestamp}.json`);
+  await writeFile(path, `${JSON.stringify(receipt, null, 2)}\n`, {
     encoding: "utf8",
     mode: 0o600,
     flag: "wx",
