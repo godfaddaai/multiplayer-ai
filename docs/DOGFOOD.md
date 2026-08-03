@@ -124,8 +124,9 @@ Reagan restarted on PID 8152 and Hudson on PID 86187; both doctor receipts
 reported matching 0.4.14 endpoints with Codex and Claude Code available.
 Reagan → Hudson and Hudson → Reagan session lists both passed after restart.
 The guided `mpai start` regression proves one selected-session participant
-invite and a fail-closed non-interactive path, but this still does not count as
-one of the ten required non-founder activations.
+invite. A live non-interactive Reagan dry run without `--session` exited one
+and left the invite count unchanged. This still does not count as one of the
+ten required non-founder activations.
 
 ## Deterministic reliability soak
 
