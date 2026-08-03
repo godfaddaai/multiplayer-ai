@@ -1,6 +1,6 @@
 {
   "name": "multiplayer-ai",
-  "version": "0.4.17",
+  "version": "0.4.18",
   "description": "Make Codex and Claude Code sessions multiplayer from the terminal.",
   "type": "module",
   "private": false,
