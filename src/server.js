@@ -269,6 +269,13 @@ export function createMpaiServer({
         const taskId = cleanTaskId(taskMatch[1]);
         requireTaskAccess(session, taskId);
         const result = await hub.readTask(taskId);
+        try {
+          await configStore.recordRoomOpened(session.invitation.id, {
+            at: new Date(now()).toISOString(),
+          });
+        } catch (error) {
+          logger.error?.(`Could not record first-room timing: ${error.message}`);
+        }
         sendJson(response, 200, {
           host: session.host,
           task: result.task,

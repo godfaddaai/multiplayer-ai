@@ -126,6 +126,8 @@ test("alpha receipt measures activation and reliability without leaking collabor
         tokenHash: "private-token-hash",
         claimedBy: "private-tailnet-user",
         claimedAt: "2026-08-03T17:03:00.000Z",
+        createdAt: "2026-08-03T17:01:30.000Z",
+        firstRoomAt: "2026-08-03T17:04:00.000Z",
         taskAccess: { mode: "selected", taskIds: ["claude:private"] },
       }],
     },
@@ -178,6 +180,8 @@ test("alpha receipt measures activation and reliability without leaking collabor
   assert.equal(receipt.submission, "not-sent");
   assert.equal(receipt.activation.minutesToFirstPeer, 5);
   assert.equal(receipt.activation.minutesToFirstClaimedInvite, 3);
+  assert.equal(receipt.activation.minutesToFirstRoom, 2.5);
+  assert.equal(receipt.activation.roomOpenInvitations, 1);
   assert.equal(receipt.activation.minutesToFirstNamedPrompt, 5);
   assert.equal(receipt.activation.selectedSessionsShared, 1);
   assert.equal(receipt.engagement.promptAttempts, 2);
@@ -227,6 +231,7 @@ test("cohort report is copy-ready public metadata with explicit unknowns", () =>
   assert.match(report, /minutes to first shared room: 4/u);
   assert.match(report, /first failure category, if any: connection_failed/u);
   assert.match(report, /claimed invites: 1/u);
+  assert.match(report, /first-room opens recorded: 0/u);
   assert.doesNotMatch(report, /Private Founder|private-user|claude:private|Users\/private/u);
 
   const injection = formatCohortReport(receipt, {
@@ -241,4 +246,15 @@ test("cohort report is copy-ready public metadata with explicit unknowns", () =>
   const unknown = formatCohortReport(buildAlphaReceipt({}));
   assert.match(unknown, /join method: not reported/u);
   assert.match(unknown, /would use this again next week: not reported/u);
+
+  const measured = formatCohortReport(buildAlphaReceipt({
+    config: {
+      invites: [{
+        createdAt: "2026-08-03T17:00:00.000Z",
+        firstRoomAt: "2026-08-03T17:03:30.000Z",
+      }],
+    },
+  }));
+  assert.match(measured, /minutes to first shared room: 3.5/u);
+  assert.match(measured, /first-room opens recorded: 1/u);
 });

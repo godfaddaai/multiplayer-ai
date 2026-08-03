@@ -17,6 +17,7 @@ On machines where you install it, mpai may process:
   timestamps, transcripts, and provider events;
 - prompts a participant sends to an explicitly shared session;
 - role, sharing, presence, and append-only prompt-audit metadata;
+- a one-time local timestamp when an invite first opens a shared room;
 - local service, provider, version, and error metadata used for diagnostics;
 - invitation and peer credentials needed to authorize a connection.
 
@@ -42,8 +43,10 @@ reliability outcomes. It excludes names, identifiers, prompts, transcripts,
 task metadata, paths, credentials, network addresses, and event timestamps.
 The command writes the receipt locally with mode 0600 and does not upload it.
 
-`mpai cohort-report` converts those counts plus four fixed-choice self-reported
-fields into an exact public preview. It sends nothing by default. If you pass
+`mpai cohort-report` converts those counts, the locally measured invite-to-room
+elapsed minutes when available, and fixed-choice self-reported fields into an
+exact public preview. The underlying room-open timestamp is excluded. It sends
+nothing by default. If you pass
 `--submit`, mpai asks for confirmation before invoking your authenticated
 GitHub CLI to publish exactly that preview to the public first-10-team issue.
 Non-interactive use also requires `--yes`. GitHub associates the comment with
@@ -69,7 +72,9 @@ teammate already viewed or copied.
 
 ## Alpha measurement
 
-The current release has no automatic product telemetry. Creating an alpha
+The current release has no automatic product telemetry. The host stores the
+first successful room-open timestamp locally so a receipt can calculate elapsed
+minutes without publishing that timestamp. Creating an alpha
 receipt or cohort preview is an explicit local action. Public cohort submission
 is a separate, review-first user choice through GitHub and remains off by
 default. It is limited to activation and reliability counts plus fixed-choice

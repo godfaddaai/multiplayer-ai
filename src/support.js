@@ -36,6 +36,21 @@ function elapsedMinutes(origin, values) {
   return Math.round((Math.min(...candidates) - startedAt) / 60_000);
 }
 
+function inviteToRoomMinutes(invitations) {
+  const elapsed = invitations
+    .map((invitation) => {
+      const invitedAt = Date.parse(invitation.createdAt || "");
+      const openedAt = Date.parse(invitation.firstRoomAt || "");
+      if (!Number.isFinite(invitedAt) || !Number.isFinite(openedAt) || openedAt < invitedAt) {
+        return null;
+      }
+      return (openedAt - invitedAt) / 60_000;
+    })
+    .filter((value) => value !== null);
+  if (!elapsed.length) return null;
+  return Number(Math.min(...elapsed).toFixed(2));
+}
+
 function weekKey(value) {
   const date = new Date(value || "");
   if (!Number.isFinite(date.getTime())) return null;
@@ -112,6 +127,8 @@ export function buildAlphaReceipt({
         setupAt,
         invitations.map((invitation) => invitation.claimedAt),
       ),
+      minutesToFirstRoom: inviteToRoomMinutes(invitations),
+      roomOpenInvitations: invitations.filter((invitation) => invitation.firstRoomAt).length,
       minutesToFirstNamedPrompt: elapsedMinutes(
         setupAt,
         promptReceived.map((event) => event.at),
@@ -166,7 +183,9 @@ export function formatCohortReport(receipt, selfReport = {}) {
       npm: "npm",
       other: "other",
     })}`,
-    `minutes to first shared room: ${reportMinutes(selfReport.minutesToRoom)}`,
+    `minutes to first shared room: ${reportMinutes(
+      selfReport.minutesToRoom ?? receipt.activation.minutesToFirstRoom
+    )}`,
     `named prompt visible in native transcript: ${reportChoice(selfReport.namedPrompt, {
       yes: "yes",
       no: "no",
@@ -181,6 +200,7 @@ export function formatCohortReport(receipt, selfReport = {}) {
     "",
     "machine-readable counts (no content or identifiers):",
     `- claimed invites: ${receipt.activation.invitationsClaimed}`,
+    `- first-room opens recorded: ${receipt.activation.roomOpenInvitations}`,
     `- selected sessions shared: ${receipt.activation.selectedSessionsShared}`,
     `- completed prompt outcomes: ${completed}/${outcomeCount}`,
     `- active days: ${receipt.engagement.activeDays}`,
