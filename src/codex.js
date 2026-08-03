@@ -2,6 +2,7 @@ import { EventEmitter } from "node:events";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 import { randomUUID } from "node:crypto";
+import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import WebSocket from "ws";
@@ -124,6 +125,7 @@ export class CodexClient extends EventEmitter {
     this.transport = null;
     this.closing = false;
     this.subscribedThreads = new Set();
+    this.managedPromotion = null;
   }
 
   async start() {
@@ -146,6 +148,38 @@ export class CodexClient extends EventEmitter {
       `Could not connect to Codex app-server: ${lastError?.message || "unknown error"}`,
       { code: "CODEX_UNAVAILABLE", status: 503, cause: lastError },
     );
+  }
+
+  async ensureManagedForPrompt() {
+    if (
+      this.mode !== "auto" ||
+      this.transport !== "standalone" ||
+      !this.proc ||
+      !existsSync(this.managedSocketPath)
+    ) {
+      return this.transport;
+    }
+    if (!this.managedPromotion) {
+      this.managedPromotion = this.#promoteToManaged().finally(() => {
+        this.managedPromotion = null;
+      });
+    }
+    await this.managedPromotion;
+    return this.transport;
+  }
+
+  async #promoteToManaged() {
+    await this.close();
+    this.closing = false;
+    try {
+      await this.#spawnAndInitialize("proxy");
+      this.transport = "proxy";
+    } catch {
+      await this.close();
+      this.closing = false;
+      await this.#spawnAndInitialize("standalone");
+      this.transport = "standalone";
+    }
   }
 
   async #spawnAndInitialize(mode) {

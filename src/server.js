@@ -99,7 +99,17 @@ function legacyHub(codex) {
       return codex.readThread(taskId).then((result) => ({ task: result.thread }));
     },
     resolve() {
-      return { provider: { id: "codex", transport: codex.transport } };
+      return {
+        provider: {
+          id: "codex",
+          get transport() {
+            return codex.transport;
+          },
+          async preparePrompt() {
+            await codex.ensureManagedForPrompt?.();
+          },
+        },
+      };
     },
     prompt({ taskId, ...input }) {
       return codex.prompt({ threadId: taskId, ...input });
@@ -266,6 +276,7 @@ export function createMpaiServer({
         const taskId = cleanTaskId(promptMatch[1]);
         requireTaskAccess(session, taskId);
         const { provider } = hub.resolve(taskId);
+        await provider.preparePrompt?.();
         if (
           provider.id === "codex" &&
           provider.transport === "standalone" &&

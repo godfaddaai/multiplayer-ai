@@ -49,6 +49,10 @@ export class CodexProvider {
     return this;
   }
 
+  async preparePrompt() {
+    await this.client.ensureManagedForPrompt?.();
+  }
+
   normalizeTask(thread) {
     return {
       id: `${this.id}:${thread.id}`,

@@ -2,6 +2,30 @@
 
 All notable project changes are documented here.
 
+## [0.4.9] - 2026-08-03
+
+Recover managed Codex prompting after a provider restart.
+
+### Fixed
+
+- An automatic-mode host that fell back to standalone Codex while the managed
+  daemon was unavailable now promotes itself back to the managed transport
+  before evaluating a remote prompt.
+- Failed promotion still leaves standalone prompting blocked by default; the
+  recovery path does not weaken the active-task safety boundary.
+- Concurrent promotion requests share one transition instead of spawning
+  competing managed connections.
+
+### Proven
+
+- A live two-Mac restart reproduced the stale-standalone state: reads remained
+  available, the first post-restart prompt failed safely, and the mpai host
+  service stayed running.
+- Managed-client and HTTP regressions require standalone-to-proxy promotion to
+  happen before the prompt safety check.
+- The full suite passes 43/43 behavioral tests and syntax checks on Node 20 and
+  Node 22.
+
 ## [0.4.8] - 2026-08-03
 
 Fail-closed managed Codex errors without a host crash.

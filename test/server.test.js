@@ -19,6 +19,7 @@ async function fixture(
     promptError,
     transport = "mock",
     allowStandalonePrompts = false,
+    recoverManaged = false,
     now,
     share = "all",
   } = {},
@@ -33,8 +34,14 @@ async function fixture(
     address: "127.0.0.1",
     port: 7337,
   });
+  let currentTransport = transport;
   const codex = {
-    transport,
+    get transport() {
+      return currentTransport;
+    },
+    async ensureManagedForPrompt() {
+      if (recoverManaged) currentTransport = "proxy";
+    },
     async listThreads() {
       return {
         data: [
@@ -220,6 +227,15 @@ test("standalone mode blocks prompts unless host explicitly opts in", async () =
     client.prompt("thread_123456789", "Do work"),
     { code: "STANDALONE_PROMPTS_DISABLED" },
   );
+});
+
+test("a recovered managed daemon is promoted before prompt safety is checked", async () => {
+  const { client } = await fixture("participant", {
+    transport: "standalone",
+    recoverManaged: true,
+  });
+  const result = await client.prompt("thread_123456789", "Do work");
+  assert.equal(result.type, "request.completed");
 });
 
 test("host can explicitly enable standalone prompts for an idle task", async () => {

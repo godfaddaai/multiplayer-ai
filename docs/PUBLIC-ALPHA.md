@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.8, August 3, 2026.
+Status: public source alpha 0.4.9, August 3, 2026.
 
 ## Product promise
 
@@ -34,7 +34,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.8/multiplayer-ai-0.4.8.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.9/multiplayer-ai-0.4.9.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -46,7 +46,7 @@ creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
 and prints the exact attach command.
 
-## Implemented in 0.4.8
+## Implemented in 0.4.9
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -58,6 +58,10 @@ and prints the exact attach command.
 - Managed Codex authentication and provider failures stay scoped to the active
   turn instead of emitting Node's process-fatal `error` event and crashing the
   host service.
+- An automatic-mode host that temporarily fell back to standalone Codex now
+  promotes itself back to the managed daemon before a remote prompt when the
+  managed socket returns. If promotion fails, standalone prompting remains
+  blocked by default.
 - Viewer and participant roles, Tailscale identity binding, invite revocation,
   idempotency, one remote prompt per task, and an append-only audit trail.
 - Private-by-default new invites. The server hides unshared titles,

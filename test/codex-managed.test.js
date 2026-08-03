@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { EventEmitter } from "node:events";
 import { createServer } from "node:http";
 import { mkdtemp, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -42,6 +43,54 @@ test("managed mode speaks WebSocket JSON-RPC over a Unix socket", async () => {
     assert.equal(client.transport, "proxy");
     assert.deepEqual(result.data, []);
     assert.equal(extensionsHeader, undefined);
+  } finally {
+    await client.close();
+    await new Promise((resolve) => webSocketServer.close(resolve));
+    await new Promise((resolve) => server.close(resolve));
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("auto mode promotes a standalone client when managed Codex returns", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mpai-codex-promote-"));
+  const socketPath = join(root, "app-server.sock");
+  const server = createServer();
+  const webSocketServer = new WebSocketServer({ server });
+  let connectionCount = 0;
+
+  webSocketServer.on("connection", (socket) => {
+    connectionCount += 1;
+    socket.on("message", (data) => {
+      const message = JSON.parse(data.toString());
+      if (message.method === "initialize") {
+        socket.send(JSON.stringify({ id: message.id, result: {} }));
+      }
+    });
+  });
+
+  await new Promise((resolve) => server.listen(socketPath, resolve));
+  const standalone = new EventEmitter();
+  standalone.stdin = {
+    end() {
+      queueMicrotask(() => standalone.emit("exit", 0, null));
+    },
+  };
+  standalone.kill = () => {};
+  const client = new CodexClient({
+    mode: "auto",
+    managedSocketPath: socketPath,
+  });
+  client.proc = standalone;
+  client.transport = "standalone";
+  try {
+    await Promise.all([
+      client.ensureManagedForPrompt(),
+      client.ensureManagedForPrompt(),
+    ]);
+    assert.equal(client.transport, "proxy");
+    assert.equal(connectionCount, 1);
+    assert.equal(client.proc, null);
+    assert.notEqual(client.ws, null);
   } finally {
     await client.close();
     await new Promise((resolve) => webSocketServer.close(resolve));

@@ -83,7 +83,7 @@ mpai setup --name "Your Name"
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.8/multiplayer-ai-0.4.8.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.9/multiplayer-ai-0.4.9.tgz
 ~~~
 
 <code>mpai setup</code> configures identity, discovers available providers,
@@ -134,7 +134,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.8
+## What works in 0.4.9
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
@@ -151,6 +151,8 @@ mpai share SESSION_ID --with Alex
 - One remote turn at a time per task
 - Append-only prompt audit trail
 - A macOS background service and provider-aware health checks
+- Automatic promotion back to managed Codex prompting after its daemon
+  returns, while standalone prompting remains blocked by default
 - Paste-an-invite setup from a fresh install
 - Upgrade-stable background-service launchers
 - Metadata-only redacted support bundles
