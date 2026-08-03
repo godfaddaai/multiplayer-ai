@@ -319,6 +319,9 @@ async function runJoin(store, positionals, options) {
     actorIdentity: remote.actor,
   });
   console.log(`Joined ${peer.name} as ${remote.actor.name} (${remote.role})`);
+  if (peer.credential?.storage === "file") {
+    console.log("Credential: protected mode-0600 local fallback (Keychain was unavailable in this session).");
+  }
   if (initialized && process.platform === "darwin" && !options["no-service"]) {
     try {
       const bindAddress = await tailscaleIPv4();

@@ -130,7 +130,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.3
+## What works in 0.4.4
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
@@ -140,7 +140,8 @@ mpai share SESSION_ID --with Alex
 - Viewer and participant roles
 - Private-by-default session sharing and invite revocation
 - Tailscale identity binding
-- macOS Keychain-backed peer credentials with legacy migration
+- macOS Keychain-backed peer credentials with legacy migration and a routed
+  mode-0600 fallback for non-interactive hosts where Keychain is unavailable
 - One remote turn at a time per task
 - Append-only prompt audit trail
 - A macOS background service and provider-aware health checks
@@ -239,10 +240,12 @@ codex --remote unix://
   <code>dontAsk</code>, so an operation that needs an interactive permission
   prompt is denied.
 
-Joined-peer bearer tokens live in macOS Keychain. The local config stores only
-a credential reference and non-secret peer metadata; existing inline alpha
-tokens migrate on first load. Read [SECURITY.md](./SECURITY.md) for threat
-boundaries and reporting.
+Joined-peer bearer tokens live in macOS Keychain when it is available. A
+non-interactive macOS session that cannot access Keychain falls back to a
+mode-0600 local credential file and records that backend in the peer reference.
+Reads follow that per-peer reference. The local config never stores the token
+itself; existing inline alpha tokens migrate on first load. Read
+[SECURITY.md](./SECURITY.md) for threat boundaries and reporting.
 
 ## Alpha limits
 

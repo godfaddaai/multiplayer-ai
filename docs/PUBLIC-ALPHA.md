@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.3, August 2, 2026.
+Status: public source alpha 0.4.4, August 2, 2026.
 
 ## Product promise
 
@@ -42,7 +42,7 @@ creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
 and prints the exact attach command.
 
-## Implemented in 0.4.3
+## Implemented in 0.4.4
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -63,6 +63,11 @@ and prints the exact attach command.
 - `mpai support-bundle`: mode-0600, metadata-only diagnostics that exclude
   prompts, transcripts, identities, credentials, paths, task metadata, and
   network addresses.
+- Per-peer credential backend routing and a mode-0600 file fallback when a
+  non-interactive macOS host cannot access Keychain.
+- Live 0.4.0 → 0.4.4 Hudson upgrade proof: initial Keychain failure left the
+  old service intact; fallback migration removed the inline token, preserved
+  reciprocal access, and produced a redacted mode-0600 support receipt.
 - Packaged 0.4 installs on two separate Macs.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
@@ -81,9 +86,10 @@ and prints the exact attach command.
    CLI instead of a versioned package source or Node executable. Service
    stop/remove/reinstall is live-verified. Complete automated rollback and full
    package-uninstall verification.
-3. **Credential storage (closed in 0.4.2).** Peer bearer tokens live in macOS
-   Keychain. Config retains only references and non-secret metadata, and legacy
-   inline tokens migrate on first load.
+3. **Credential storage (closed in 0.4.4).** Peer bearer tokens live in macOS
+   Keychain when available. Non-interactive hosts fall back to a mode-0600
+   local store, config retains only a routed reference and non-secret metadata,
+   and legacy inline tokens migrate on first load.
 4. **Two-way provider certification.** Run harmless attributed prompt receipts
    in both directions for Claude Code and managed Codex, with the native
    transcript visible on the host.

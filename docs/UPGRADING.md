@@ -59,7 +59,10 @@ items so a reinstall can recover. Review and remove those separately only when
 you intentionally want to destroy local identity, invitations, audit history,
 and peer access.
 
-The service-only uninstall/reinstall sequence was executed on the live 0.4.3
+The service-only uninstall/reinstall sequence was executed on the live Reagan
 host: the LaunchAgent disappeared, status reported stopped, reinstall restored
-the endpoint, and `mpai doctor` again reported matching 0.4.3 Codex and Claude
-Code health. Full Homebrew package removal remains a disposable-install gate.
+the endpoint, and `mpai doctor` again reported matching-version Codex and Claude
+Code health. A separate Hudson 0.4.0 → 0.4.4 candidate upgrade failed safely
+when Keychain was unavailable, then succeeded through the protected fallback
+without losing reciprocal access. Full Homebrew package removal remains a
+disposable-install gate.

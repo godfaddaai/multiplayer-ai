@@ -2,6 +2,33 @@
 
 All notable project changes are documented here.
 
+## [0.4.4] - 2026-08-02
+
+Non-interactive host credential repair.
+
+### Fixed
+
+- Legacy credential migration no longer blocks an SSH-managed macOS host when
+  its login Keychain is unavailable.
+- Credential reads now follow each peer's recorded storage backend instead of
+  assuming one global backend for the process.
+
+### Added
+
+- A mode-0600 local credential fallback outside config, used only when the
+  preferred Keychain write fails.
+- Explicit join output when the protected local fallback is selected.
+
+### Proven
+
+- Primary-success and Keychain-unavailable fallback tests cover write, routed
+  read, stale-fallback removal, and file permissions.
+- The failed Hudson upgrade left his 0.4.0 service and inline legacy state
+  untouched, providing the live reproduction for this patch.
+- The 0.4.4 candidate then migrated Hudson to the mode-0600 fallback, removed
+  the inline token, restarted through the stable launcher, reported matching
+  provider/service health, and preserved two-way Reagan ↔ Hudson session reads.
+
 ## [0.4.3] - 2026-08-02
 
 First-use reliability and supportability.

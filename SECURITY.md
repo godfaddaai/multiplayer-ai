@@ -40,8 +40,11 @@ as soon as practical and coordinate disclosure after a fix is available.
 - The host remains the source of truth for task access.
 - The host stores only a SHA-256 hash of issued invite tokens.
 - Joined-peer bearer tokens are stored in macOS Keychain under a per-peer
-  account. The config contains only the credential reference and non-secret
-  peer metadata. Legacy inline alpha tokens migrate on first load.
+  account when Keychain is available. Non-interactive macOS sessions that
+  cannot access Keychain fall back to a mode-0600 local credential file. The
+  config records the per-peer backend and contains only the credential
+  reference and non-secret peer metadata. Legacy inline alpha tokens migrate
+  on first load and never return to config.
 - The service has no arbitrary shell, task deletion, archival, or remote
   approval endpoint.
 - Codex approvals from remote turns are declined.

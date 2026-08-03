@@ -15,7 +15,11 @@ import {
   timingSafeEqual,
 } from "node:crypto";
 import { MpaiError } from "./errors.js";
-import { FileSecretStore, KeychainSecretStore } from "./secrets.js";
+import {
+  FallbackSecretStore,
+  FileSecretStore,
+  KeychainSecretStore,
+} from "./secrets.js";
 
 const VERSION = 1;
 
@@ -82,12 +86,14 @@ export class ConfigStore {
     this.configPath = join(root, "config.json");
     this.auditPath = join(root, "audit.jsonl");
     const productionRoot = join(homedir(), ".multiplayer-ai");
+    const fileSecretStore = new FileSecretStore({ root });
     this.secretStore = secretStore || (
-      process.platform === "darwin" &&
-      !process.env.MULTIPLAYER_AI_HOME &&
-      root === productionRoot
-        ? new KeychainSecretStore()
-        : new FileSecretStore({ root })
+      process.platform === "darwin" && root === productionRoot
+        ? new FallbackSecretStore({
+            primary: new KeychainSecretStore(),
+            fallback: fileSecretStore,
+          })
+        : fileSecretStore
     );
     this.mutationQueue = Promise.resolve();
   }
@@ -111,9 +117,9 @@ export class ConfigStore {
       let migratedCredential = false;
       for (const peer of parsed.peers) {
         if (!peer.token) continue;
-        await this.secretStore.set(peer.id, peer.token);
+        const credential = await this.secretStore.set(peer.id, peer.token);
         delete peer.token;
-        peer.credential = this.secretStore.reference(peer.id);
+        peer.credential = credential || this.secretStore.reference(peer.id);
         migratedCredential = true;
       }
       parsed.host ||= { port: 7337 };
@@ -357,12 +363,12 @@ export class ConfigStore {
     const config = await this.load({ required: true });
     const normalizedName = cleanName(name || hostIdentity?.name, "peer name");
     const peerId = hostIdentity?.id || randomUUID();
-    await this.secretStore.set(peerId, token);
+    const credential = await this.secretStore.set(peerId, token);
     const peer = {
       id: peerId,
       name: normalizedName,
       baseUrl: String(baseUrl).replace(/\/+$/u, ""),
-      credential: this.secretStore.reference(peerId),
+      credential: credential || this.secretStore.reference(peerId),
       ...(actorIdentity?.name
         ? {
             joinedAs: {
@@ -402,7 +408,7 @@ export class ConfigStore {
       config,
       peer: {
         ...peer,
-        token: await this.secretStore.get(peer.id),
+        token: await this.secretStore.get(peer.id, peer.credential),
       },
     };
   }

@@ -49,6 +49,7 @@ export class KeychainSecretStore {
         { code: "KEYCHAIN_WRITE" },
       );
     }
+    return this.reference(account);
   }
 
   async get(account) {
@@ -99,6 +100,7 @@ export class FileSecretStore {
   }
 
   async set(account, token) {
+    if (!token) throw missingCredential(account);
     const credentials = await this.#load();
     credentials[String(account)] = String(token);
     await mkdir(dirname(this.path), { recursive: true, mode: 0o700 });
@@ -109,6 +111,7 @@ export class FileSecretStore {
     });
     await rename(temporaryPath, this.path);
     await chmod(this.path, 0o600);
+    return this.reference(account);
   }
 
   async get(account) {
@@ -133,9 +136,69 @@ export class FileSecretStore {
       return JSON.parse(await readFile(this.path, "utf8"));
     } catch (error) {
       if (error?.code === "ENOENT") return {};
-      throw new MpaiError("Could not read the isolated credential store.", {
+      throw new MpaiError("Could not read the local credential store.", {
         code: "CREDENTIAL_READ",
       });
     }
+  }
+}
+
+export class FallbackSecretStore {
+  constructor({ primary, fallback }) {
+    this.primary = primary;
+    this.fallback = fallback;
+  }
+
+  reference(account) {
+    return this.primary.reference(account);
+  }
+
+  async set(account, token) {
+    try {
+      const reference = await this.primary.set(account, token);
+      await this.fallback.delete(account).catch(() => {});
+      return reference || this.primary.reference(account);
+    } catch {
+      try {
+        return await this.fallback.set(account, token);
+      } catch (fallbackError) {
+        throw new MpaiError(
+          "Could not store the teammate credential in Keychain or the protected local fallback.",
+          {
+            code: "CREDENTIAL_WRITE",
+            cause: fallbackError,
+          },
+        );
+      }
+    }
+  }
+
+  async get(account, reference) {
+    if (reference?.storage === "file") {
+      return this.fallback.get(account);
+    }
+    if (reference?.storage === "keychain") {
+      return this.primary.get(account);
+    }
+    try {
+      return await this.primary.get(account);
+    } catch {
+      return this.fallback.get(account);
+    }
+  }
+
+  async delete(account, reference) {
+    if (reference?.storage === "file") {
+      await this.fallback.delete(account);
+      return;
+    }
+    if (reference?.storage === "keychain") {
+      await this.primary.delete(account);
+      return;
+    }
+    await Promise.allSettled([
+      this.primary.delete(account),
+      this.fallback.delete(account),
+    ]);
   }
 }
