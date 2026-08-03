@@ -9,6 +9,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { AuditStore, ConfigStore } from "../src/config.js";
 import { createMpaiServer, listen } from "../src/server.js";
+import { VERSION } from "../src/version.js";
 
 const execFileAsync = promisify(execFile);
 const roots = [];
@@ -218,7 +219,10 @@ test("a host can create an invite already scoped to one explicit session", async
   assert.match(stdout, /Send Maya this one line \(Node\.js 20\+; no global install\):/u);
   assert.match(
     stdout,
-    /npx --yes https:\/\/github\.com\/godfaddaai\/multiplayer-ai\/releases\/download\/v0\.4\.14\/multiplayer-ai-0\.4\.14\.tgz join 'mpai:\/\/[^']+' --no-service --attach/u,
+    new RegExp(
+      `npx --yes https://github\\.com/godfaddaai/multiplayer-ai/releases/download/v${VERSION.replaceAll(".", "\\.")}/multiplayer-ai-${VERSION.replaceAll(".", "\\.")}\\.tgz join 'mpai://[^']+' --no-service --attach`,
+      "u",
+    ),
   );
   assert.match(stdout, /For a permanent install that can host sessions back:/u);
   assert.match(stdout, /brew install godfaddaai\/tap\/mpai/u);

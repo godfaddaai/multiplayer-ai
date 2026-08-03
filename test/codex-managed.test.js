@@ -166,3 +166,56 @@ test("managed Codex auth failures reject one turn without crashing the client", 
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("managed Codex interrupts an active turn when the teammate disconnects", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mpai-codex-abort-"));
+  const socketPath = join(root, "app-server.sock");
+  const server = createServer();
+  const webSocketServer = new WebSocketServer({ server });
+  const threadId = "thread-abort";
+  const turnId = "turn-abort";
+  let interrupted = false;
+
+  webSocketServer.on("connection", (socket) => {
+    socket.on("message", (data) => {
+      const message = JSON.parse(data.toString());
+      if (message.method === "initialize") {
+        socket.send(JSON.stringify({ id: message.id, result: {} }));
+      } else if (message.method === "thread/resume") {
+        socket.send(JSON.stringify({ id: message.id, result: { thread: { id: threadId } } }));
+      } else if (message.method === "turn/start") {
+        socket.send(JSON.stringify({ id: message.id, result: { turn: { id: turnId } } }));
+      } else if (message.method === "turn/interrupt") {
+        interrupted = true;
+        assert.deepEqual(message.params, { threadId, turnId });
+        socket.send(JSON.stringify({ id: message.id, result: {} }));
+      }
+    });
+  });
+
+  await new Promise((resolve) => server.listen(socketPath, resolve));
+  const client = new CodexClient({ mode: "proxy", managedSocketPath: socketPath });
+  const controller = new AbortController();
+  try {
+    const prompt = client.prompt({
+      threadId,
+      text: "Stop after acceptance",
+      actor: { name: "Hudson" },
+      signal: controller.signal,
+      onEvent(event) {
+        if (event.type === "turn.accepted") controller.abort();
+      },
+    });
+    await assert.rejects(prompt, { code: "CLIENT_DISCONNECTED" });
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    assert.equal(interrupted, true);
+    assert.equal(client.listenerCount("notification"), 0);
+    assert.equal(client.listenerCount("providerError"), 0);
+    assert.equal(client.listenerCount("exit"), 0);
+  } finally {
+    await client.close();
+    await new Promise((resolve) => webSocketServer.close(resolve));
+    await new Promise((resolve) => server.close(resolve));
+    await rm(root, { recursive: true, force: true });
+  }
+});

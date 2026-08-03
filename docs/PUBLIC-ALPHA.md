@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.14, August 3, 2026.
+Status: public source alpha 0.4.15, August 3, 2026.
 
 ## Product promise
 
@@ -38,7 +38,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.14/multiplayer-ai-0.4.14.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.15/multiplayer-ai-0.4.15.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -54,7 +54,7 @@ no LaunchAgent. The invite also prints the permanent Homebrew path for a
 teammate who intentionally wants to host sessions back. Older, empty, or
 multi-session invites still print the exact next command.
 
-## Implemented in 0.4.14
+## Implemented in 0.4.15
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -66,6 +66,11 @@ multi-session invites still print the exact next command.
 - Managed Codex authentication and provider failures stay scoped to the active
   turn instead of emitting Node's process-fatal `error` event and crashing the
   host service.
+- A teammate disconnect now cancels the exact provider turn and releases the
+  per-session prompt lock. Codex uses App Server's supported `turn/interrupt`;
+  Claude terminates the exact resumed CLI child. Claude also terminates a turn
+  after two minutes without stdout or stderr progress instead of holding the
+  room until the 30-minute overall deadline.
 - Bearer authorization parsing is length-bounded and accepts only the
   base64url alphabet used by generated invites, preventing ambiguous
   attacker-controlled regular-expression work before authentication.

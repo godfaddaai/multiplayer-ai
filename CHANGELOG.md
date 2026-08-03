@@ -2,6 +2,27 @@
 
 All notable project changes are documented here.
 
+## [0.4.15] - 2026-08-03
+
+Release shared rooms promptly when a teammate leaves or a provider stalls.
+
+### Fixed
+
+- Closing a teammate's prompt stream now aborts the exact provider operation,
+  clears the per-session turn lock, and records a failed audit event.
+- Managed Codex turns use the supported App Server `turn/interrupt` method on
+  disconnect.
+- Claude Code resumes are terminated on disconnect or after two minutes with
+  no stdout or stderr progress, while retaining the 30-minute overall bound.
+
+### Proven
+
+- Regressions cover silent Claude cleanup, Claude disconnect cleanup, managed
+  Codex interruption, failed audit recording, and immediate reuse of the same
+  session after a disconnected turn.
+- The packed 0.4.15 artifact has SHA-256
+  `5d444f115324013e24cdc317a2b05407c9f249c596a7f9085176c62bf9eec523`.
+
 ## [0.4.14] - 2026-08-03
 
 Collapse the host's first-room path into one guided command.

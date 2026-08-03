@@ -347,6 +347,11 @@ export function createMpaiServer({
           provider: provider.id,
           actor: session.actor,
         });
+        const promptController = new AbortController();
+        const onResponseClose = () => {
+          if (!response.writableEnded) promptController.abort();
+        };
+        response.once("close", onResponseClose);
         try {
           const result = await hub.prompt({
             taskId,
@@ -354,6 +359,7 @@ export function createMpaiServer({
             actor: session.actor,
             requestId,
             onEvent: writeEvent,
+            signal: promptController.signal,
           });
           if (result.turn?.status !== "completed") {
             throw new MpaiError(
@@ -389,6 +395,7 @@ export function createMpaiServer({
             message: error.message,
           });
         } finally {
+          response.off("close", onResponseClose);
           activePrompts.delete(taskId);
           activeRequestIds.delete(requestId);
           response.end();

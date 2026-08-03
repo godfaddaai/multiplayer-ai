@@ -89,7 +89,7 @@ mpai start --name "Your Name" --with "Teammate Name"
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.14/multiplayer-ai-0.4.14.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.15/multiplayer-ai-0.4.15.tgz
 ~~~
 
 <code>mpai start</code> configures identity, installs and verifies the background
@@ -115,7 +115,7 @@ issue, terminal recording, or public chat. On the teammate's Mac with Node.js
 20+, that one paste opens the room without a global install or setup step:
 
 ~~~bash
-npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.14/multiplayer-ai-0.4.14.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
+npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.15/multiplayer-ai-0.4.15.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
 ~~~
 
 The invite establishes Alex's attributed identity, stores the peer credential
@@ -142,7 +142,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.14
+## What works in 0.4.15
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
@@ -157,6 +157,8 @@ mpai share SESSION_ID --with Alex
 - macOS Keychain-backed peer credentials with legacy migration and a routed
   mode-0600 fallback for non-interactive hosts where Keychain is unavailable
 - One remote turn at a time per task
+- Provider work is cancelled when a teammate disconnects; silent Claude turns
+  are terminated after two minutes without output so the room can recover
 - Append-only prompt audit trail
 - A macOS background service and provider-aware health checks
 - Automatic promotion back to managed Codex prompting after its daemon
