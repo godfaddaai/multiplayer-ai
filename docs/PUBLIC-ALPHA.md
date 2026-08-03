@@ -131,6 +131,16 @@ multi-session invites still print the exact next command.
 - Live 0.4.11 → 0.4.12 public-asset upgrades on Reagan and Hudson: both services
   restarted with matching 0.4.12 doctor receipts and reciprocal session reads
   remained intact without rejoining or changing the existing share state.
+- Live 0.4.12 → 0.4.13 public-asset upgrades on Reagan and Hudson: both services
+  restarted with matching 0.4.13 doctor receipts. Hudson retained access to
+  Reagan; Reagan's missing local Hudson credential was replaced by a newly
+  claimed participant invite with the prior trusted all-session scope, the
+  stale invite was revoked, and reciprocal session reads passed again.
+- The exact public 0.4.13 release asset matched SHA-256
+  `4f32501188f3d0ec54fd99627bf454785c5d1305680e8fe2deb869f1ae212b7c`,
+  installed into an isolated prefix, and reported 0.4.13 from both binaries and
+  a separate clean-cache `npx` execution. Homebrew test-bot run 30815017446
+  passed install, test, and uninstall on macOS 26 and Linux.
 - Live paste-once receipt: Hudson used a fresh isolated state and the printed
   `mpai join '…' --attach` handoff to enter one viewer-only Reagan Codex room,
   render its persisted context, and leave. The invitation was then revoked and

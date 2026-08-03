@@ -99,6 +99,13 @@ The same public-asset process upgraded both hosts to 0.4.12. Stable launchers,
 stored peer state, and existing share rules were preserved; both services
 restarted with matching doctor receipts and reciprocal reads remained intact.
 
+Both hosts then upgraded from the exact public 0.4.13 asset and restarted on
+matching 0.4.13 endpoints. Hudson retained read access to Reagan. Reagan's old
+Hudson peer credential was absent locally, so a replacement participant invite
+with the prior trusted all-session scope was claimed and the stale invite was
+revoked. Reciprocal reads then passed without rebuilding either host identity
+or service configuration.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.
