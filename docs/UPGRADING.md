@@ -119,6 +119,13 @@ without rebuilding identities, rejoining, or changing share configuration.
 The exact release artifact matched SHA-256
 `5d444f115324013e24cdc317a2b05407c9f249c596a7f9085176c62bf9eec523`.
 
+Both hosts then upgraded from the exact public 0.4.16 asset and restarted on
+matching 0.4.16 endpoints. Reagan's service ran as PID 67898 and Hudson's as
+PID 96352. Provider-aware doctor checks and reciprocal session lists passed
+without rebuilding identities, rejoining, or changing share configuration.
+The exact release artifact matched SHA-256
+`2e5a464497319166e9f44510ab186f950122a35dad2c1a1b15037e9feb96966b`.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.

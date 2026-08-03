@@ -139,6 +139,17 @@ was no longer running, and the append-only audit paired the 13:35:28Z
 public-artifact disconnect cleanup; it is still founder dogfood, not external
 activation or retention evidence.
 
+The public 0.4.16 measurement release upgraded both hosts from the exact
+public asset. Reagan restarted on PID 67898 and Hudson on PID 96352; both
+doctor receipts reported matching endpoints with Codex and Claude Code
+available, and reciprocal session lists passed. Reagan ran `cohort-report`
+without submission first and inspected the exact fixed-choice preview. The
+same command then used explicit `--submit --yes` consent to publish that
+preview through the authenticated GitHub CLI. Issue comment 5167163814 labels
+the following receipt, comment 5167164038, as founder dogfood excluded from
+the 0/10 non-founder cohort. This proves the networked consent path without
+claiming outside activation.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
