@@ -22,6 +22,14 @@ Shorten the private first-room path without weakening explicit session access.
   creates the scoped invitation, and verifies no follow-up share command is
   printed.
 - The full suite passes 46/46 behavioral tests and syntax checks.
+- The exact public release asset matched SHA-256
+  `bff743c95d37219b0ad663294b13f8e040ca376a60c359f8733a6b261bc2f77c`,
+  installed into an isolated prefix, and reported 0.4.11 from both binaries.
+- Both live Macs upgraded to matching 0.4.11 services from the public asset;
+  reciprocal session reads remained intact without rejoining or resharing.
+- Homebrew lifecycle run 30800846625 installed the exact formula, executed
+  0.4.11, passed its formula test, uninstalled it, and verified both CLI links
+  were absent on clean macOS 26 and Linux.
 
 ## [0.4.10] - 2026-08-03
 

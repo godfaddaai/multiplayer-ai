@@ -97,6 +97,13 @@ services on matching 0.4.10 endpoints. Reagan could still list Hudson's shared
 sessions, and Hudson could still list Reagan's, without rejoining or changing
 the existing share configuration.
 
+The public 0.4.11 release then upgraded both isolated npm-prefix installations
+and restarted both services on matching 0.4.11 endpoints. Each doctor check
+reported healthy Codex and Claude Code adapters, and reciprocal session lists
+still worked without rejoining or changing the existing share configuration.
+The release adds an atomic session-scoped invite; it does not broaden any
+previous invitation.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
