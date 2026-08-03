@@ -161,6 +161,7 @@ test("an invite can be created with one explicit session already shared", async 
     taskIds: ["claude:shared-one"],
     excludedTaskIds: [],
   });
+  assert.equal(invitation.tracksFirstRoom, true);
   assert.equal(invitationCanAccess(invitation, "claude:shared-one"), true);
   assert.equal(invitationCanAccess(invitation, "claude:private"), false);
 
@@ -180,6 +181,29 @@ test("an invite can be created with one explicit session already shared", async 
     (candidate) => candidate.id === invitation.id,
   );
   assert.equal(recorded.firstRoomAt, "2026-08-03T14:20:00.000Z");
+
+  const legacy = await config.createInvite({
+    name: "Legacy",
+    role: "viewer",
+    address: "100.64.0.1",
+    port: 7337,
+  });
+  const legacyState = await config.load({ required: true });
+  delete legacyState.invites.find((candidate) => candidate.id === legacy.invitation.id)
+    .tracksFirstRoom;
+  await config.save(legacyState);
+  assert.equal(
+    await config.recordRoomOpened(legacy.invitation.id, {
+      at: "2026-08-03T14:30:00.000Z",
+    }),
+    null,
+  );
+  assert.equal(
+    (await config.load({ required: true })).invites.find(
+      (candidate) => candidate.id === legacy.invitation.id,
+    ).firstRoomAt,
+    undefined,
+  );
 
   await assert.rejects(
     config.createInvite({

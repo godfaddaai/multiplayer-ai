@@ -2,6 +2,23 @@
 
 All notable project changes are documented here.
 
+## [0.4.18] - 2026-08-03
+
+Keep pre-measurement invites out of automatic first-room timing.
+
+### Fixed
+
+- Only invites created by a timing-aware release are eligible for automatic
+  invite-to-room measurement. Existing invites now remain unmeasured instead
+  of treating their first read after an upgrade as their first-ever room.
+
+### Proven
+
+- Regression coverage verifies that new invites opt in while legacy invites
+  neither record nor report a fabricated first-room timestamp.
+- The packed 0.4.18 artifact has SHA-256
+  `3d2ccd6391815b41147b3b79ef228c9375e7aa6cc5143e04bb1fe41990cfc6bb`.
+
 ## [0.4.17] - 2026-08-03
 
 Measure invite-to-first-room activation locally without shipping collaboration

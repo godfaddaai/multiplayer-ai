@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.17, August 3, 2026.
+Status: public source alpha 0.4.18, August 3, 2026.
 
 ## Product promise
 
@@ -37,7 +37,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.17/multiplayer-ai-0.4.17.tgz && mpai start
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.18/multiplayer-ai-0.4.18.tgz && mpai start
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -53,7 +53,7 @@ no LaunchAgent. The invite also prints the permanent Homebrew path for a
 teammate who intentionally wants to host sessions back. Older, empty, or
 multi-session invites still print the exact next command.
 
-## Implemented in 0.4.17
+## Implemented in 0.4.18
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.

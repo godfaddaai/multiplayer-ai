@@ -218,6 +218,7 @@ export class ConfigStore {
       claimedBy: null,
       claimedAt: null,
       createdAt: new Date().toISOString(),
+      tracksFirstRoom: true,
       revokedAt: null,
     };
     config.invites.push(invitation);
@@ -332,6 +333,7 @@ export class ConfigStore {
           status: 404,
         });
       }
+      if (invitation.tracksFirstRoom !== true) return null;
       if (invitation.firstRoomAt) return invitation.firstRoomAt;
       const timestamp = new Date(at);
       if (!Number.isFinite(timestamp.getTime())) {
