@@ -128,6 +128,17 @@ invite. A live non-interactive Reagan dry run without `--session` exited one
 and left the invite count unchanged. This still does not count as one of the
 ten required non-founder activations.
 
+The public 0.4.15 reliability release upgraded both hosts from the exact
+public asset. Reagan restarted on PID 45102 and Hudson on PID 92158; both doctor
+receipts reported matching 0.4.15 endpoints with Codex and Claude Code
+available, and reciprocal session lists passed. Hudson then started an
+attributed prompt against Reagan's dedicated Claude certification session and
+closed the client stream after acceptance. Reagan's exact resumed Claude child
+was no longer running, and the append-only audit paired the 13:35:28Z
+`prompt.received` event with a 13:35:44Z `prompt.failed` event. This proves
+public-artifact disconnect cleanup; it is still founder dogfood, not external
+activation or retention evidence.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP

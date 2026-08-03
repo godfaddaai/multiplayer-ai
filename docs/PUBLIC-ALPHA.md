@@ -158,6 +158,14 @@ multi-session invites still print the exact next command.
   uninstall on macOS 26 and Linux.
 - Reagan and Hudson installed that exact public 0.4.14 artifact, restarted on
   matching provider-aware endpoints, and retained reciprocal session reads.
+- The exact public 0.4.15 release asset matched SHA-256
+  `5d444f115324013e24cdc317a2b05407c9f249c596a7f9085176c62bf9eec523`,
+  installed into an isolated prefix, and reported 0.4.15. Homebrew test-bot run
+  30818547957 passed install, test, and uninstall on macOS 26 and Linux.
+- Reagan and Hudson installed that exact public 0.4.15 artifact, restarted on
+  matching provider-aware endpoints, and retained reciprocal session reads.
+  A live Hudson → Reagan Claude prompt was disconnected after acceptance; the
+  exact resumed child disappeared and the audit recorded `prompt.failed`.
 - Live paste-once receipt: Hudson used a fresh isolated state and the printed
   `mpai join '…' --attach` handoff to enter one viewer-only Reagan Codex room,
   render its persisted context, and leave. The invitation was then revoked and
