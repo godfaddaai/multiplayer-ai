@@ -2,6 +2,36 @@
 
 All notable project changes are documented here.
 
+## [0.4.19] - 2026-08-03
+
+Keep very large Codex sessions usable as shared terminal rooms.
+
+### Fixed
+
+- Codex transcript reads now tail the host-local rollout instead of asking the
+  App Server to serialize the entire task history. A 170.6 MB real session
+  that previously exceeded the transport payload limit now opens in under one
+  second on its host.
+- Peer, room, dashboard, and explicit `show --tail` reads request bounded
+  transcript windows before data crosses the tailnet.
+
+### Safety
+
+- The rollout reader admits only visible user and assistant messages. Tool
+  records, Codex internal context, and ambient app/browser context stay out of
+  the shared transcript.
+- Managed Codex keeps a finite 512 MB transport ceiling for operations that
+  still require the App Server, and local rollout failure safely falls back to
+  the existing integration.
+
+### Proven
+
+- Regression coverage includes deep peer transcripts, large rollout tails,
+  internal-context exclusion, partial active files, named teammate recovery,
+  and the bounded managed-WebSocket payload.
+- The packed 0.4.19 artifact has SHA-256
+  `7044050bff7ec25eebaec336d3887ca5a0520afd8387419212b1686c9d8db7e5`.
+
 ## [0.4.18] - 2026-08-03
 
 Keep pre-measurement invites out of automatic first-room timing.

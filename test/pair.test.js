@@ -21,6 +21,7 @@ test("terminal room mirrors a teammate session, prompts it, and switches session
   input.isTTY = false;
   const capture = captureStream();
   const prompts = [];
+  const reads = [];
   const presenceUpdates = [];
   const tasks = [
     {
@@ -56,7 +57,8 @@ test("terminal room mirrors a teammate session, prompts it, and switches session
       return { role: "participant", host: { name: "Maya" }, actor: { name: "Alex" } };
     },
     async listTasks() { return { data: tasks }; },
-    async readTask(taskId) {
+    async readTask(taskId, options) {
+      reads.push({ taskId, options });
       const task = tasks.find((candidate) => candidate.id === taskId);
       return { task: { ...task, messages: messages.get(taskId) } };
     },
@@ -112,6 +114,8 @@ test("terminal room mirrors a teammate session, prompts it, and switches session
   assert.match(output, /Review the protocol/u);
   assert.match(output, /Following: Alex, Maya/u);
   assert.deepEqual(prompts, [{ taskId: tasks[0].id, text: "What should I review?" }]);
+  assert.ok(reads.length >= 2);
+  assert.ok(reads.every((read) => read.options.tail === 100));
   assert.equal(presenceUpdates.at(-1).state, "offline");
 });
 
@@ -141,4 +145,40 @@ test("Codex transcripts recover the named multiplayer author", async () => {
   const result = await provider.readTask("codex-one");
   assert.equal(result.task.messages[0].author, "Alex");
   assert.equal(result.task.messages[0].text, "Check Maya’s current approach.");
+});
+
+test("Codex transcripts use the bounded local rollout with lightweight metadata", async () => {
+  const reads = [];
+  const provider = new CodexProvider({
+    transport: "proxy",
+    async readThread(nativeId, options) {
+      reads.push({ nativeId, options });
+      return { thread: { id: nativeId, name: "Large shared task" } };
+    },
+  }, {
+    rolloutReader: {
+      async readMessages() {
+        return {
+          truncated: true,
+          messages: [
+            { id: "one", role: "user", text: "[Multiplayer teammate: Alex]\nReview this.", at: null },
+            { id: "two", role: "assistant", text: "Reviewing.", at: null },
+          ],
+        };
+      },
+    },
+  });
+
+  const result = await provider.readTask("019fafc4-0bc4-73f0-a8b4-70281a9c25c9");
+  assert.deepEqual(reads, [{
+    nativeId: "019fafc4-0bc4-73f0-a8b4-70281a9c25c9",
+    options: { includeTurns: false },
+  }]);
+  assert.equal(result.task.messages[0].author, "Alex");
+  assert.equal(result.task.messages[1].author, "Codex");
+  assert.deepEqual(result.task.transcriptWindow, {
+    returned: 2,
+    total: null,
+    truncated: true,
+  });
 });

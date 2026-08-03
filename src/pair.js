@@ -219,7 +219,7 @@ export class TerminalRoom {
     if (this.task && this.task.id !== task.id) {
       await this.client.setPresence({ state: "idle", taskId: this.task.id }).catch(() => {});
     }
-    const result = await this.client.readTask(task.id);
+    const result = await this.client.readTask(task.id, { tail: 100 });
     this.task = result.task || result.thread;
     this.seen.clear();
     this.renderHeader();
@@ -227,6 +227,15 @@ export class TerminalRoom {
     const visible = initial ? messages.slice(-30) : messages;
     for (const message of messages) this.seen.add(messageKey(message));
     for (const message of visible) this.line(this.renderMessage(message));
+    if (this.task.transcriptWindow?.truncated) {
+      const window = this.task.transcriptWindow;
+      this.line(this.style(
+        "dim",
+        window.total === null
+          ? `Showing the latest ${window.returned} messages from a larger transcript.`
+          : `Showing the latest ${window.returned} of ${window.total} messages.`,
+      ));
+    }
     await this.heartbeat();
     if (initial) {
       this.line(this.style("dim", "Live attach. Type a message to prompt this session; /help for commands."));
@@ -239,7 +248,7 @@ export class TerminalRoom {
 
   async refresh({ silent = false } = {}) {
     if (!this.task) return;
-    const result = await this.client.readTask(this.task.id);
+    const result = await this.client.readTask(this.task.id, { tail: 100 });
     this.task = { ...this.task, ...(result.task || result.thread) };
     for (const message of this.task.messages || []) {
       const key = messageKey(message);

@@ -193,7 +193,10 @@ export function createDashboardServer({
           clientFactory,
           cleanSegment(taskMatch[1], "teammate"),
         );
-        const result = await client.readTask(cleanSegment(taskMatch[2], "task"));
+        const result = await client.readTask(
+          cleanSegment(taskMatch[2], "task"),
+          { tail: 100 },
+        );
         sendJson(response, 200, result);
         return;
       }

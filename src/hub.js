@@ -1,4 +1,5 @@
 import { MpaiError } from "./errors.js";
+import { CodexRolloutReader } from "./codex-rollout.js";
 
 function isoTimestamp(value) {
   if (!value) return null;
@@ -34,8 +35,9 @@ function taskTitle(thread) {
 }
 
 export class CodexProvider {
-  constructor(client) {
+  constructor(client, { rolloutReader = new CodexRolloutReader() } = {}) {
     this.client = client;
+    this.rolloutReader = rolloutReader;
     this.id = "codex";
     this.name = "Codex";
   }
@@ -80,6 +82,33 @@ export class CodexProvider {
   }
 
   async readTask(nativeId) {
+    let rollout = null;
+    try {
+      rollout = await this.rolloutReader?.readMessages(nativeId, { limit: 200 });
+    } catch {
+      // A local rollout is an optimization. The App Server remains the fallback.
+    }
+    if (rollout) {
+      const result = await this.client.readThread(nativeId, { includeTurns: false });
+      const messages = rollout.messages.map((message) => {
+        if (message.role === "user") {
+          const user = attributedUser(message.text);
+          return { ...message, author: user.author, text: user.text };
+        }
+        return { ...message, author: "Codex" };
+      });
+      return {
+        task: {
+          ...this.normalizeTask(result.thread),
+          messages,
+          transcriptWindow: {
+            returned: messages.length,
+            total: null,
+            truncated: rollout.truncated,
+          },
+        },
+      };
+    }
     const result = await this.client.readThread(nativeId);
     const thread = result.thread;
     const messages = [];

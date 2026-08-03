@@ -117,12 +117,16 @@ export class MpaiClient {
     return this.listTasks(options);
   }
 
-  readTask(taskId) {
-    return this.request(`/v1/tasks/${encodeURIComponent(taskId)}`);
+  readTask(taskId, { tail } = {}) {
+    const query = new URLSearchParams();
+    if (tail !== undefined) query.set("tail", String(tail));
+    const search = query.toString();
+    const suffix = search ? `?${search}` : "";
+    return this.request(`/v1/tasks/${encodeURIComponent(taskId)}${suffix}`);
   }
 
-  readThread(taskId) {
-    return this.readTask(taskId);
+  readThread(taskId, options) {
+    return this.readTask(taskId, options);
   }
 
   audit({ limit = 100 } = {}) {

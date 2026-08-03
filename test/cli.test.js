@@ -69,7 +69,7 @@ test("a fresh install can paste an invite and reach a ready room", async () => {
       }));
       return;
     }
-    if (decodeURIComponent(request.url || "") === "/v1/tasks/claude:one") {
+    if (decodeURIComponent(request.url || "").startsWith("/v1/tasks/claude:one?tail=100")) {
       response.end(JSON.stringify({
         task: {
           id: "claude:one",

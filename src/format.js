@@ -57,6 +57,14 @@ export function formatThread(thread) {
     `${thread.id} · ${summary.provider} · ${summary.status}${thread.cwd ? ` · ${thread.cwd}` : ""}`,
     "",
   ];
+  if (thread.transcriptWindow?.truncated) {
+    const window = thread.transcriptWindow;
+    lines.push(
+      window.total === null
+        ? `[showing latest ${window.returned} messages from a larger transcript]\n`
+        : `[showing latest ${window.returned} of ${window.total} messages]\n`,
+    );
+  }
   if (Array.isArray(thread.messages)) {
     for (const message of thread.messages) {
       lines.push(`${String(message.author || message.role).toUpperCase()}\n${message.text}\n`);

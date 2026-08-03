@@ -647,7 +647,10 @@ async function runShow(store, positionals, options) {
       "Usage: mpai show @PEER THREAD_ID",
     );
     const threadId = await resolveThreadId(client, input);
-    const result = await client.readThread(threadId);
+    const result = await client.readThread(
+      threadId,
+      tail === null ? undefined : { tail },
+    );
     console.log(formatThread(limitMessages(result.thread)));
     return;
   }

@@ -62,3 +62,19 @@ test("the prompt deadline covers connection only, not a valid long stream", asyn
   assert.equal(result.type, "turn.completed");
   assert.equal(result.status, "completed");
 });
+
+test("transcript reads request an explicit bounded tail", async () => {
+  let requestedUrl;
+  const fetchImpl = async (url) => {
+    requestedUrl = url;
+    return new Response(JSON.stringify({ task: { id: "codex:deep" } }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
+  await client(fetchImpl).readTask("codex:deep", { tail: 100 });
+  assert.equal(
+    requestedUrl,
+    "http://100.64.0.2:7337/v1/tasks/codex%3Adeep?tail=100",
+  );
+});

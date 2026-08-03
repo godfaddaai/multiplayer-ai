@@ -23,6 +23,7 @@ async function fixture(
     promptHandler,
     now,
     share = "all",
+    turnCount = 0,
   } = {},
 ) {
   const root = await mkdtemp(join(tmpdir(), "mpai-server-"));
@@ -61,7 +62,10 @@ async function fixture(
           id: threadId,
           name: "Multiplayer build",
           status: { type: "idle" },
-          turns: [],
+          turns: Array.from({ length: turnCount }, (_, index) => ({
+            id: `turn-${index + 1}`,
+            items: [],
+          })),
         },
       };
     },
@@ -162,6 +166,22 @@ test("malformed and oversized bearer credentials are rejected", async () => {
     assert.equal(response.status, 401);
   }
   assert.equal((await client.whoami()).role, "viewer");
+});
+
+test("deep transcripts can be bounded before crossing the peer connection", async () => {
+  const { client } = await fixture("viewer", { turnCount: 250 });
+  const result = await client.readThread("thread_123456789", { tail: 100 });
+  assert.equal(result.thread.turns.length, 100);
+  assert.equal(result.thread.turns[0].id, "turn-151");
+  assert.deepEqual(result.thread.transcriptWindow, {
+    returned: 100,
+    total: 250,
+    truncated: true,
+  });
+  await assert.rejects(
+    client.readThread("thread_123456789", { tail: 201 }),
+    { code: "INVALID_ARGUMENT", status: 400 },
+  );
 });
 
 test("viewer cannot prompt", async () => {

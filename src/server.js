@@ -6,6 +6,7 @@ import { resolveTailscaleIdentity } from "./tailscale.js";
 import { VERSION } from "./version.js";
 
 const MAX_BEARER_TOKEN_LENGTH = 128;
+const MAX_TRANSCRIPT_MESSAGES = 200;
 
 function sendJson(response, status, payload) {
   if (response.writableEnded) return;
@@ -82,6 +83,40 @@ function cleanTaskId(value) {
     });
   }
   return id;
+}
+
+function transcriptTail(value) {
+  if (value === null) return null;
+  const limit = Number(value);
+  if (!Number.isInteger(limit) || limit < 1 || limit > MAX_TRANSCRIPT_MESSAGES) {
+    throw new MpaiError(
+      `tail must be an integer from 1 to ${MAX_TRANSCRIPT_MESSAGES}`,
+      { code: "INVALID_ARGUMENT", status: 400 },
+    );
+  }
+  return limit;
+}
+
+function limitTranscript(task, tail) {
+  if (tail === null) return task;
+  const field = Array.isArray(task.messages)
+    ? "messages"
+    : Array.isArray(task.turns)
+      ? "turns"
+      : null;
+  if (!field) return task;
+  const total = task.transcriptWindow?.total ?? task[field].length;
+  const truncatedBeforeLimit = Boolean(task.transcriptWindow?.truncated);
+  const truncatedByLimit = task[field].length > tail;
+  return {
+    ...task,
+    [field]: task[field].slice(-tail),
+    transcriptWindow: {
+      returned: Math.min(task[field].length, tail),
+      total,
+      truncated: truncatedBeforeLimit || truncatedByLimit,
+    },
+  };
 }
 
 function legacyHub(codex) {
@@ -267,8 +302,10 @@ export function createMpaiServer({
       const taskMatch = /^\/v1\/(?:tasks|threads)\/([^/]+)$/u.exec(url.pathname);
       if (request.method === "GET" && taskMatch) {
         const taskId = cleanTaskId(taskMatch[1]);
+        const tail = transcriptTail(url.searchParams.get("tail"));
         requireTaskAccess(session, taskId);
         const result = await hub.readTask(taskId);
+        const task = limitTranscript(result.task, tail);
         try {
           await configStore.recordRoomOpened(session.invitation.id, {
             at: new Date(now()).toISOString(),
@@ -278,8 +315,8 @@ export function createMpaiServer({
         }
         sendJson(response, 200, {
           host: session.host,
-          task: result.task,
-          thread: result.task,
+          task,
+          thread: task,
         });
         return;
       }
