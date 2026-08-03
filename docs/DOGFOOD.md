@@ -111,6 +111,14 @@ viewer-only invitation to one Reagan proof session. The printed
 the persisted Codex context, entered the room, and left cleanly. The invite was
 revoked and its disposable local state deleted immediately afterward.
 
+The public 0.4.13 release upgraded both hosts from the exact public asset and
+restarted matching-version services. Hudson could still list Reagan's shared
+sessions. Reagan's stored Hudson peer no longer had a local credential, so
+Hudson issued a new participant invite with the same trusted all-session scope;
+Reagan claimed it, the stale invite was revoked, and Reagan could list Hudson's
+sessions again. This proves scoped credential rotation and reciprocal recovery,
+but it is founder dogfood rather than outside activation evidence.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
