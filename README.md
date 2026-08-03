@@ -244,6 +244,25 @@ mpai serve --codex-mode proxy
 codex --remote unix://
 ~~~
 
+## Commercial and client work
+
+Yes. mpai is MIT-licensed, so commercial use is permitted. For the public
+alpha, treat client work as an explicitly authorized, client-controlled pilot:
+
+- Run the host on a client-owned Mac and a tailnet the client controls or has
+  intentionally invited you into.
+- Have the client issue your named invite and share only the exact sessions
+  needed for the engagement.
+- Start with non-sensitive work and review the security, privacy, and
+  acceptable-use boundaries together before sharing production context.
+- Keep a human at the host. mpai provides no arbitrary remote shell and cannot
+  grant or bypass provider approvals.
+
+The alpha is not yet an enterprise SLA, compliance certification, or substitute
+for the client's own access-control policy. If you pilot it, report
+privacy-safe install-to-first-room timing through the
+[first 10-team cohort](https://github.com/godfaddaai/multiplayer-ai/issues/7).
+
 ## Security, plainly
 
 - The collaboration service listens on the Tailscale address, not every

@@ -19,6 +19,9 @@ warehouse.
 - A shared Tailscale network.
 - A concrete need to pair, unblock, hand off, review, or steer work already in
   progress inside an agent session.
+- Consultants and agencies may pilot mpai commercially when the client owns or
+  explicitly controls the host environment, tailnet membership, invite, and
+  session-sharing decision. The public alpha is not yet enterprise-certified.
 
 ## Installation
 
