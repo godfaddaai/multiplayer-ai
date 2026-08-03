@@ -806,6 +806,17 @@ kbd { font: inherit; }
   border-radius: 7px;
   font: 400 9px var(--mono);
 }
+.product-hunt-badge {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: fit-content;
+  margin: 24px auto 0;
+  border-radius: 7px;
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+.product-hunt-badge:hover { opacity: 0.9; transform: translateY(-2px); }
+.product-hunt-badge img { display: block; max-width: 100%; height: auto; }
 .oss-orbit {
   position: absolute;
   top: 50%;
