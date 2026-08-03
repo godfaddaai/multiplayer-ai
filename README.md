@@ -89,7 +89,7 @@ mpai setup --name "Your Name"
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.11/multiplayer-ai-0.4.11.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.12/multiplayer-ai-0.4.12.tgz
 ~~~
 
 <code>mpai setup</code> configures identity, discovers available providers,
@@ -114,13 +114,13 @@ On a fresh Alex Mac, no separate setup step is needed:
 
 ~~~bash
 brew install godfaddaai/tap/mpai
-mpai join 'mpai://100.x.y.z:7337/join?token=...'
-mpai @maya
+mpai join 'mpai://100.x.y.z:7337/join?token=...' --attach
 ~~~
 
 The invite establishes Alex's attributed identity, stores the peer credential
 outside config, makes Alex's Mac ready to host in return, checks for shared
-sessions, and prints the exact next command.
+sessions, and opens the explicitly shared ready room. An older or deliberately
+empty invite still prints the exact next command instead.
 
 Testing this with a real teammate? Join the
 [first 10-team public-alpha cohort](https://github.com/godfaddaai/multiplayer-ai/issues/7)

@@ -73,7 +73,7 @@ Optional diagnostics:
   mpai dashboard [--port 7338] [--no-open]
 
 Joining and collaborating:
-  mpai join 'mpai://HOST:7337/join?token=...'
+  mpai join 'mpai://HOST:7337/join?token=...' [--attach]
   mpai peers
   mpai @PEER [TASK_ID]              live terminal attach
   mpai pair @PEER [TASK_ID]         same as above
@@ -241,7 +241,10 @@ async function runInvite(store, options) {
   );
   console.log(`\nSend ${result.invitation.name} these two lines:`);
   console.log("brew install godfaddaai/tap/mpai");
-  console.log(`mpai join '${result.url}'`);
+  const opensReadyRoom =
+    result.invitation.taskAccess.mode === "selected" &&
+    result.invitation.taskAccess.taskIds.length === 1;
+  console.log(`mpai join '${result.url}'${opensReadyRoom ? " --attach" : ""}`);
   console.log("\nThe invite is a secret and binds to the first Tailscale identity that uses it.");
   if (result.invitation.taskAccess.mode === "selected") {
     if (result.invitation.taskAccess.taskIds.length) {
@@ -368,19 +371,31 @@ async function runJoin(store, positionals, options) {
       console.log("Run `mpai service install` when you want to share your sessions back.");
     }
   }
+  let tasks;
   try {
     const result = await client.listTasks({ limit: 100 });
-    const count = result.data?.length || 0;
-    if (count) {
-      console.log(`${count} shared session${count === 1 ? " is" : "s are"} ready.`);
-      console.log(`Next: mpai @${peer.name}`);
-    } else {
-      console.log(`${peer.name} has not shared a session with you yet.`);
-      console.log(`Ask ${peer.name} to run: mpai share SESSION_ID --with ${remote.actor.name}`);
-    }
+    tasks = result.data || [];
   } catch (error) {
     console.log(`Connected, but the first session check failed: ${error.message}`);
     console.log(`Retry with: mpai @${peer.name}`);
+    return;
+  }
+  if (!tasks.length) {
+    console.log(`${peer.name} has not shared a session with you yet.`);
+    console.log(`Ask ${peer.name} to run: mpai share SESSION_ID --with ${remote.actor.name}`);
+    return;
+  }
+  console.log(`${tasks.length} shared session${tasks.length === 1 ? " is" : "s are"} ready.`);
+  if (options.attach) {
+    console.log(`Opening ${peer.name}'s ready room…`);
+    await runTerminalRoom({
+      client,
+      peer,
+      identity: peer.joinedAs || config.identity,
+      taskInput: tasks.length === 1 ? tasks[0].id : undefined,
+    });
+  } else {
+    console.log(`Next: mpai @${peer.name}`);
   }
 }
 

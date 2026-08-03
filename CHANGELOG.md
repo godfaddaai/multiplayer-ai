@@ -2,6 +2,26 @@
 
 All notable project changes are documented here.
 
+## [0.4.12] - 2026-08-03
+
+Shorten the invited teammate's first-room path without weakening explicit
+session authorization.
+
+### Added
+
+- Session-scoped invite handoffs now print `mpai join '…' --attach`, so the
+  teammate's one pasted join command stores identity and credentials, verifies
+  the shared session, and opens its live terminal room.
+- Plain `mpai join` remains non-interactive for older, empty, all-session, and
+  automation-oriented flows, and still prints the exact next attach command.
+
+### Proven
+
+- A fresh-install CLI regression joins an isolated server, enters the exact
+  shared Claude Code room, renders its saved context, and leaves cleanly from
+  the same process.
+- The full suite passes 46/46 behavioral tests and syntax checks.
+
 ## [0.4.11] - 2026-08-03
 
 Shorten the private first-room path without weakening explicit session access.
