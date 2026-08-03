@@ -11,6 +11,9 @@ one-host/two-teammate concurrency proof, a live cross-Mac managed-Codex turn,
 managed-provider restart recovery, and the privacy-safe local alpha receipt on
 August 3, 2026. GitHub CodeQL now runs on every main-branch push and weekly;
 the first extended scan fixed its one genuine finding and has zero open alerts.
+The August 3 Product Hunt launch reached #10 with 99 points, 67 followers, and
+10 comments in the verified 1:59 PM launch-day snapshot. That is useful outside
+interest evidence, but it does not count as a non-founder install or return.
 
 ## 1. Core multiplayer usefulness — 18/20
 
@@ -60,7 +63,7 @@ the first extended scan fixed its one genuine finding and has zero open alerts.
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Real two-Mac product proof | 2/2 | Public Reagan → Hudson recording |
-| Public install, landing, release, and launch listings | 2/2 | GitHub Pages, GitHub release, Homebrew tap, Product Hunt listing |
+| Public install, landing, release, and launch listings | 2/2 | GitHub Pages, GitHub release, Homebrew tap, and Product Hunt listing; the verified August 3 launch-day snapshot showed #10, 99 points, 67 followers, and 10 comments, but these do not count as installs or retention |
 | Safe public support loop | 1/1 | Issue templates, private security reporting, support bundle |
 | Ten non-founder teams complete first room | 0/5 | No evidence yet |
 | Ten non-founder teams return in a later week | 0/7 | No evidence yet |
