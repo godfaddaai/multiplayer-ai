@@ -126,6 +126,15 @@ without rebuilding identities, rejoining, or changing share configuration.
 The exact release artifact matched SHA-256
 `2e5a464497319166e9f44510ab186f950122a35dad2c1a1b15037e9feb96966b`.
 
+Both hosts then upgraded from the exact public 0.4.19 asset and restarted on
+matching endpoints without rejoining or changing share state. Reagan's
+service ran as PID 92398 and Hudson's as PID 28692; reciprocal session lists
+passed. Hudson then read Reagan's 170.6 MB Codex task over Tailscale in 1.83
+seconds using a bounded 100-message window, with no internal-context or
+tool-record markers in the returned transcript. Homebrew test-bot run
+30824770881 separately passed install, test, and uninstall on clean macOS 26
+and Linux.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.

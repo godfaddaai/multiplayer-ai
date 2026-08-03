@@ -194,6 +194,15 @@ multi-session invites still print the exact next command.
   minutes. The local receipt exposed only elapsed minutes and a count; both
   disposable proof invites were revoked. Pre-0.4.18 invites remained
   unmeasured after reciprocal reads, preventing fabricated upgrade timing.
+- The exact public 0.4.19 release asset matched SHA-256
+  `66bd09930d40c1459a04fb3b66bbcf619d41d1837d1e0af3446d21d77706d565`.
+  Homebrew test-bot run 30824770881 installed, tested, and uninstalled it on
+  clean macOS 26 and Linux. Reagan and Hudson then installed that exact public
+  artifact and restarted as matching 0.4.19 endpoints. Reciprocal session
+  lists passed. From Hudson, a bounded read of Reagan's exact 170.6 MB Codex
+  task completed in 1.83 seconds over Tailscale; the returned 100-message
+  window contained no Codex-internal, ambient browser/app, or tool-record
+  markers.
 - Live paste-once receipt: Hudson used a fresh isolated state and the printed
   `mpai join '…' --attach` handoff to enter one viewer-only Reagan Codex room,
   render its persisted context, and leave. The invitation was then revoked and
