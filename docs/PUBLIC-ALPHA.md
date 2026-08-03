@@ -181,6 +181,16 @@ multi-session invites still print the exact next command.
   Reagan previewed a fixed-choice report locally, then explicitly submitted
   exactly that preview to issue #7. A preceding public label marks it as
   founder dogfood excluded from the 0/10 non-founder cohort.
+- The exact public 0.4.18 release asset matched SHA-256
+  `3d2ccd6391815b41147b3b79ef228c9375e7aa6cc5143e04bb1fe41990cfc6bb`,
+  installed from GitHub on Reagan and Hudson, and restarted as matching 0.4.18
+  endpoints. Reciprocal session reads passed. Homebrew test-bot run 30822829094
+  passed install, test, and uninstall on macOS 26 and Linux.
+- A fresh timing-aware, selected-session viewer invite joined from isolated
+  state on Hudson and completed its first authorized Reagan room read in 0.07
+  minutes. The local receipt exposed only elapsed minutes and a count; both
+  disposable proof invites were revoked. Pre-0.4.18 invites remained
+  unmeasured after reciprocal reads, preventing fabricated upgrade timing.
 - Live paste-once receipt: Hudson used a fresh isolated state and the printed
   `mpai join '…' --attach` handoff to enter one viewer-only Reagan Codex room,
   render its persisted context, and leave. The invitation was then revoked and

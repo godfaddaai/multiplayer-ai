@@ -5,13 +5,13 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **77/100** after the public 0.4.16 deployment,
+Current evidence score: **78/100** after the public 0.4.18 deployment,
 release-artifact lifecycle/100-cycle soak receipts, deterministic
 one-host/two-teammate concurrency proof, a live cross-Mac managed-Codex turn,
 managed-provider restart recovery, and the privacy-safe local alpha receipt on
 August 3, 2026. GitHub CodeQL now runs on every main-branch push and weekly;
 the first extended scan fixed its one genuine finding and has zero open alerts.
-The August 3 Product Hunt launch reached #10 with 99 points, 67 followers, and
+The August 3 Product Hunt launch reached #10 with 100 points, 67 followers, and
 10 comments in the verified 1:59 PM launch-day snapshot. That is useful outside
 interest evidence, but it does not count as a non-founder install or return.
 
@@ -29,8 +29,8 @@ interest evidence, but it does not count as a non-founder install or return.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.16 public asset hash plus isolated install verified; run 30819579277 proves the Homebrew formula installs, executes, tests, and uninstalls 0.4.16 on clean macOS 26 and Linux |
-| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.16 doctor receipts on the live Reagan and Hudson hosts; `mpai start` now combines fresh-host setup, explicit private session selection, and a ready participant invite, while non-interactive use without `--session` fails before invite creation |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.18 public asset hash plus isolated install verified; run 30822829094 proves the Homebrew formula installs, executes, tests, and uninstalls 0.4.18 on clean macOS 26 and Linux |
+| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.18 doctor receipts on the live Reagan and Hudson hosts; `mpai start` now combines fresh-host setup, explicit private session selection, and a ready participant invite, while non-interactive use without `--session` fails before invite creation |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Child-process and packed-artifact regressions prove the version-pinned `npx` handoff establishes identity, stores the credential outside config, and enters the exact ready room without a global install or host service; the prior live Hudson → Reagan receipt proves the underlying join path across two Macs |
 | Empty-share and offline recovery print exact next action | 2/2 | A deliberately empty invite names the share command; session-scoped invites join directly into a ready room, while connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps and established prompt streams remain open |
 | Upgrade, rollback, and uninstall path | 3/3 | Stable launcher and live service reinstall receipt plus a disposable public-asset 0.4.4 → 0.4.3 → 0.4.4 rollback and full package uninstall with state preserved |
@@ -52,28 +52,28 @@ interest evidence, but it does not count as a non-founder install or return.
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Automated behavioral and syntax suite | 4/4 | 54/54 tests and syntax checks; CodeQL extended scan runs on pushes, pull requests, and weekly with zero open alerts after its bearer-parser finding was fixed |
-| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.16 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads; the earlier scoped credential rotation and Hudson managed-provider restart remain proven |
+| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.18 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads; the earlier scoped credential rotation and Hudson managed-provider restart remain proven |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex auth-error replay returned an actionable turn failure without changing the host PID; on public 0.4.15, a live Hudson → Reagan Claude stream disconnect terminated the exact child, recorded `prompt.failed`, and left the host healthy; standalone-block and provider cancellation suites pass |
 | Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 2/5 | On public 0.4.9, Hudson's managed Codex daemon stopped while mpai PID 38042 stayed up and reads fell back safely; after the daemon returned, Reagan's next named prompt promoted the same service back to proxy and completed without reinstall or rejoin. Sleep/wake, Wi-Fi, and relay transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
 | One host plus two simultaneous teammates | 2/3 | Real local HTTP server with two isolated simulated tailnet identities passes per-invite visibility, simultaneous named presence, prompt collision, unaffected-peer continuity, and revocation; physical third-Mac certification remains open |
 
-## 5. Demand, learning, and retention — 7/20
+## 5. Demand, learning, and retention — 8/20
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Real two-Mac product proof | 2/2 | Public Reagan → Hudson recording |
-| Public install, landing, release, and launch listings | 2/2 | GitHub Pages, GitHub release, Homebrew tap, and Product Hunt listing; the verified August 3 launch-day snapshot showed #10, 99 points, 67 followers, and 10 comments, but these do not count as installs or retention |
+| Public install, landing, release, and launch listings | 2/2 | GitHub Pages, GitHub release, Homebrew tap, and Product Hunt listing; the verified August 3 launch-day snapshot showed #10, 100 points, 67 followers, and 10 comments, but these do not count as installs or retention |
 | Safe public support loop | 1/1 | Issue templates, private security reporting, support bundle |
 | Ten non-founder teams complete first room | 0/5 | No evidence yet |
 | Ten non-founder teams return in a later week | 0/7 | No evidence yet |
-| Opt-in metadata-only activation/reliability measurement | 2/3 | Public 0.4.16 adds a review-first fixed-choice cohort preview and explicit GitHub submission through the user's authenticated CLI; arbitrary content and non-interactive submission without `--yes` fail closed. The exact public artifact posted a founder-only receipt to issue #7 and was labeled as excluded from cohort progress. Non-founder evidence remains open |
+| Opt-in metadata-only activation/reliability measurement | 3/3 | Public 0.4.18 records the first authorized room read only for newly created timing-aware invites and exposes elapsed minutes/count without content, identifiers, or the timestamp. A fresh isolated Hudson → Reagan proof measured 0.07 minutes; legacy invites stayed unmeasured, reports remained review-first, and the proof is founder-only rather than cohort progress |
 
 ## Evidence required for 98
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.16 installs, executes, tests, and uninstalls on clean
+1. **Closed:** Homebrew 0.4.18 installs, executes, tests, and uninstalls on clean
    macOS and Linux, with both CLI links absent afterward.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.
@@ -91,10 +91,11 @@ The score can reach 98 only after all of these are proven:
 7. Rollback and uninstall are executed on a disposable installation.
 8. Privacy notice, acceptable-use policy, and trademark review are complete.
 9. Ten non-founder teams return in a later week.
-10. **Partially closed:** the local receipt and review-first `cohort-report`
-    report activation and reliability without prompt or transcript content;
-    explicit submission is proven on the public artifact. Ten-team non-founder
-    cohort evidence remains open.
+10. **Closed for instrumentation:** the local receipt and review-first
+    `cohort-report` report activation and reliability without prompt or
+    transcript content; exact public-artifact timing and explicit submission
+    are proven. Ten-team non-founder activation and retention remain separate
+    open evidence gates above.
 
 The separate probability of a massive outcome should rise only when outside
 activation and retention evidence rises. Shipping more features by itself does
