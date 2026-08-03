@@ -169,6 +169,7 @@ export class ClaudeProvider {
     configDir,
     scanLimit = 300,
     turnTimeoutMs = 30 * 60_000,
+    turnIdleTimeoutMs = 2 * 60_000,
   } = {}) {
     this.id = "claude";
     this.name = "Claude Code";
@@ -179,6 +180,7 @@ export class ClaudeProvider {
     this.projectsDir = join(this.configDir, "projects");
     this.scanLimit = scanLimit;
     this.turnTimeoutMs = turnTimeoutMs;
+    this.turnIdleTimeoutMs = turnIdleTimeoutMs;
     this.taskCache = new Map();
   }
 
@@ -278,7 +280,13 @@ export class ClaudeProvider {
     return { task: { ...task, messages: transcriptMessages(records) } };
   }
 
-  async prompt({ nativeId, text, actor, requestId = randomUUID(), onEvent }) {
+  async prompt({ nativeId, text, actor, requestId = randomUUID(), onEvent, signal }) {
+    if (signal?.aborted) {
+      throw new MpaiError("Remote teammate disconnected", {
+        code: "CLIENT_DISCONNECTED",
+        status: 499,
+      });
+    }
     const file = await this.#find(nativeId);
     const { task } = await this.#load(file.path, file.stat);
     const taskId = `claude:${nativeId}`;
@@ -307,9 +315,12 @@ export class ClaudeProvider {
     let finalText = "";
     let completion = null;
     let sawTextDelta = false;
+    let markProgress = () => {};
     proc.stderr.on("data", (chunk) => {
+      markProgress();
       stderr = `${stderr}${chunk}`.slice(-16_384);
     });
+    proc.stdout.on("data", () => markProgress());
     const lines = createInterface({ input: proc.stdout });
     lines.on("line", (line) => {
       let raw;
@@ -339,21 +350,51 @@ export class ClaudeProvider {
       actor,
     });
     const exit = await new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
+      let settled = false;
+      let idleTimer;
+      const finish = (callback, value) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(overallTimer);
+        clearTimeout(idleTimer);
+        signal?.removeEventListener("abort", onAbort);
+        callback(value);
+      };
+      const fail = (error) => {
         proc.kill("SIGTERM");
-        reject(new MpaiError("Claude turn timed out", {
+        finish(reject, error);
+      };
+      const resetIdleTimer = () => {
+        if (settled) return;
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          fail(new MpaiError(
+            `Claude turn made no progress for ${Math.ceil(this.turnIdleTimeoutMs / 1000)} seconds`,
+            { code: "CLAUDE_TURN_STALLED", status: 504 },
+          ));
+        }, this.turnIdleTimeoutMs);
+        idleTimer.unref?.();
+      };
+      markProgress = resetIdleTimer;
+      const overallTimer = setTimeout(() => {
+        fail(new MpaiError("Claude turn timed out", {
           code: "CLAUDE_TURN_TIMEOUT",
           status: 504,
         }));
       }, this.turnTimeoutMs);
-      timer.unref?.();
-      proc.once("error", (error) => {
-        clearTimeout(timer);
-        reject(error);
-      });
-      proc.once("exit", (code, signal) => {
-        clearTimeout(timer);
-        resolve({ code, signal });
+      overallTimer.unref?.();
+      const onAbort = () => {
+        fail(new MpaiError("Remote teammate disconnected", {
+          code: "CLIENT_DISCONNECTED",
+          status: 499,
+        }));
+      };
+      signal?.addEventListener("abort", onAbort, { once: true });
+      resetIdleTimer();
+      if (signal?.aborted) onAbort();
+      proc.once("error", (error) => finish(reject, error));
+      proc.once("exit", (code, exitSignal) => {
+        finish(resolve, { code, signal: exitSignal });
       });
     });
     if (exit.code !== 0 || completion?.status === "failed") {

@@ -107,6 +107,51 @@ test("Claude adapter resumes the exact session and streams a named teammate turn
   assert.equal(events.at(-1).type, "turn.completed");
 });
 
+test("Claude adapter terminates a silent turn after its inactivity deadline", async () => {
+  const fixture = await claudeFixture();
+  await writeFile(
+    fixture.mockCli,
+    "#!/usr/bin/env node\nsetInterval(() => {}, 1000);\n",
+  );
+  const claude = new ClaudeProvider({
+    configDir: fixture.configDir,
+    claudeBin: fixture.mockCli,
+    turnIdleTimeoutMs: 30,
+  });
+  await claude.start();
+  await assert.rejects(
+    claude.prompt({
+      nativeId: fixture.sessionId,
+      text: "Wait forever",
+      actor: { name: "Maya" },
+    }),
+    { code: "CLAUDE_TURN_STALLED" },
+  );
+});
+
+test("Claude adapter terminates a turn when the remote teammate disconnects", async () => {
+  const fixture = await claudeFixture();
+  await writeFile(
+    fixture.mockCli,
+    "#!/usr/bin/env node\nsetInterval(() => {}, 1000);\n",
+  );
+  const claude = new ClaudeProvider({
+    configDir: fixture.configDir,
+    claudeBin: fixture.mockCli,
+    turnIdleTimeoutMs: 60_000,
+  });
+  await claude.start();
+  const controller = new AbortController();
+  const prompt = claude.prompt({
+    nativeId: fixture.sessionId,
+    text: "Wait forever",
+    actor: { name: "Maya" },
+    signal: controller.signal,
+  });
+  controller.abort();
+  await assert.rejects(prompt, { code: "CLIENT_DISCONNECTED" });
+});
+
 test("provider hub merges, sorts, and routes namespaced tasks", async () => {
   const fixture = await claudeFixture();
   const claude = new ClaudeProvider({ configDir: fixture.configDir, claudeBin: fixture.mockCli });

@@ -20,6 +20,7 @@ async function fixture(
     transport = "mock",
     allowStandalonePrompts = false,
     recoverManaged = false,
+    promptHandler,
     now,
     share = "all",
   } = {},
@@ -64,7 +65,10 @@ async function fixture(
         },
       };
     },
-    async prompt({ threadId, actor, requestId, onEvent }) {
+    async prompt({ threadId, actor, requestId, onEvent, signal }) {
+      if (promptHandler) {
+        return promptHandler({ threadId, actor, requestId, onEvent, signal });
+      }
       if (promptError) throw promptError;
       onEvent({
         type: "turn.accepted",
@@ -213,6 +217,61 @@ test("participant prompt streams attributed events and is audited", async () => 
       requestId: "request-once",
     }),
     { code: "PROMPT_CONFLICT" },
+  );
+});
+
+test("disconnecting a prompt aborts provider work and releases the task lock", async () => {
+  let calls = 0;
+  let resolveAborted;
+  const aborted = new Promise((resolve) => { resolveAborted = resolve; });
+  const { client } = await fixture("participant", {
+    promptHandler({ threadId, actor, requestId, onEvent, signal }) {
+      calls += 1;
+      if (calls > 1) {
+        return {
+          requestId,
+          threadId,
+          turnId: "turn_recovered",
+          turn: { id: "turn_recovered", status: "completed" },
+          finalText: "Recovered",
+        };
+      }
+      onEvent({ type: "turn.accepted", threadId, turnId: "turn_stalled", actor });
+      return new Promise((resolve, reject) => {
+        signal.addEventListener("abort", () => {
+          resolveAborted();
+          reject(Object.assign(new Error("Remote teammate disconnected"), {
+            code: "CLIENT_DISCONNECTED",
+          }));
+        }, { once: true });
+      });
+    },
+  });
+  const response = await fetch(
+    `${client.baseUrl}/v1/tasks/thread_123456789/prompt`,
+    {
+      method: "POST",
+      headers: {
+        authorization: `Bearer ${client.token}`,
+        "content-type": "application/json",
+        "idempotency-key": "request-disconnect",
+      },
+      body: JSON.stringify({ text: "Start and disconnect" }),
+    },
+  );
+  assert.equal(response.status, 200);
+  await response.body.cancel();
+  await aborted;
+  await new Promise((resolve) => setTimeout(resolve, 20));
+
+  const result = await client.prompt("thread_123456789", "Try again", {
+    requestId: "request-after-disconnect",
+  });
+  assert.equal(result.type, "request.completed");
+  const audit = await client.audit();
+  assert.deepEqual(
+    audit.data.map((event) => event.type),
+    ["prompt.received", "prompt.failed", "prompt.received", "prompt.completed"],
   );
 });
 

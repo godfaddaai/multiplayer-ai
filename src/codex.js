@@ -433,7 +433,13 @@ export class CodexClient extends EventEmitter {
     return result;
   }
 
-  async prompt({ threadId, text, actor, requestId = randomUUID(), onEvent }) {
+  async prompt({ threadId, text, actor, requestId = randomUUID(), onEvent, signal }) {
+    if (signal?.aborted) {
+      throw new MpaiError("Remote teammate disconnected", {
+        code: "CLIENT_DISCONNECTED",
+        status: 499,
+      });
+    }
     await this.start();
     if (!this.subscribedThreads.has(threadId)) {
       await this.request(
@@ -503,6 +509,23 @@ export class CodexClient extends EventEmitter {
         turnId,
         actor,
       });
+      let rejectAborted;
+      const aborted = new Promise((resolve, reject) => {
+        rejectAborted = reject;
+      });
+      const onAbort = () => {
+        void this.request(
+          "turn/interrupt",
+          { threadId, turnId },
+          { timeoutMs: 10_000 },
+        ).catch(() => {});
+        rejectAborted(new MpaiError("Remote teammate disconnected", {
+          code: "CLIENT_DISCONNECTED",
+          status: 499,
+        }));
+      };
+      signal?.addEventListener("abort", onAbort, { once: true });
+      if (signal?.aborted) onAbort();
       let cleanupCompletion = () => {};
       const completionRequest = new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
@@ -541,9 +564,11 @@ export class CodexClient extends EventEmitter {
         const completion = await Promise.race([
           completionRequest,
           providerFailure,
+          aborted,
         ]);
         return { requestId, threadId, turnId, turn: completion, finalText };
       } finally {
+        signal?.removeEventListener("abort", onAbort);
         cleanupCompletion();
       }
     } finally {
