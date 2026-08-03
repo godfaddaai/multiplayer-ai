@@ -79,10 +79,14 @@ and prints the exact attach command.
 - Live 0.4.4 → 0.4.5 public-asset upgrades on Reagan and Hudson: both services
   restarted with matching doctor receipts, Hudson's shadowing 0.4.0 shell
   launcher was replaced, and reciprocal session reads remained intact.
-- The exact public 0.4.5 release asset matched SHA-256
-  `24b493d9842fbc3c3022cadebf98678f08732867a42b384fb590ed2c8cf10279`,
-  installed into an isolated prefix, reported 0.4.5 from both binaries, and
-  uninstalled while configured state remained.
+- Live 0.4.5 → 0.4.6 public-asset upgrades on Reagan and Hudson: both services
+  restarted with matching 0.4.6 doctor receipts, reciprocal session reads
+  remained intact, and each host produced a local mode-0600 alpha receipt that
+  was not transmitted.
+- The exact public 0.4.6 release asset matched SHA-256
+  `b8d7e561b4fd64db7a01b597e8fa42fbdeb24346b520b6627da813da99175b34`,
+  installed into an isolated prefix, reported 0.4.6 from both binaries, and
+  generated a valid mode-0600 alpha receipt.
 - Disposable public-artifact lifecycle proof: install 0.4.4, preserve configured
   state while rolling back to 0.4.3, recover forward to 0.4.4, then uninstall
   the package with both installed binaries removed and state retained.
@@ -93,7 +97,7 @@ and prints the exact attach command.
   tailnet identities. Per-invite visibility, simultaneous named presence,
   same-task prompt collision, unaffected-peer continuity, and revocation pass;
   a physical third-Mac receipt remains open.
-- Packaged 0.4.5 installs on two separate Macs with matching live services.
+- Packaged 0.4.6 installs on two separate Macs with matching live services.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
   attributed Reagan prompt from one Mac into Hudson's existing session.
@@ -140,7 +144,8 @@ and prints the exact attach command.
 - Automatic update notification without silent mutation.
 - Friendly teammate-offline and no-shared-session recovery instructions.
 - Session pinning and explicit titles.
-- Opt-in, metadata-only alpha telemetry for activation and reliability.
+- The local review-before-sharing alpha receipt is implemented; automatic
+  opt-in collection remains open.
 - A short guided demo that creates a disposable shared QA session.
 
 ## Alpha acceptance gates

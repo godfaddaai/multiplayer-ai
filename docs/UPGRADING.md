@@ -73,6 +73,11 @@ prototype symlink ahead of the stable install; the two explicit launcher
 symlinks were repaired after verifying their exact targets, so both the shell
 and LaunchAgent now resolve the same 0.4.5 package.
 
+On August 3, 2026, both hosts were upgraded again from the exact public 0.4.6
+release asset. Their services restarted with matching 0.4.6 doctor receipts,
+reciprocal read-only session access remained intact, and `mpai alpha-receipt`
+produced a local mode-0600, `not-sent` receipt on each host.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.

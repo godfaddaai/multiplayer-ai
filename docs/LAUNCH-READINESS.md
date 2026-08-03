@@ -5,9 +5,10 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **74/100** after the public 0.4.5 deployment,
-release-artifact lifecycle/100-cycle soak receipts, and deterministic
-one-host/two-teammate concurrency proof on August 2, 2026.
+Current evidence score: **75/100** after the public 0.4.6 deployment,
+release-artifact lifecycle/100-cycle soak receipts, deterministic
+one-host/two-teammate concurrency proof, and the privacy-safe local alpha
+receipt on August 3, 2026.
 
 ## 1. Core multiplayer usefulness — 18/20
 
@@ -23,14 +24,14 @@ one-host/two-teammate concurrency proof on August 2, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.5 public asset hash plus isolated install/uninstall verified; Homebrew test-bot passes on clean macOS 26 and Linux |
-| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.5 doctor receipts on the live Reagan and Hudson hosts; Hudson's shadowing legacy launcher was repaired |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.6 public asset hash plus isolated install verified; Homebrew test-bot installs the formula on clean macOS 26 and Linux |
+| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.6 doctor receipts on the live Reagan and Hudson hosts; Hudson's shadowing legacy launcher was repaired |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join names the share command; connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps while established prompt streams remain open |
 | Upgrade, rollback, and uninstall path | 3/3 | Stable launcher and live service reinstall receipt plus a disposable public-asset 0.4.4 → 0.4.3 → 0.4.4 rollback and full package uninstall with state preserved |
 | Ten stranger installs with median time-to-room below five minutes | 0/3 | No external cohort yet |
 
-## 3. Trust and security boundary — 18/20
+## 3. Trust and security boundary — 19/20
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
@@ -45,14 +46,14 @@ one-host/two-teammate concurrency proof on August 2, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Automated behavioral and syntax suite | 4/4 | 38/38 tests and syntax checks |
-| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.5 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads |
+| Automated behavioral and syntax suite | 4/4 | 39/39 tests and syntax checks |
+| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.6 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex, standalone-block, and Claude permission behavior suites |
-| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson 0.4.4 migration failed safely then recovered; both hosts upgraded to 0.4.5 and restarted with reciprocal access intact; other lifecycle transitions remain open |
+| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson 0.4.4 migration failed safely then recovered; both hosts upgraded through 0.4.6 and restarted with reciprocal access intact; other lifecycle transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
 | One host plus two simultaneous teammates | 2/3 | Real local HTTP server with two isolated simulated tailnet identities passes per-invite visibility, simultaneous named presence, prompt collision, unaffected-peer continuity, and revocation; physical third-Mac certification remains open |
 
-## 5. Demand, learning, and retention — 5/20
+## 5. Demand, learning, and retention — 6/20
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
@@ -61,13 +62,13 @@ one-host/two-teammate concurrency proof on August 2, 2026.
 | Safe public support loop | 1/1 | Issue templates, private security reporting, support bundle |
 | Ten non-founder teams complete first room | 0/5 | No evidence yet |
 | Ten non-founder teams return in a later week | 0/7 | No evidence yet |
-| Opt-in metadata-only activation/reliability measurement | 0/3 | Not implemented |
+| Opt-in metadata-only activation/reliability measurement | 1/3 | Public 0.4.6 local review-before-sharing receipt, synthetic leak-exclusion test, public-artifact install, and live mode-0600 receipts on both hosts; automatic consented collection and non-founder cohort evidence remain open |
 
 ## Evidence required for 98
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.5 installs and tests on clean macOS and Linux.
+1. **Closed:** Homebrew 0.4.6 installs and tests on clean macOS and Linux.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.
 3. Ten people who did not build mpai install it; median existing-tailnet time
@@ -84,8 +85,9 @@ The score can reach 98 only after all of these are proven:
 7. Rollback and uninstall are executed on a disposable installation.
 8. Privacy notice, acceptable-use policy, and trademark review are complete.
 9. Ten non-founder teams return in a later week.
-10. Opt-in metadata-only measurement reports activation and reliability without
-    collecting prompt or transcript content.
+10. **Partially closed:** the local review-before-sharing receipt reports
+    activation and reliability without prompt or transcript content. Automatic
+    consented collection and ten-team cohort evidence remain open.
 
 The separate probability of a massive outcome should rise only when outside
 activation and retention evidence rises. Shipping more features by itself does
