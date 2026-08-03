@@ -2,6 +2,37 @@
 
 All notable project changes are documented here.
 
+## [0.4.13] - 2026-08-03
+
+Remove the invited teammate's global-install step from the first-room path.
+
+### Added
+
+- Session-scoped invite handoffs now lead with one exact `npx` command against
+  the versioned GitHub release artifact. A teammate with Node.js 20+ can claim
+  the named invite and enter the ready room without a global package install.
+- The one-paste guest path uses `--no-service`: it grants no hosting capability
+  and creates no LaunchAgent. The existing Homebrew plus `mpai join` path is
+  printed underneath for teammates who intentionally want to host in return.
+
+### Proven
+
+- The exact public 0.4.12 artifact executes through `npx` from a fresh npm
+  cache. The packed 0.4.13 artifact then completed a fresh-state `npx` join,
+  identity and credential bootstrap, transcript render, ready-room attach, and
+  clean leave against a real local HTTP server without installing hosting.
+- The invite-output regression pins the 0.4.13 artifact URL, `--no-service`,
+  exact private invite, and `--attach` in one recommended line.
+- A release-metadata regression keeps the runtime, package manifests, formula,
+  README, landing page, and public-alpha contract on the same version.
+- The full suite passes 47/47 behavioral tests and syntax checks; the formula
+  copy also passes Ruby syntax validation.
+- The packed 0.4.13 artifact reports from both installed binaries and through
+  a fresh-cache `npx` execution; its pre-release SHA-256 is
+  `4f32501188f3d0ec54fd99627bf454785c5d1305680e8fe2deb869f1ae212b7c`.
+- The formula copy shipped in this repository is pinned to that same artifact
+  and hash instead of lagging behind the external tap.
+
 ## [0.4.12] - 2026-08-03
 
 Shorten the invited teammate's first-room path without weakening explicit

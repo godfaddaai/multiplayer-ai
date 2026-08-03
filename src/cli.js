@@ -239,12 +239,20 @@ async function runInvite(store, options) {
   console.log(
     `${result.invitation.name} · ${result.invitation.role} · ${result.invitation.taskAccess.mode} sessions`,
   );
-  console.log(`\nSend ${result.invitation.name} these two lines:`);
-  console.log("brew install godfaddaai/tap/mpai");
   const opensReadyRoom =
     result.invitation.taskAccess.mode === "selected" &&
     result.invitation.taskAccess.taskIds.length === 1;
-  console.log(`mpai join '${result.url}'${opensReadyRoom ? " --attach" : ""}`);
+  const attachFlag = opensReadyRoom ? " --attach" : "";
+  const releaseArtifact =
+    `https://github.com/godfaddaai/multiplayer-ai/releases/download/` +
+    `v${VERSION}/multiplayer-ai-${VERSION}.tgz`;
+  console.log(`\nSend ${result.invitation.name} this one line (Node.js 20+; no global install):`);
+  console.log(
+    `npx --yes ${releaseArtifact} join '${result.url}' --no-service${attachFlag}`,
+  );
+  console.log("\nFor a permanent install that can host sessions back:");
+  console.log("brew install godfaddaai/tap/mpai");
+  console.log(`mpai join '${result.url}'${attachFlag}`);
   console.log("\nThe invite is a secret and binds to the first Tailscale identity that uses it.");
   if (result.invitation.taskAccess.mode === "selected") {
     if (result.invitation.taskAccess.taskIds.length) {
