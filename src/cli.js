@@ -56,6 +56,7 @@ Fast path:
 Setup and hosting:
   mpai setup --name Alex [--port 7337] [--no-service]
   mpai invite --name Maya [--role viewer|participant] [--share selected|all]
+              [--session SESSION_ID]
   mpai invites
   mpai share SESSION_ID --with Maya
   mpai share all --with Maya
@@ -207,17 +208,31 @@ async function runSetup(store, options) {
   console.log("\nChecking this Mac…");
   await runDoctor(store, options);
   console.log(
-    "\nNext: invite a teammate who can collaborate with `mpai invite --name TEAMMATE --role participant --share selected`.",
+    "\nNext: choose a session with `mpai list`, then invite a teammate with `mpai invite --name TEAMMATE --role participant --session SESSION_ID`.",
   );
 }
 
 async function runInvite(store, options) {
   const config = await store.load({ required: true });
   const address = options.address || (await tailscaleIPv4());
+  const share = options.share || "selected";
+  if (options.session && share === "all") {
+    throw new MpaiError("--session cannot be combined with --share all", {
+      code: "INVALID_SHARE_MODE",
+      status: 400,
+    });
+  }
+  const taskIds = [];
+  if (options.session) {
+    await withLocalHub(options, async (hub) => {
+      taskIds.push(await resolveLocalTaskId(hub, options.session));
+    });
+  }
   const result = await store.createInvite({
     name: required(options.name, "Usage: mpai invite --name TEAMMATE"),
     role: options.role || "viewer",
-    share: options.share || "selected",
+    share,
+    taskIds,
     address,
     port: Number(options.port || config.host.port),
   });
@@ -229,8 +244,13 @@ async function runInvite(store, options) {
   console.log(`mpai join '${result.url}'`);
   console.log("\nThe invite is a secret and binds to the first Tailscale identity that uses it.");
   if (result.invitation.taskAccess.mode === "selected") {
-    console.log("\nYour sessions remain private. Choose one with `mpai list`, then share it:");
-    console.log(`mpai share SESSION_ID --with ${result.invitation.name}`);
+    if (result.invitation.taskAccess.taskIds.length) {
+      console.log(`\n${result.invitation.taskAccess.taskIds[0]} is shared with ${result.invitation.name} as part of this invite.`);
+      console.log("Every other session remains private.");
+    } else {
+      console.log("\nYour sessions remain private. Choose one with `mpai list`, then share it:");
+      console.log(`mpai share SESSION_ID --with ${result.invitation.name}`);
+    }
   } else {
     console.log(`\n${result.invitation.name} can access all current and future sessions until you unshare or revoke this invite.`);
   }

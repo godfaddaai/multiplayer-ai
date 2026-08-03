@@ -143,3 +143,35 @@ test("new invites are private by default and can share selected sessions", async
   });
   assert.equal(invitationCanAccess(excluded, "claude:new-session"), false);
 });
+
+test("an invite can be created with one explicit session already shared", async () => {
+  const config = await store();
+  await config.setup({ name: "Alex", port: 7337 });
+  const { invitation } = await config.createInvite({
+    name: "Maya",
+    role: "participant",
+    share: "selected",
+    taskIds: ["claude:shared-one"],
+    address: "100.64.0.1",
+    port: 7337,
+  });
+
+  assert.deepEqual(invitation.taskAccess, {
+    mode: "selected",
+    taskIds: ["claude:shared-one"],
+    excludedTaskIds: [],
+  });
+  assert.equal(invitationCanAccess(invitation, "claude:shared-one"), true);
+  assert.equal(invitationCanAccess(invitation, "claude:private"), false);
+
+  await assert.rejects(
+    config.createInvite({
+      name: "Taylor",
+      share: "all",
+      taskIds: ["claude:shared-one"],
+      address: "100.64.0.1",
+      port: 7337,
+    }),
+    { code: "INVALID_SHARE_MODE" },
+  );
+});

@@ -180,7 +180,14 @@ export class ConfigStore {
     return config;
   }
 
-  async createInvite({ name, role = "viewer", share = "selected", address, port }) {
+  async createInvite({
+    name,
+    role = "viewer",
+    share = "selected",
+    taskIds = [],
+    address,
+    port,
+  }) {
     const config = await this.load({ required: true });
     if (!["viewer", "participant"].includes(role)) {
       throw new MpaiError("role must be viewer or participant", {
@@ -194,12 +201,19 @@ export class ConfigStore {
         status: 400,
       });
     }
+    const selectedTaskIds = taskIds.map(cleanTaskId);
+    if (share === "all" && selectedTaskIds.length) {
+      throw new MpaiError("session-scoped invites cannot use all-session sharing", {
+        code: "INVALID_SHARE_MODE",
+        status: 400,
+      });
+    }
     const token = randomBytes(32).toString("base64url");
     const invitation = {
       id: randomUUID(),
       name: cleanName(name, "invite name"),
       role,
-      taskAccess: normalizeTaskAccess({ mode: share }),
+      taskAccess: normalizeTaskAccess({ mode: share, taskIds: selectedTaskIds }),
       tokenHash: hashToken(token),
       claimedBy: null,
       claimedAt: null,

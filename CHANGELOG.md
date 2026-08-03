@@ -2,6 +2,27 @@
 
 All notable project changes are documented here.
 
+## [0.4.11] - 2026-08-03
+
+Shorten the private first-room path without weakening explicit session access.
+
+### Added
+
+- `mpai invite --name TEAMMATE --role participant --session SESSION_ID`
+  resolves the chosen local session and creates the named invite with that one
+  session already shared.
+- The printed handoff remains two lines, but the teammate's first `mpai join`
+  can now confirm a ready room instead of waiting for a separate host command.
+
+### Proven
+
+- Config regressions require session-scoped invitations to expose only the
+  chosen task and reject contradictory all-session scope.
+- A CLI regression discovers a real saved Claude Code fixture by short ID,
+  creates the scoped invitation, and verifies no follow-up share command is
+  printed.
+- The full suite passes 46/46 behavioral tests and syntax checks.
+
 ## [0.4.10] - 2026-08-03
 
 Harden the invite-authentication boundary and make continuous security analysis
