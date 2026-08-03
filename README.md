@@ -82,17 +82,17 @@ context and can add a turn with their own name attached.
 ### 1. Host setup
 
 ~~~bash
-brew install godfaddaai/tap/mpai
-mpai start --name "Your Name" --with "Teammate Name"
+brew install godfaddaai/tap/mpai && mpai start
 ~~~
 
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz && mpai start
 ~~~
 
-<code>mpai start</code> configures identity, installs and verifies the background
+The guided <code>mpai start</code> flow asks for both names, configures identity,
+installs and verifies the background
 service, discovers existing Codex and Claude Code sessions, and asks the host to
 choose exactly one. It then creates a participant invite for that session and
 prints the teammate's one-paste command. Every other session remains private.

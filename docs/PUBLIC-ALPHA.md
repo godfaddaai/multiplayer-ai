@@ -26,11 +26,10 @@ warehouse.
 
 ## Installation
 
-Install with Homebrew, then let one command finish the machine setup:
+Install and enter the guided host setup with one pasted command:
 
 ```bash
-brew install godfaddaai/tap/mpai
-mpai start --name Alex --with Maya
+brew install godfaddaai/tap/mpai && mpai start
 ```
 
 It must configure identity, find the tailnet address, install the always-on
@@ -38,7 +37,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz && mpai start
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
