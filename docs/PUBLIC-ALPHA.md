@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.13, August 3, 2026.
+Status: public source alpha 0.4.14, August 3, 2026.
 
 ## Product promise
 
@@ -30,7 +30,7 @@ Install with Homebrew, then let one command finish the machine setup:
 
 ```bash
 brew install godfaddaai/tap/mpai
-mpai setup --name Alex
+mpai start --name Alex --with Maya
 ```
 
 It must configure identity, find the tailnet address, install the always-on
@@ -38,7 +38,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.14/multiplayer-ai-0.4.14.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -54,7 +54,7 @@ no LaunchAgent. The invite also prints the permanent Homebrew path for a
 teammate who intentionally wants to host sessions back. Older, empty, or
 multi-session invites still print the exact next command.
 
-## Implemented in 0.4.13
+## Implemented in 0.4.14
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -88,6 +88,10 @@ multi-session invites still print the exact next command.
 - A session-scoped invitation leads with one version-pinned `npx` command that
   enters the room without a global package install or background host service;
   the permanent Homebrew path remains available underneath.
+- A guided `mpai start --name HOST --with TEAMMATE` host flow verifies a fresh
+  host, presents its native sessions for explicit selection, creates a private
+  participant invite for exactly one session, and prints that same guest paste.
+  Non-interactive use fails closed unless `--session` is explicit.
 - Setup's printed next step lists sessions and creates an explicit participant
   invite already scoped to the chosen session, so the safest collaboration
   path is immediately useful without broadening access.

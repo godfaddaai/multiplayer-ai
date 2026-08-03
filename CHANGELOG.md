@@ -2,6 +2,33 @@
 
 All notable project changes are documented here.
 
+## [0.4.14] - 2026-08-03
+
+Collapse the host's first-room path into one guided command.
+
+### Added
+
+- `mpai start --name HOST --with TEAMMATE` now configures and verifies a fresh
+  host, discovers its existing Codex and Claude Code sessions, asks the host to
+  select exactly one, and creates a participant invite already scoped to it.
+- Existing hosts can omit `--name`; scripts can use `--session SESSION_ID` to
+  make the same selection explicitly without an interactive picker.
+
+### Safety
+
+- Every session except the selected one remains private, and non-interactive
+  execution without `--session` stops before creating an invite.
+- A fresh host must pass the existing doctor gate before the invitation is
+  created, so setup failures do not produce a dead first-room handoff.
+
+### Proven
+
+- CLI regressions cover the one-command selected-session participant invite,
+  version-pinned no-install guest handoff, and fail-closed non-interactive path.
+- The packed 0.4.14 artifact has SHA-256
+  `41b3f52819859c817bbe066703c708f3eaed8907e80471adf99a61c1c8a8e096`;
+  the repository formula is pinned to that exact artifact and hash.
+
 ## [0.4.13] - 2026-08-03
 
 Remove the invited teammate's global-install step from the first-room path.

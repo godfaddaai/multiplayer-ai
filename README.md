@@ -83,38 +83,39 @@ context and can add a turn with their own name attached.
 
 ~~~bash
 brew install godfaddaai/tap/mpai
-mpai setup --name "Your Name"
+mpai start --name "Your Name" --with "Teammate Name"
 ~~~
 
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.14/multiplayer-ai-0.4.14.tgz
 ~~~
 
-<code>mpai setup</code> configures identity, discovers available providers,
-installs the background service, and verifies its reachable version.
+<code>mpai start</code> configures identity, installs and verifies the background
+service, discovers existing Codex and Claude Code sessions, and asks the host to
+choose exactly one. It then creates a participant invite for that session and
+prints the teammate's one-paste command. Every other session remains private.
 
-### 2. Invite a teammate
-
-On Maya's Mac:
+For scripts or a session ID you already know, skip the picker:
 
 ~~~bash
-mpai list
-mpai invite --name Alex --role participant --session SESSION_ID
+mpai start --name "Maya" --with "Alex" --session SESSION_ID
 ~~~
 
-Send the recommended one-line command printed by <code>mpai invite</code> to
-Alex through a channel you trust. The invite contains a secret. Do not paste it
-into an issue, terminal recording, or public chat.
+Existing hosts can omit <code>--name</code>. The lower-level
+<code>mpai setup</code>, <code>mpai list</code>, and <code>mpai invite</code>
+commands remain available for custom roles and broader workflows.
 
-### 3. Teammate joins
+### 2. Teammate joins
 
-On a fresh Alex Mac with Node.js 20+, one paste opens the room without a global
-install or separate setup step:
+Send the recommended one-line command printed by <code>mpai start</code> through
+a channel you trust. The invite contains a secret; do not paste it into an
+issue, terminal recording, or public chat. On the teammate's Mac with Node.js
+20+, that one paste opens the room without a global install or setup step:
 
 ~~~bash
-npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.13/multiplayer-ai-0.4.13.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
+npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.14/multiplayer-ai-0.4.14.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
 ~~~
 
 The invite establishes Alex's attributed identity, stores the peer credential
@@ -141,7 +142,7 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.13
+## What works in 0.4.14
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
