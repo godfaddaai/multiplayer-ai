@@ -84,6 +84,17 @@ export function normalizeCodexEvent(message) {
   };
 }
 
+function codexProviderFailure(params = {}) {
+  const authRequired = params.error?.codexErrorInfo === "unauthorized";
+  return new MpaiError(
+    params.error?.message || "Codex turn failed",
+    {
+      code: authRequired ? "CODEX_AUTH_REQUIRED" : "CODEX_TURN_FAILED",
+      status: authRequired ? 401 : 502,
+    },
+  );
+}
+
 export class CodexClient extends EventEmitter {
   constructor({
     codexBin = "codex",
@@ -263,7 +274,11 @@ export class CodexClient extends EventEmitter {
     }
     if (message.method) {
       this.emit("notification", message);
-      this.emit(message.method, message.params);
+      if (message.method === "error") {
+        this.emit("providerError", message.params);
+      } else {
+        this.emit(message.method, message.params);
+      }
     }
   }
 
@@ -397,6 +412,20 @@ export class CodexClient extends EventEmitter {
     const attributedText = `[Multiplayer teammate: ${actor.name}]\n${text}`;
     let turnId;
     let finalText = "";
+    let rejectProviderFailure;
+    const earlyProviderFailures = [];
+    const providerFailure = new Promise((resolve, reject) => {
+      rejectProviderFailure = reject;
+    });
+    const onProviderError = (params = {}) => {
+      if (params.threadId && params.threadId !== threadId) return;
+      if (!turnId) {
+        earlyProviderFailures.push(params);
+        return;
+      }
+      if (params.turnId && params.turnId !== turnId) return;
+      rejectProviderFailure(codexProviderFailure(params));
+    };
     const listener = (message) => {
       const normalized = normalizeCodexEvent(message);
       if (
@@ -410,6 +439,7 @@ export class CodexClient extends EventEmitter {
       onEvent?.(normalized);
     };
     this.on("notification", listener);
+    this.on("providerError", onProviderError);
     try {
       const started = await this.request(
         "turn/start",
@@ -426,6 +456,12 @@ export class CodexClient extends EventEmitter {
           status: 502,
         });
       }
+      const earlyFailure = earlyProviderFailures.find(
+        (params) => !params.turnId || params.turnId === turnId,
+      );
+      if (earlyFailure) {
+        rejectProviderFailure(codexProviderFailure(earlyFailure));
+      }
       onEvent?.({
         type: "turn.accepted",
         requestId,
@@ -433,7 +469,8 @@ export class CodexClient extends EventEmitter {
         turnId,
         actor,
       });
-      const completion = await new Promise((resolve, reject) => {
+      let cleanupCompletion = () => {};
+      const completionRequest = new Promise((resolve, reject) => {
         const timer = setTimeout(() => {
           cleanup();
           reject(
@@ -462,12 +499,22 @@ export class CodexClient extends EventEmitter {
           this.off("notification", onNotification);
           this.off("exit", onExit);
         };
+        cleanupCompletion = cleanup;
         this.on("notification", onNotification);
         this.on("exit", onExit);
       });
-      return { requestId, threadId, turnId, turn: completion, finalText };
+      try {
+        const completion = await Promise.race([
+          completionRequest,
+          providerFailure,
+        ]);
+        return { requestId, threadId, turnId, turn: completion, finalText };
+      } finally {
+        cleanupCompletion();
+      }
     } finally {
       this.off("notification", listener);
+      this.off("providerError", onProviderError);
     }
   }
 

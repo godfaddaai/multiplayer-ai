@@ -2,6 +2,28 @@
 
 All notable project changes are documented here.
 
+## [0.4.8] - 2026-08-03
+
+Fail-closed managed Codex errors without a host crash.
+
+### Fixed
+
+- Managed Codex notifications named `error` no longer become Node's special
+  unhandled `error` event, which terminated the mpai host service.
+- A provider auth failure now rejects only the affected turn as
+  `CODEX_AUTH_REQUIRED`; other failures use `CODEX_TURN_FAILED`.
+- Turn-completion, provider-error, and exit listeners are removed immediately
+  after either success or failure.
+
+### Proven
+
+- A disposable Hudson → Reagan managed-Codex prompt reached the correct native
+  transcript with Hudson's attribution and reproduced the expired-token crash
+  without touching a real project.
+- A managed-socket regression sends an immediate auth error, requires the
+  typed failure, proves all turn listeners are removed, and confirms the same
+  Codex client remains usable afterward.
+
 ## [0.4.7] - 2026-08-03
 
 Participant-first onboarding without broader sharing.

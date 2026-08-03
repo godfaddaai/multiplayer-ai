@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.7, August 3, 2026.
+Status: public source alpha 0.4.8, August 3, 2026.
 
 ## Product promise
 
@@ -42,7 +42,7 @@ creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
 and prints the exact attach command.
 
-## Implemented in 0.4.7
+## Implemented in 0.4.8
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -51,6 +51,9 @@ and prints the exact attach command.
 - A ten-second peer connection/response-header deadline that becomes a
   privacy-safe `PEER_UNREACHABLE` error with exact wake, Tailscale, and host
   service recovery steps without timing out an established prompt stream.
+- Managed Codex authentication and provider failures stay scoped to the active
+  turn instead of emitting Node's process-fatal `error` event and crashing the
+  host service.
 - Viewer and participant roles, Tailscale identity binding, invite revocation,
   idempotency, one remote prompt per task, and an append-only audit trail.
 - Private-by-default new invites. The server hides unshared titles,
