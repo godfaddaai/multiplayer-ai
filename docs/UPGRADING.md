@@ -106,6 +106,12 @@ with the prior trusted all-session scope was claimed and the stale invite was
 revoked. Reciprocal reads then passed without rebuilding either host identity
 or service configuration.
 
+Both hosts then upgraded from the exact public 0.4.14 asset and restarted on
+matching 0.4.14 endpoints. Reagan's service ran as PID 8152 and Hudson's as PID
+86187; both provider-aware doctor checks passed, and reciprocal one-session
+lists succeeded without reinstalling identities, rejoining, or changing share
+configuration.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.

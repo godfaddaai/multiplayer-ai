@@ -119,6 +119,14 @@ Reagan claimed it, the stale invite was revoked, and Reagan could list Hudson's
 sessions again. This proves scoped credential rotation and reciprocal recovery,
 but it is founder dogfood rather than outside activation evidence.
 
+The public 0.4.14 release then upgraded both hosts from the exact public asset.
+Reagan restarted on PID 8152 and Hudson on PID 86187; both doctor receipts
+reported matching 0.4.14 endpoints with Codex and Claude Code available.
+Reagan → Hudson and Hudson → Reagan session lists both passed after restart.
+The guided `mpai start` regression proves one selected-session participant
+invite and a fail-closed non-interactive path, but this still does not count as
+one of the ten required non-founder activations.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
