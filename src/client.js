@@ -1,6 +1,20 @@
 import { randomUUID } from "node:crypto";
 import { MpaiError } from "./errors.js";
 
+const DEFAULT_REQUEST_TIMEOUT_MS = 10_000;
+
+function peerUnreachable(error) {
+  if (error instanceof MpaiError) return error;
+  return new MpaiError(
+    "Teammate is unreachable. Check that their Mac is awake, connected to Tailscale, and running `mpai service install`, then retry.",
+    {
+      code: "PEER_UNREACHABLE",
+      status: 503,
+      cause: error,
+    },
+  );
+}
+
 function parseInvite(invite) {
   let url;
   try {
@@ -35,19 +49,41 @@ function parseInvite(invite) {
 }
 
 export class MpaiClient {
-  constructor({ baseUrl, token, identity, fetchImpl = fetch }) {
+  constructor({
+    baseUrl,
+    token,
+    identity,
+    fetchImpl = fetch,
+    requestTimeoutMs = DEFAULT_REQUEST_TIMEOUT_MS,
+  }) {
     this.baseUrl = baseUrl.replace(/\/+$/u, "");
     this.token = token;
     this.identity = identity;
     this.fetch = fetchImpl;
+    this.requestTimeoutMs = requestTimeoutMs;
   }
 
   static fromInvite(invite, options = {}) {
     return new MpaiClient({ ...parseInvite(invite), ...options });
   }
 
+  async fetchWithTimeout(url, options = {}) {
+    const controller = new AbortController();
+    const timer = setTimeout(
+      () => controller.abort(),
+      this.requestTimeoutMs,
+    );
+    try {
+      return await this.fetch(url, { ...options, signal: controller.signal });
+    } catch (error) {
+      throw peerUnreachable(error);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   async request(path, { method = "GET", body, headers = {} } = {}) {
-    const response = await this.fetch(`${this.baseUrl}${path}`, {
+    const response = await this.fetchWithTimeout(`${this.baseUrl}${path}`, {
       method,
       headers: {
         authorization: `Bearer ${this.token}`,
@@ -105,7 +141,7 @@ export class MpaiClient {
   }
 
   async prompt(taskId, text, { onEvent, requestId = randomUUID() } = {}) {
-    const response = await this.fetch(
+    const response = await this.fetchWithTimeout(
       `${this.baseUrl}/v1/tasks/${encodeURIComponent(taskId)}/prompt`,
       {
         method: "POST",
