@@ -21,6 +21,15 @@ session authorization.
   shared Claude Code room, renders its saved context, and leaves cleanly from
   the same process.
 - The full suite passes 46/46 behavioral tests and syntax checks.
+- The exact public release asset matched SHA-256
+  `d925f1890964d8fe04c53ee181afff240b8945a3be5df0356d271979d055b513`,
+  installed into an isolated prefix, and reported 0.4.12 from both binaries.
+- A real Hudson → Reagan viewer invite opened one explicitly shared persisted
+  Codex room from the printed join command; the invite was then revoked and the
+  disposable credential state deleted.
+- Both live Macs upgraded to matching 0.4.12 services with reciprocal session
+  reads intact, and Homebrew lifecycle run 30802423567 passed on clean macOS 26
+  and Linux.
 
 ## [0.4.11] - 2026-08-03
 

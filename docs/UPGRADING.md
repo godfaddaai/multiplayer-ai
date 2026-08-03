@@ -95,6 +95,10 @@ their isolated npm global prefixes. The stable launchers and stored peer state
 were preserved, both services restarted with matching 0.4.11 doctor receipts,
 and reciprocal session reads remained intact without rejoining or resharing.
 
+The same public-asset process upgraded both hosts to 0.4.12. Stable launchers,
+stored peer state, and existing share rules were preserved; both services
+restarted with matching doctor receipts and reciprocal reads remained intact.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.
