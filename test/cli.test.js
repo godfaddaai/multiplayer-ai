@@ -218,7 +218,7 @@ test("a host can create an invite already scoped to one explicit session", async
   assert.match(stdout, /Send Maya this one line \(Node\.js 20\+; no global install\):/u);
   assert.match(
     stdout,
-    /npx --yes https:\/\/github\.com\/godfaddaai\/multiplayer-ai\/releases\/download\/v0\.4\.13\/multiplayer-ai-0\.4\.13\.tgz join 'mpai:\/\/[^']+' --no-service --attach/u,
+    /npx --yes https:\/\/github\.com\/godfaddaai\/multiplayer-ai\/releases\/download\/v0\.4\.14\/multiplayer-ai-0\.4\.14\.tgz join 'mpai:\/\/[^']+' --no-service --attach/u,
   );
   assert.match(stdout, /For a permanent install that can host sessions back:/u);
   assert.match(stdout, /brew install godfaddaai\/tap\/mpai/u);
@@ -226,6 +226,105 @@ test("a host can create an invite already scoped to one explicit session", async
   assert.match(stdout, new RegExp(`claude:${sessionId} is shared with Maya as part of this invite\\.`, "u"));
   assert.doesNotMatch(stdout, /mpai share SESSION_ID/u);
   const config = JSON.parse(await readFile(join(stateRoot, "config.json"), "utf8"));
+  assert.deepEqual(config.invites[0].taskAccess, {
+    mode: "selected",
+    taskIds: [`claude:${sessionId}`],
+    excludedTaskIds: [],
+  });
+
+  let missingSelection;
+  try {
+    await execFileAsync(
+      process.execPath,
+      [
+        join(projectRoot, "src", "cli.js"),
+        "start",
+        "--with",
+        "Taylor",
+        "--address",
+        "127.0.0.1",
+        "--codex-bin",
+        "/mpai-test/missing-codex",
+      ],
+      {
+        cwd: projectRoot,
+        env: {
+          ...process.env,
+          MULTIPLAYER_AI_HOME: stateRoot,
+          CLAUDE_CONFIG_DIR: claudeConfig,
+        },
+      },
+    );
+  } catch (error) {
+    missingSelection = error;
+  }
+  assert.ok(missingSelection);
+  assert.match(missingSelection.stdout, /AI work/u);
+  assert.match(
+    missingSelection.stderr,
+    /Choose one private session with `mpai start --name YOUR_NAME --with TEAMMATE --session SESSION_ID`/u,
+  );
+  const afterRejectedStart = JSON.parse(
+    await readFile(join(stateRoot, "config.json"), "utf8"),
+  );
+  assert.equal(afterRejectedStart.invites.length, 1);
+});
+
+test("start collapses an existing host into one private participant invite", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mpai-cli-start-"));
+  roots.push(root);
+  const stateRoot = join(root, "state");
+  const claudeConfig = join(root, ".claude");
+  const projectDir = join(claudeConfig, "projects", "-tmp-mpai-start");
+  const sessionId = "aaaaaaaa-bbbb-4ccc-8ddd-eeeeeeeeeeee";
+  await mkdir(projectDir, { recursive: true });
+  await writeFile(
+    join(projectDir, `${sessionId}.jsonl`),
+    `${JSON.stringify({
+      type: "user",
+      sessionId,
+      uuid: "start-user-one",
+      timestamp: "2026-08-03T10:00:00.000Z",
+      cwd: "/tmp/mpai-start",
+      message: { role: "user", content: "Pair on this session." },
+    })}\n`,
+  );
+  const hostStore = new ConfigStore({ root: stateRoot });
+  await hostStore.setup({ name: "Alex", port: 7337 });
+
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [
+      join(projectRoot, "src", "cli.js"),
+      "start",
+      "--with",
+      "Maya",
+      "--session",
+      sessionId.slice(-8),
+      "--address",
+      "127.0.0.1",
+      "--codex-bin",
+      "/mpai-test/missing-codex",
+    ],
+    {
+      cwd: projectRoot,
+      env: {
+        ...process.env,
+        MULTIPLAYER_AI_HOME: stateRoot,
+        CLAUDE_CONFIG_DIR: claudeConfig,
+      },
+    },
+  );
+
+  assert.match(stdout, /Hosting as Alex/u);
+  assert.match(stdout, /Creating a participant invite for that session/u);
+  assert.match(stdout, /Maya · participant · selected sessions/u);
+  assert.match(stdout, /--no-service --attach/u);
+  assert.match(stdout, /Every other session remains private/u);
+  const config = JSON.parse(await readFile(join(stateRoot, "config.json"), "utf8"));
+  assert.equal(config.invites.length, 1);
+  assert.equal(config.invites[0].name, "Maya");
+  assert.equal(config.invites[0].role, "participant");
   assert.deepEqual(config.invites[0].taskAccess, {
     mode: "selected",
     taskIds: [`claude:${sessionId}`],

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { execFile } from "node:child_process";
+import { createInterface as createPromptInterface } from "node:readline/promises";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { ClaudeProvider } from "./claude.js";
@@ -15,6 +16,7 @@ import {
   formatStreamEvent,
   formatThread,
   formatThreadList,
+  threadSummary,
 } from "./format.js";
 import { createMpaiServer, listen } from "./server.js";
 import {
@@ -49,11 +51,13 @@ const HELP = `Multiplayer AI (mpai)
 Two-player terminal rooms for existing Codex and Claude Code sessions.
 
 Fast path:
+  mpai start --name Alex --with Maya     guided private room + invite
   mpai @Maya [SESSION_ID]          see and join Maya's AI sessions
 
   mpai --version
 
 Setup and hosting:
+  mpai start --name Alex --with Maya [--session SESSION_ID]
   mpai setup --name Alex [--port 7337] [--no-service]
   mpai invite --name Maya [--role viewer|participant] [--share selected|all]
               [--session SESSION_ID]
@@ -178,7 +182,7 @@ async function withLocalHub(options, callback) {
   }
 }
 
-async function runSetup(store, options) {
+async function runSetup(store, options, { printNext = true } = {}) {
   const existing = await store.load();
   const config = await store.setup({
     name: required(
@@ -206,10 +210,101 @@ async function runSetup(store, options) {
     }
   }
   console.log("\nChecking this Mac…");
-  await runDoctor(store, options);
-  console.log(
-    "\nNext: choose a session with `mpai list`, then invite a teammate with `mpai invite --name TEAMMATE --role participant --session SESSION_ID`.",
+  const doctor = await runDoctor(store, options);
+  if (printNext) {
+    console.log(
+      "\nNext: choose a session with `mpai list`, then invite a teammate with `mpai invite --name TEAMMATE --role participant --session SESSION_ID`.",
+    );
+  }
+  return { config, ready: doctor.ok };
+}
+
+function recentFirst(tasks) {
+  return [...tasks].sort((left, right) => {
+    const rightAt = Date.parse(right.updatedAt || right.createdAt || 0) || 0;
+    const leftAt = Date.parse(left.updatedAt || left.createdAt || 0) || 0;
+    return rightAt - leftAt;
+  });
+}
+
+async function chooseStartSession(hub, options) {
+  if (options.session) return resolveLocalTaskId(hub, options.session);
+
+  const tasks = recentFirst(await hub.listTasks({
+    limit: options.limit || 25,
+    cwd: options.cwd,
+  }));
+  if (!tasks.length) {
+    throw new MpaiError(
+      "No Codex or Claude Code sessions were found. Start the AI session you want to share, then run `mpai start` again.",
+      { code: "THREAD_NOT_FOUND", status: 404 },
+    );
+  }
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    console.log(formatThreadList(tasks));
+    throw new MpaiError(
+      "Choose one private session with `mpai start --name YOUR_NAME --with TEAMMATE --session SESSION_ID`.",
+      { code: "MISSING_ARGUMENT", status: 400 },
+    );
+  }
+
+  console.log("\nChoose the one session to share. Every other session stays private:\n");
+  for (const [index, task] of tasks.entries()) {
+    const item = threadSummary(task);
+    console.log(`${index + 1}) ${item.provider} · ${item.title}`);
+    console.log(`   ${item.shortId}${item.cwd ? ` · ${item.cwd}` : ""}`);
+  }
+  const prompt = createPromptInterface({ input: process.stdin, output: process.stdout });
+  let answer;
+  try {
+    answer = (await prompt.question("\nSession number or ID (q to cancel): ")).trim();
+  } finally {
+    prompt.close();
+  }
+  if (!answer || /^q(?:uit)?$/iu.test(answer)) {
+    throw new MpaiError("No session was shared.", {
+      code: "CANCELLED",
+      status: 400,
+    });
+  }
+  if (/^\d+$/u.test(answer)) {
+    const index = Number(answer) - 1;
+    if (index >= 0 && index < tasks.length) return tasks[index].id;
+    throw new MpaiError(`Choose a number from 1 to ${tasks.length}.`, {
+      code: "INVALID_ARGUMENT",
+      status: 400,
+    });
+  }
+  return resolveLocalTaskId(hub, answer);
+}
+
+async function runStart(store, options) {
+  const teammate = required(
+    options.with,
+    "Usage: mpai start --name YOUR_NAME --with TEAMMATE [--session SESSION_ID]",
   );
+  const existing = await store.load();
+  if (!existing || options.name) {
+    const setup = await runSetup(store, options, { printNext: false });
+    if (!setup.ready) {
+      throw new MpaiError(
+        "This Mac is not ready to host yet. Fix the failed doctor checks, then rerun the same `mpai start` command.",
+        { code: "HOST_NOT_READY", status: 503 },
+      );
+    }
+  } else {
+    console.log(`Hosting as ${existing.identity.name}`);
+  }
+  const session = await withLocalHub(options, (hub) =>
+    chooseStartSession(hub, options));
+  console.log("\nCreating a participant invite for that session…");
+  await runInvite(store, {
+    ...options,
+    name: teammate,
+    role: options.role || "participant",
+    share: "selected",
+    session,
+  });
 }
 
 async function runInvite(store, options) {
@@ -707,7 +802,9 @@ async function runDoctor(store, options) {
   for (const check of checks) {
     console.log(`${check.ok ? "✓" : check.required === false ? "○" : "✗"} ${check.name}: ${check.detail}`);
   }
-  if (checks.some((check) => !check.ok && check.required !== false)) process.exitCode = 1;
+  const ok = !checks.some((check) => !check.ok && check.required !== false);
+  if (!ok) process.exitCode = 1;
+  return { ok, checks };
 }
 
 async function fetchHostHealth(address, port, { attempts = 1 } = {}) {
@@ -864,6 +961,9 @@ async function main() {
       break;
     case "setup":
       await runSetup(store, options);
+      break;
+    case "start":
+      await runStart(store, options);
       break;
     case "invite":
       await runInvite(store, options);
