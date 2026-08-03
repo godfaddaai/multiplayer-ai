@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.11, August 3, 2026.
+Status: public source alpha 0.4.12, August 3, 2026.
 
 ## Product promise
 
@@ -37,7 +37,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.11/multiplayer-ai-0.4.11.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.12/multiplayer-ai-0.4.12.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -47,9 +47,11 @@ fallback above when Node.js 20+ is already installed.
 An invited teammate can start from a completely fresh install. `mpai join`
 creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
-and prints the exact attach command.
+and, when the invite is scoped to one session, opens that ready room from the
+same pasted command. Older, empty, or multi-session invites still print the
+exact attach command.
 
-## Implemented in 0.4.11
+## Implemented in 0.4.12
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.

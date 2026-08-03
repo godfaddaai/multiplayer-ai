@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFile } from "node:child_process";
+import { execFile, spawn } from "node:child_process";
 import { createServer } from "node:http";
 import { promisify } from "node:util";
 import { afterEach, test } from "node:test";
@@ -13,6 +13,35 @@ import { createMpaiServer, listen } from "../src/server.js";
 const execFileAsync = promisify(execFile);
 const roots = [];
 const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
+
+function execFileWithInput(file, args, { cwd, env, input, timeoutMs = 5_000 }) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(file, args, { cwd, env, stdio: ["pipe", "pipe", "pipe"] });
+    let stdout = "";
+    let stderr = "";
+    child.stdout.setEncoding("utf8");
+    child.stderr.setEncoding("utf8");
+    child.stdout.on("data", (chunk) => { stdout += chunk; });
+    child.stderr.on("data", (chunk) => { stderr += chunk; });
+    const timer = setTimeout(() => child.kill("SIGKILL"), timeoutMs);
+    child.on("error", (error) => {
+      clearTimeout(timer);
+      reject(error);
+    });
+    child.on("close", (code, signal) => {
+      clearTimeout(timer);
+      if (code === 0) {
+        resolve({ stdout, stderr });
+        return;
+      }
+      const error = new Error(`child exited with ${code ?? signal}`);
+      error.stdout = stdout;
+      error.stderr = stderr;
+      reject(error);
+    });
+    child.stdin.end(input);
+  });
+}
 
 afterEach(async () => {
   await Promise.all(
@@ -39,6 +68,31 @@ test("a fresh install can paste an invite and reach a ready room", async () => {
       }));
       return;
     }
+    if (decodeURIComponent(request.url || "") === "/v1/tasks/claude:one") {
+      response.end(JSON.stringify({
+        task: {
+          id: "claude:one",
+          nativeId: "one",
+          provider: "claude",
+          providerName: "Claude Code",
+          title: "Ship the alpha",
+          cwd: "/tmp/mpai-alpha",
+          canPrompt: true,
+          messages: [{
+            id: "message-one",
+            role: "user",
+            author: "Maya",
+            text: "Prepare the launch.",
+            at: "2026-08-03T09:00:00.000Z",
+          }],
+        },
+      }));
+      return;
+    }
+    if (request.url === "/v1/presence" && request.method === "POST") {
+      response.end(JSON.stringify({ data: [] }));
+      return;
+    }
     response.statusCode = 404;
     response.end(JSON.stringify({ error: { message: "not found" } }));
   });
@@ -46,17 +100,28 @@ test("a fresh install can paste an invite and reach a ready room", async () => {
   const address = server.address();
   try {
     const invite = `mpai://127.0.0.1:${address.port}/join?token=fresh-secret&host=Maya`;
-    const { stdout } = await execFileAsync(
+    const { stdout } = await execFileWithInput(
       process.execPath,
-      [join(projectRoot, "src", "cli.js"), "join", invite, "--no-service"],
+      [
+        join(projectRoot, "src", "cli.js"),
+        "join",
+        invite,
+        "--no-service",
+        "--attach",
+      ],
       {
         cwd: projectRoot,
         env: { ...process.env, MULTIPLAYER_AI_HOME: root },
+        input: "/leave\n",
       },
     );
     assert.match(stdout, /Joined Maya as Alex \(participant\)/u);
     assert.match(stdout, /1 shared session is ready/u);
-    assert.match(stdout, /Next: mpai @Maya/u);
+    assert.match(stdout, /Opening Maya's ready room/u);
+    assert.match(stdout, /Ship the alpha/u);
+    assert.match(stdout, /Prepare the launch\./u);
+    assert.match(stdout, /Left Maya’s room\./u);
+    assert.doesNotMatch(stdout, /Next: mpai @Maya/u);
 
     const config = JSON.parse(await readFile(join(root, "config.json"), "utf8"));
     assert.equal(config.identity.name, "Alex");
@@ -151,6 +216,7 @@ test("a host can create an invite already scoped to one explicit session", async
   );
 
   assert.match(stdout, /Send Maya these two lines:/u);
+  assert.match(stdout, /mpai join 'mpai:\/\/[^']+' --attach/u);
   assert.match(stdout, new RegExp(`claude:${sessionId} is shared with Maya as part of this invite\\.`, "u"));
   assert.doesNotMatch(stdout, /mpai share SESSION_ID/u);
   const config = JSON.parse(await readFile(join(stateRoot, "config.json"), "utf8"));
