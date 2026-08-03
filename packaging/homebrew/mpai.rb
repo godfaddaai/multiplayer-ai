@@ -19,8 +19,9 @@ class Mpai < Formula
 
   def caveats
     <<~EOS
-      Restart the host after upgrades with:
+      Restart and verify the host after upgrades with:
         mpai service install
+        mpai doctor
 
       Before uninstalling, stop the host with:
         mpai service uninstall
