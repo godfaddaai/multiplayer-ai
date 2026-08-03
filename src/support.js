@@ -136,6 +136,58 @@ export function buildAlphaReceipt({
   };
 }
 
+function reportChoice(value, choices) {
+  const normalized = String(value ?? "").trim().toLowerCase();
+  return choices[normalized] || "not reported";
+}
+
+function reportMinutes(value) {
+  const text = String(value ?? "").trim();
+  if (!/^\d+(?:\.\d+)?$/u.test(text)) return "not reported";
+  const minutes = Number(text);
+  return minutes <= 10_080 ? String(minutes) : "not reported";
+}
+
+export function formatCohortReport(receipt, selfReport = {}) {
+  const providers = receipt.engagement.providersUsed.length
+    ? receipt.engagement.providersUsed.join(", ")
+    : "none observed";
+  const failures = Object.keys(receipt.reliability.failureKinds);
+  const outcomeCount = receipt.reliability.completedOutcomes;
+  const completed = receipt.engagement.promptsCompleted;
+  return [
+    "<!-- mpai cohort report v1 · public metadata only -->",
+    `mpai version: ${receipt.runtime.mpai}`,
+    `provider: ${providers}`,
+    `join method: ${reportChoice(selfReport.joinMethod, {
+      npx: "npx guest",
+      "npx-guest": "npx guest",
+      homebrew: "Homebrew",
+      npm: "npm",
+      other: "other",
+    })}`,
+    `minutes to first shared room: ${reportMinutes(selfReport.minutesToRoom)}`,
+    `named prompt visible in native transcript: ${reportChoice(selfReport.namedPrompt, {
+      yes: "yes",
+      no: "no",
+      "view-only": "view-only",
+    })}`,
+    `would use this again next week: ${reportChoice(selfReport.useAgain, {
+      yes: "yes",
+      no: "no",
+      unsure: "unsure",
+    })}`,
+    `first failure category, if any: ${failures[0] || "none observed"}`,
+    "",
+    "machine-readable counts (no content or identifiers):",
+    `- claimed invites: ${receipt.activation.invitationsClaimed}`,
+    `- selected sessions shared: ${receipt.activation.selectedSessionsShared}`,
+    `- completed prompt outcomes: ${completed}/${outcomeCount}`,
+    `- active days: ${receipt.engagement.activeDays}`,
+    `- active weeks: ${receipt.engagement.activeWeeks}`,
+  ].join("\n");
+}
+
 export function buildSupportBundle({
   config,
   service,

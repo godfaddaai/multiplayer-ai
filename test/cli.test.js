@@ -3,7 +3,7 @@ import { execFile, spawn } from "node:child_process";
 import { createServer } from "node:http";
 import { promisify } from "node:util";
 import { afterEach, test } from "node:test";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -334,6 +334,82 @@ test("start collapses an existing host into one private participant invite", asy
     taskIds: [`claude:${sessionId}`],
     excludedTaskIds: [],
   });
+});
+
+test("cohort report previews first and submits only with explicit consent", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mpai-cohort-report-"));
+  roots.push(root);
+  const stateRoot = join(root, "state");
+  const capturePath = join(root, "gh-args.json");
+  const mockGh = join(root, "gh");
+  const store = new ConfigStore({ root: stateRoot });
+  await store.setup({ name: "Private Name", port: 7337 });
+  await writeFile(
+    mockGh,
+    `#!/usr/bin/env node
+import { writeFile } from "node:fs/promises";
+await writeFile(process.env.MPAI_GH_CAPTURE, JSON.stringify(process.argv.slice(2)));
+console.log("https://github.com/godfaddaai/multiplayer-ai/issues/7#issuecomment-test");
+`,
+  );
+  await chmod(mockGh, 0o755);
+  const env = {
+    ...process.env,
+    PATH: `${root}:${process.env.PATH}`,
+    MULTIPLAYER_AI_HOME: stateRoot,
+    MPAI_GH_CAPTURE: capturePath,
+  };
+
+  const preview = await execFileAsync(
+    process.execPath,
+    [join(projectRoot, "src", "cli.js"), "cohort-report"],
+    { cwd: projectRoot, env },
+  );
+  assert.match(preview.stdout, /Public cohort report preview:/u);
+  assert.match(preview.stdout, /Nothing was sent/u);
+  await assert.rejects(
+    execFileAsync(
+      process.execPath,
+      [join(projectRoot, "src", "cli.js"), "cohort-report", "--submit"],
+      { cwd: projectRoot, env },
+    ),
+    (error) => {
+      assert.match(error.stderr, /rerun with `mpai cohort-report --submit --yes`/u);
+      return true;
+    },
+  );
+
+  const submitted = await execFileAsync(
+    process.execPath,
+    [
+      join(projectRoot, "src", "cli.js"),
+      "cohort-report",
+      "--submit",
+      "--yes",
+      "--join-method",
+      "npx",
+      "--minutes-to-room",
+      "4",
+      "--named-prompt",
+      "view-only",
+      "--use-again",
+      "yes",
+    ],
+    { cwd: projectRoot, env },
+  );
+  assert.match(submitted.stdout, /Submitted with explicit consent:/u);
+  const args = JSON.parse(await readFile(capturePath, "utf8"));
+  assert.deepEqual(args.slice(0, 6), [
+    "issue",
+    "comment",
+    "7",
+    "--repo",
+    "godfaddaai/multiplayer-ai",
+    "--body",
+  ]);
+  assert.match(args[6], /join method: npx guest/u);
+  assert.match(args[6], /minutes to first shared room: 4/u);
+  assert.doesNotMatch(args[6], /Private Name/u);
 });
 
 test("two isolated identities join and send an attributed prompt through the real server", async () => {

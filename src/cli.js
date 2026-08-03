@@ -30,6 +30,7 @@ import { VERSION } from "./version.js";
 import {
   buildAlphaReceipt,
   buildSupportBundle,
+  formatCohortReport,
   writeAlphaReceipt,
   writeSupportBundle,
 } from "./support.js";
@@ -72,6 +73,11 @@ Setup and hosting:
   mpai doctor
   mpai support-bundle [--output PATH]
   mpai alpha-receipt [--output PATH]
+  mpai cohort-report [--submit] [--yes]
+                     [--join-method npx|homebrew|npm|other]
+                     [--minutes-to-room MINUTES]
+                     [--named-prompt yes|no|view-only]
+                     [--use-again yes|no|unsure]
 
 Optional diagnostics:
   mpai dashboard [--port 7338] [--no-open]
@@ -898,6 +904,104 @@ async function runAlphaReceipt(store, options) {
   console.log("The receipt contains counts and elapsed minutes only—never prompts, transcripts, names, task IDs, paths, tokens, addresses, or event timestamps.");
 }
 
+function cohortChoice(value, name, allowed) {
+  if (value === undefined) return undefined;
+  const normalized = String(value).trim().toLowerCase();
+  if (!allowed.includes(normalized)) {
+    throw new MpaiError(`--${name} must be ${allowed.join(", ")}`, {
+      code: "INVALID_ARGUMENT",
+      status: 400,
+    });
+  }
+  return normalized;
+}
+
+async function confirmPublicCohortSubmission() {
+  if (!process.stdin.isTTY || !process.stdout.isTTY) {
+    throw new MpaiError(
+      "Review the report, then rerun with `mpai cohort-report --submit --yes` to consent to posting it publicly.",
+      { code: "CONFIRMATION_REQUIRED", status: 400 },
+    );
+  }
+  const prompt = createPromptInterface({ input: process.stdin, output: process.stdout });
+  try {
+    const answer = await prompt.question(
+      "\nPost exactly this metadata-only report publicly to cohort issue #7? [y/N] ",
+    );
+    return /^y(?:es)?$/iu.test(answer.trim());
+  } finally {
+    prompt.close();
+  }
+}
+
+async function runCohortReport(store, options) {
+  const config = await store.load();
+  const auditEvents = await new AuditStore({ path: store.auditPath }).list({
+    limit: 1000,
+  });
+  const receipt = buildAlphaReceipt({ config, auditEvents });
+  const minutesToRoom = options["minutes-to-room"];
+  if (
+    minutesToRoom !== undefined &&
+    (!/^\d+(?:\.\d+)?$/u.test(String(minutesToRoom)) || Number(minutesToRoom) > 10_080)
+  ) {
+    throw new MpaiError("--minutes-to-room must be a number from 0 to 10080", {
+      code: "INVALID_ARGUMENT",
+      status: 400,
+    });
+  }
+  const report = formatCohortReport(receipt, {
+    joinMethod: cohortChoice(
+      options["join-method"],
+      "join-method",
+      ["npx", "npx-guest", "homebrew", "npm", "other"],
+    ),
+    minutesToRoom,
+    namedPrompt: cohortChoice(
+      options["named-prompt"],
+      "named-prompt",
+      ["yes", "no", "view-only"],
+    ),
+    useAgain: cohortChoice(
+      options["use-again"],
+      "use-again",
+      ["yes", "no", "unsure"],
+    ),
+  });
+  console.log("Public cohort report preview:\n");
+  console.log(report);
+  console.log("\nNo prompts, transcripts, names, task IDs, paths, credentials, addresses, or timestamps are included.");
+  if (!options.submit) {
+    console.log("Nothing was sent. Add self-reported flags if needed, then use `--submit` to review and post it to issue #7.");
+    return;
+  }
+  if (!options.yes && !(await confirmPublicCohortSubmission())) {
+    console.log("Not submitted.");
+    return;
+  }
+  try {
+    const { stdout } = await execFileAsync(
+      "gh",
+      [
+        "issue",
+        "comment",
+        "7",
+        "--repo",
+        "godfaddaai/multiplayer-ai",
+        "--body",
+        report,
+      ],
+      { env: process.env },
+    );
+    console.log(`Submitted with explicit consent: ${stdout.trim()}`);
+  } catch (error) {
+    throw new MpaiError(
+      "Could not submit through GitHub CLI. Install and authenticate `gh`, or copy the preview into https://github.com/godfaddaai/multiplayer-ai/issues/7",
+      { code: "COHORT_SUBMISSION_FAILED", status: 503, cause: error },
+    );
+  }
+}
+
 async function runService(store, positionals, options) {
   const action = positionals[0] || "status";
   await store.load({ required: true });
@@ -1027,6 +1131,9 @@ async function main() {
     case "alpha-receipt":
     case "cohort-receipt":
       await runAlphaReceipt(store, options);
+      break;
+    case "cohort-report":
+      await runCohortReport(store, options);
       break;
     default:
       if (command.startsWith("@")) {
