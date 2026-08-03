@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.9, August 3, 2026.
+Status: public source alpha 0.4.10, August 3, 2026.
 
 ## Product promise
 
@@ -37,7 +37,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.9/multiplayer-ai-0.4.9.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.10/multiplayer-ai-0.4.10.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -49,7 +49,7 @@ creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
 and prints the exact attach command.
 
-## Implemented in 0.4.9
+## Implemented in 0.4.10
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -61,6 +61,9 @@ and prints the exact attach command.
 - Managed Codex authentication and provider failures stay scoped to the active
   turn instead of emitting Node's process-fatal `error` event and crashing the
   host service.
+- Bearer authorization parsing is length-bounded and accepts only the
+  base64url alphabet used by generated invites, preventing ambiguous
+  attacker-controlled regular-expression work before authentication.
 - An automatic-mode host that temporarily fell back to standalone Codex now
   promotes itself back to the managed daemon before a remote prompt when the
   managed socket returns. If promotion fails, standalone prompting remains

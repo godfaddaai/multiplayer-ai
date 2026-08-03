@@ -2,6 +2,26 @@
 
 All notable project changes are documented here.
 
+## [0.4.10] - 2026-08-03
+
+Harden the invite-authentication boundary and make continuous security analysis
+part of every release.
+
+### Fixed
+
+- Bearer authorization parsing is now length-bounded and accepts only the
+  generated invite token alphabet, removing a polynomial regular-expression
+  path on attacker-controlled request headers.
+
+### Proven
+
+- A regression rejects oversized, space-containing, and non-Bearer
+  credentials while preserving valid generated invites.
+- The full suite passes 44/44 behavioral tests and syntax checks on Node 20 and
+  Node 22.
+- CodeQL extended security analysis runs on pushes, pull requests, and weekly;
+  its high-severity parser finding is fixed and zero alerts remain open.
+
 ## [0.4.9] - 2026-08-03
 
 Recover managed Codex prompting after a provider restart.
