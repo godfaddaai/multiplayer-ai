@@ -145,6 +145,14 @@ multi-session invites still print the exact next command.
   installed into an isolated prefix, and reported 0.4.13 from both binaries and
   a separate clean-cache `npx` execution. Homebrew test-bot run 30815017446
   passed install, test, and uninstall on macOS 26 and Linux.
+- The exact public 0.4.14 release asset matched SHA-256
+  `41b3f52819859c817bbe066703c708f3eaed8907e80471adf99a61c1c8a8e096`,
+  installed into an isolated prefix, exposed the guided `mpai start` command,
+  and reported 0.4.14 from both binaries and a separate clean-cache `npx`
+  execution. Homebrew test-bot run 30816937134 passed install, test, and
+  uninstall on macOS 26 and Linux.
+- Reagan and Hudson installed that exact public 0.4.14 artifact, restarted on
+  matching provider-aware endpoints, and retained reciprocal session reads.
 - Live paste-once receipt: Hudson used a fresh isolated state and the printed
   `mpai join '…' --attach` handoff to enter one viewer-only Reagan Codex room,
   render its persisted context, and leave. The invitation was then revoked and
