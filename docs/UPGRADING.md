@@ -90,6 +90,11 @@ remained intact. A live managed-Codex auth failure returned a scoped error to
 the teammate without restarting the host service, proving the crash repair on
 the public artifact.
 
+Both hosts later upgraded from the exact public 0.4.11 release asset through
+their isolated npm global prefixes. The stable launchers and stored peer state
+were preserved, both services restarted with matching 0.4.11 doctor receipts,
+and reciprocal session reads remained intact without rejoining or resharing.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.
