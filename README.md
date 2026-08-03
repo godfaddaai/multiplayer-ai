@@ -287,7 +287,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
 - [x] One-command Homebrew tap install
 - [x] Fresh-install invite bootstrap and upgrade-stable service launcher
 - [x] Redacted <code>mpai support-bundle</code>
-- [ ] Versioned upgrade, rollback, and uninstall verification
+- [x] Public release-asset upgrade, rollback, and uninstall verification
 - [ ] Safe attachment across supported active Codex surfaces
 - [ ] Three-person concurrency certification
 - [ ] Linux support

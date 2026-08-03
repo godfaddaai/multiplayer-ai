@@ -5,8 +5,9 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **67/100** after the public 0.4.4 deployment on August
-2, 2026.
+Current evidence score: **74/100** after the public 0.4.4 deployment,
+release-artifact lifecycle/100-cycle soak receipts, and deterministic
+one-host/two-teammate concurrency proof on August 2, 2026.
 
 ## 1. Core multiplayer usefulness — 18/20
 
@@ -18,7 +19,7 @@ Current evidence score: **67/100** after the public 0.4.4 deployment on August
 | Managed Codex attributed prompting | 3/4 | Managed transport and attribution suites pass; two-way cross-Mac native receipt remains open |
 | Durable human identity in room, provider transcript, and audit | 3/4 | Claude receipt plus server/audit suites; both-provider two-way certification remains open |
 
-## 2. Activation and distribution — 16/20
+## 2. Activation and distribution — 17/20
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
@@ -26,7 +27,7 @@ Current evidence score: **67/100** after the public 0.4.4 deployment on August
 | Host setup installs and verifies a reachable matching service | 4/4 | Matching-version doctor receipts on the live Reagan host and Hudson's public 0.4.4 host |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join and room paths name the host command required |
-| Upgrade, rollback, and uninstall path | 2/3 | Stable launcher, documented procedures, and live service uninstall/reinstall receipt; release rollback and full package uninstall remain open |
+| Upgrade, rollback, and uninstall path | 3/3 | Stable launcher and live service reinstall receipt plus a disposable public-asset 0.4.4 → 0.4.3 → 0.4.4 rollback and full package uninstall with state preserved |
 | Ten stranger installs with median time-to-room below five minutes | 0/3 | No external cohort yet |
 
 ## 3. Trust and security boundary — 18/20
@@ -40,16 +41,16 @@ Current evidence score: **67/100** after the public 0.4.4 deployment on August
 | Redacted diagnostics | 2/2 | Real mode-0600 bundle plus sensitive-fixture exclusion suite |
 | Public policy surface | 2/3 | MIT, contribution, conduct, security reporting, privacy, and acceptable-use policies exist; trademark review remains open |
 
-## 4. Reliability and lifecycle — 9/20
+## 4. Reliability and lifecycle — 15/20
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Automated behavioral and syntax suite | 4/4 | 33/33 tests and syntax checks |
+| Automated behavioral and syntax suite | 4/4 | 35/35 tests and syntax checks |
 | Real service restart and matching-version health | 2/2 | Live Reagan restart and Hudson public 0.4.4 upgrade receipts |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex, standalone-block, and Claude permission behavior suites |
 | Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson upgrade failed safely, then migrated and restarted with reciprocal access intact; other lifecycle transitions remain open |
-| 100 attach/read/leave cycles without ordering defects | 0/4 | Not run |
-| One host plus two simultaneous teammates | 0/3 | Not certified |
+| 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
+| One host plus two simultaneous teammates | 2/3 | Real local HTTP server with two isolated simulated tailnet identities passes per-invite visibility, simultaneous named presence, prompt collision, unaffected-peer continuity, and revocation; physical third-Mac certification remains open |
 
 ## 5. Demand, learning, and retention — 5/20
 
@@ -73,9 +74,13 @@ The score can reach 98 only after all of these are proven:
    to first shared room is below five minutes.
 4. Sleep/wake, network change, relay change, provider restart, and service
    upgrade recover without reinstalling or rejoining.
-5. One hundred attach/read/leave cycles preserve order and authorship.
+5. **Closed:** one hundred local server/client attach, attributed turn, read,
+   and leave cycles preserve order, unique IDs, authorship, presence cleanup,
+   and audit pairing. A later physical-network soak remains valuable but does
+   not reopen this deterministic protocol gate.
 6. One host plus two teammates passes presence, collision, per-invite sharing,
-   and revocation checks.
+   and revocation checks. The deterministic real-server/two-client gate is
+   closed; a physical third Mac is still required for the final point.
 7. Rollback and uninstall are executed on a disposable installation.
 8. Privacy notice, acceptable-use policy, and trademark review are complete.
 9. Ten non-founder teams return in a later week.

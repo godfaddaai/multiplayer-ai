@@ -68,6 +68,16 @@ and prints the exact attach command.
 - Live 0.4.0 → 0.4.4 Hudson upgrade proof: initial Keychain failure left the
   old service intact; fallback migration removed the inline token, preserved
   reciprocal access, and produced a redacted mode-0600 support receipt.
+- Disposable public-artifact lifecycle proof: install 0.4.4, preserve configured
+  state while rolling back to 0.4.3, recover forward to 0.4.4, then uninstall
+  the package with both installed binaries removed and state retained.
+- A 100-cycle local HTTP server/client soak covering attach, attributed turn,
+  transcript read, and leave. All message/event order, unique IDs, teammate
+  authorship, presence cleanup, and 200 audit records remained correct.
+- A deterministic one-host/two-teammate HTTP proof using two isolated simulated
+  tailnet identities. Per-invite visibility, simultaneous named presence,
+  same-task prompt collision, unaffected-peer continuity, and revocation pass;
+  a physical third-Mac receipt remains open.
 - Packaged 0.4 installs on two separate Macs.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
@@ -84,8 +94,9 @@ and prints the exact attach command.
 2. **Complete distribution.** The public GitHub source, versioned release, and
    Homebrew tap are available, and services launch through the stable installed
    CLI instead of a versioned package source or Node executable. Service
-   stop/remove/reinstall is live-verified. Complete automated rollback and full
-   package-uninstall verification.
+   stop/remove/reinstall is live-verified. Public release-asset rollback and
+   full package uninstall are disposable-prefix verified; a full disposable
+   Homebrew removal remains a distribution-specific follow-up.
 3. **Credential storage (closed in 0.4.4).** Peer bearer tokens live in macOS
    Keychain when available. Non-interactive hosts fall back to a mode-0600
    local store, config retains only a routed reference and non-secret metadata,
@@ -96,8 +107,9 @@ and prints the exact attach command.
 5. **Lifecycle reliability.** Certify laptop sleep/wake, Wi-Fi changes, tailnet
    relay changes, provider restarts, partial transcript writes, duplicate
    events, and service upgrades while a room is open.
-6. **Three-person concurrency.** Dogfood one host plus two teammates, including
-   presence, prompt collision, revocation, and per-invite sharing.
+6. **Three-person concurrency.** The real-server/two-client protocol proof now
+   covers presence, prompt collision, revocation, and per-invite sharing.
+   Complete the gate with one physical host plus two teammate devices.
 7. **Redacted diagnostics (closed in 0.4.3).** `mpai support-bundle` includes
    versions, service/provider health, aggregate task/audit counts, and
    categorized recent failures without tokens or transcript contents.
@@ -120,7 +132,8 @@ and prints the exact attach command.
 - Median install-to-first-shared-room time under five minutes for an existing
   tailnet user.
 - 100 attach/read/leave cycles with no leaked, duplicated, or reordered human
-  messages.
+  messages. This protocol gate is closed by the deterministic local soak;
+  physical network transitions remain part of lifecycle certification.
 - Zero access to an unshared session across list, direct read, presence, audit,
   and prompt tests.
 - Every remote prompt shows the correct human in both `mpai` and the provider's

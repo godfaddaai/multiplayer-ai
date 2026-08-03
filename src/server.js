@@ -148,7 +148,7 @@ export function createMpaiServer({
 
       const networkIdentity = await identityResolver(
         request.socket.remoteAddress,
-        { allowLoopback },
+        { allowLoopback, request },
       );
       const session = await configStore.authenticate(
         bearerToken(request),

@@ -64,5 +64,11 @@ host: the LaunchAgent disappeared, status reported stopped, reinstall restored
 the endpoint, and `mpai doctor` again reported matching-version Codex and Claude
 Code health. A separate Hudson 0.4.0 → 0.4.4 candidate upgrade failed safely
 when Keychain was unavailable, then succeeded through the protected fallback
-without losing reciprocal access. Full Homebrew package removal remains a
-disposable-install gate.
+without losing reciprocal access.
+
+On August 2, 2026, the exact public GitHub release assets were exercised in an
+isolated npm prefix: 0.4.4 installed, configured state was created, the package
+rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.
+Both installed binaries and the package directory were absent afterward while
+the state file remained. Full Homebrew package removal remains a separate
+distribution-specific disposable-install gate.

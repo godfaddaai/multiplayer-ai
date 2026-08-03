@@ -56,3 +56,24 @@ documents that messages interleave. The server prevents two simultaneous
 remote turns to the same task, but it cannot lock a separate local Claude Code
 process. Treat the live room and named presence as the human coordination
 signal before sending a turn into an actively running session.
+
+## Deterministic reliability soak
+
+`test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP
+server and `MpaiClient`. Each cycle lists and attaches to the shared Claude Code
+task, establishes named presence, reads the ordered transcript, sends a unique
+attributed turn, reads the resulting transcript, and leaves. The test rejects
+duplicated message IDs, reordered timestamps/events, incorrect teammate or
+provider authorship, stale presence, missing audit pairs, and duplicate request
+IDs. It runs as part of `npm test`.
+
+This closes the deterministic protocol soak. It does not substitute for the
+open physical lifecycle matrix: sleep/wake, Wi-Fi and DERP changes, provider
+restart, or one-host/two-teammate concurrency.
+
+`test/concurrency.test.js` adds a real HTTP one-host/two-client proof with two
+isolated simulated tailnet identities. It verifies different per-invite task
+views, two named people present in the same room, one accepted and one rejected
+overlapping prompt, revocation of only the intended teammate, and continued
+access for the unaffected teammate. This is the deterministic concurrency
+gate; the physical third-Mac receipt remains open.
