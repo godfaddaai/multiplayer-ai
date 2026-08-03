@@ -127,7 +127,10 @@ async function fixture(
 }
 
 test("viewer can list and read real tasks", async () => {
-  const { client } = await fixture("viewer");
+  const openedAt = Date.now() + 60_000;
+  const { client, configStore, invitation } = await fixture("viewer", {
+    now: () => openedAt,
+  });
   const identity = await client.whoami();
   assert.equal(identity.actor.name, "Maya");
   assert.equal(identity.role, "viewer");
@@ -135,6 +138,15 @@ test("viewer can list and read real tasks", async () => {
   assert.equal(threads.data[0].name, "Multiplayer build");
   const result = await client.readThread("thread_123456789");
   assert.equal(result.thread.id, "thread_123456789");
+  let storedInvite = (await configStore.load({ required: true })).invites.find(
+    (candidate) => candidate.id === invitation.id,
+  );
+  assert.equal(storedInvite.firstRoomAt, new Date(openedAt).toISOString());
+  await client.readThread("thread_123456789");
+  storedInvite = (await configStore.load({ required: true })).invites.find(
+    (candidate) => candidate.id === invitation.id,
+  );
+  assert.equal(storedInvite.firstRoomAt, new Date(openedAt).toISOString());
 });
 
 test("malformed and oversized bearer credentials are rejected", async () => {
@@ -161,7 +173,7 @@ test("viewer cannot prompt", async () => {
 });
 
 test("selected sharing hides session metadata and blocks direct access", async () => {
-  const { client, configStore } = await fixture("participant", {
+  const { client, configStore, invitation } = await fixture("participant", {
     share: "selected",
   });
   let tasks = await client.listTasks();
@@ -173,6 +185,12 @@ test("selected sharing hides session metadata and blocks direct access", async (
   await assert.rejects(
     client.prompt("thread_123456789", "Do work"),
     { code: "TASK_NOT_SHARED" },
+  );
+  assert.equal(
+    (await configStore.load({ required: true })).invites.find(
+      (candidate) => candidate.id === invitation.id,
+    ).firstRoomAt,
+    undefined,
   );
 
   await configStore.updateTaskAccess("Maya", {

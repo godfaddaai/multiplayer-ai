@@ -164,6 +164,23 @@ test("an invite can be created with one explicit session already shared", async 
   assert.equal(invitationCanAccess(invitation, "claude:shared-one"), true);
   assert.equal(invitationCanAccess(invitation, "claude:private"), false);
 
+  assert.equal(
+    await config.recordRoomOpened(invitation.id, {
+      at: "2026-08-03T14:20:00.000Z",
+    }),
+    "2026-08-03T14:20:00.000Z",
+  );
+  assert.equal(
+    await config.recordRoomOpened(invitation.id, {
+      at: "2026-08-03T14:25:00.000Z",
+    }),
+    "2026-08-03T14:20:00.000Z",
+  );
+  const recorded = (await config.load({ required: true })).invites.find(
+    (candidate) => candidate.id === invitation.id,
+  );
+  assert.equal(recorded.firstRoomAt, "2026-08-03T14:20:00.000Z");
+
   await assert.rejects(
     config.createInvite({
       name: "Taylor",

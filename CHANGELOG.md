@@ -2,6 +2,33 @@
 
 All notable project changes are documented here.
 
+## [0.4.17] - 2026-08-03
+
+Measure invite-to-first-room activation locally without shipping collaboration
+data.
+
+### Added
+
+- The first successful authorized shared-room read records one host-local
+  timestamp per invite. `mpai alpha-receipt` exposes only the elapsed minutes
+  and count, and `mpai cohort-report` uses the measured value automatically.
+- `--minutes-to-room` remains an explicit override for older installs and
+  externally measured runs.
+
+### Safety
+
+- Failed or unshared reads do not record activation; repeat reads cannot move
+  the first-room timestamp.
+- Receipts and reports exclude the timestamp, invitation, identity, task ID,
+  prompt, and transcript. Collection and submission remain off by default.
+
+### Proven
+
+- Regression coverage verifies successful, denied, and repeat room reads,
+  receipt minimization, measured report fallback, and manual override.
+- The packed 0.4.17 artifact has SHA-256
+  `4a6a9558a82346804ae906ec24c7dad0366c470f27bb68535bf1ee1ef1244c6f`.
+
 ## [0.4.16] - 2026-08-03
 
 Make public-alpha learning reviewable and explicitly consented from the CLI.

@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.16, August 3, 2026.
+Status: public source alpha 0.4.17, August 3, 2026.
 
 ## Product promise
 
@@ -37,7 +37,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz && mpai start
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.17/multiplayer-ai-0.4.17.tgz && mpai start
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -53,7 +53,7 @@ no LaunchAgent. The invite also prints the permanent Homebrew path for a
 teammate who intentionally wants to host sessions back. Older, empty, or
 multi-session invites still print the exact next command.
 
-## Implemented in 0.4.16
+## Implemented in 0.4.17
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -105,8 +105,10 @@ multi-session invites still print the exact next command.
   prompts, transcripts, identities, credentials, paths, task metadata, and
   network addresses.
 - `mpai alpha-receipt`: an explicit, local-only, mode-0600 cohort receipt with
-  activation elapsed minutes, collaboration counts, active days/weeks, and
-  provider reliability. It sends nothing and excludes prompts, transcripts,
+  locally measured invite-to-first-room elapsed minutes, collaboration counts,
+  active days/weeks, and provider reliability. A successful authorized room
+  read stores its first timestamp locally once; the receipt exposes only elapsed
+  minutes. It sends nothing and excludes prompts, transcripts,
   names, task identifiers, paths, credentials, network addresses, and event
   timestamps.
 - `mpai cohort-report`: a local preview of fixed-choice cohort metadata. It
@@ -299,5 +301,7 @@ multi-session invites still print the exact next command.
 
 No transcript contents should be collected for product analytics.
 The local `mpai alpha-receipt` covers the machine-verifiable subset without
-automatic collection. Install-to-room time and context-transfer value remain
-self-reported in the first-10-team cohort.
+automatic submission. Invite-to-first-room time is measured locally when the
+current release observes the first successful room read; older installs can
+still self-report it. Context-transfer value remains self-reported in the
+first-10-team cohort.

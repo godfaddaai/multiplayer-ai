@@ -322,6 +322,30 @@ export class ConfigStore {
     });
   }
 
+  async recordRoomOpened(inviteId, { at = new Date().toISOString() } = {}) {
+    return this.#mutate(async () => {
+      const config = await this.load({ required: true });
+      const invitation = config.invites.find((candidate) => candidate.id === inviteId);
+      if (!invitation) {
+        throw new MpaiError("Invitation was not found while recording first room", {
+          code: "INVITE_NOT_FOUND",
+          status: 404,
+        });
+      }
+      if (invitation.firstRoomAt) return invitation.firstRoomAt;
+      const timestamp = new Date(at);
+      if (!Number.isFinite(timestamp.getTime())) {
+        throw new MpaiError("First-room timestamp must be a valid date", {
+          code: "INVALID_ARGUMENT",
+          status: 400,
+        });
+      }
+      invitation.firstRoomAt = timestamp.toISOString();
+      await this.save(config);
+      return invitation.firstRoomAt;
+    });
+  }
+
   async #authenticateLocked(token, networkIdentity) {
     if (!token) {
       throw new MpaiError("Missing bearer token", {
