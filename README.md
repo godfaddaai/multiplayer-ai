@@ -89,7 +89,7 @@ mpai setup --name "Your Name"
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.10/multiplayer-ai-0.4.10.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.11/multiplayer-ai-0.4.11.tgz
 ~~~
 
 <code>mpai setup</code> configures identity, discovers available providers,
@@ -100,9 +100,8 @@ installs the background service, and verifies its reachable version.
 On Maya's Mac:
 
 ~~~bash
-mpai invite --name Alex --role participant --share selected
 mpai list
-mpai share SESSION_ID --with Alex
+mpai invite --name Alex --role participant --session SESSION_ID
 ~~~
 
 Send the two lines printed by <code>mpai invite</code> to Alex through a channel

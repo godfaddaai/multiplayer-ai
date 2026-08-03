@@ -1,6 +1,6 @@
 # Public alpha contract
 
-Status: public source alpha 0.4.10, August 3, 2026.
+Status: public source alpha 0.4.11, August 3, 2026.
 
 ## Product promise
 
@@ -37,7 +37,7 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.10/multiplayer-ai-0.4.10.tgz
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.11/multiplayer-ai-0.4.11.tgz
 ```
 
 Homebrew can refuse every formula before mpai runs when Apple's Command Line
@@ -49,7 +49,7 @@ creates their attributed local identity, stores the peer credential outside
 config, installs their host service on macOS, checks shared-session readiness,
 and prints the exact attach command.
 
-## Implemented in 0.4.10
+## Implemented in 0.4.11
 
 - Provider-neutral Codex and Claude Code discovery and transcript reading.
 - Exact Claude Code resume and a Codex App Server integration.
@@ -74,13 +74,15 @@ and prints the exact attach command.
   transcripts, presence, audit events, and prompt routes even when a caller
   knows an exact task ID.
 - Selected-session and intentional all-session sharing.
+- A session-scoped invite can atomically grant access to one explicit session,
+  removing the separate post-invite share command without broadening access.
 - One-command macOS service setup and provider-aware health checks.
 - One-command Homebrew installation and macOS Keychain-backed peer tokens,
   including automatic migration from the legacy inline format.
 - Fresh-install invite bootstrap and peer-specific attributed identity.
-- Setup's printed next step creates an explicit participant invite with
-  selected-session sharing, so the safest collaboration path does not
-  accidentally strand a new team in view-only mode.
+- Setup's printed next step lists sessions and creates an explicit participant
+  invite already scoped to the chosen session, so the safest collaboration
+  path is immediately useful without broadening access.
 - A stable service launcher path that survives package/runtime upgrades, plus
   a doctor check for the reachable host version.
 - `mpai support-bundle`: mode-0600, metadata-only diagnostics that exclude

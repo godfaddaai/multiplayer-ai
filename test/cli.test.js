@@ -3,7 +3,7 @@ import { execFile } from "node:child_process";
 import { createServer } from "node:http";
 import { promisify } from "node:util";
 import { afterEach, test } from "node:test";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -98,8 +98,67 @@ test("setup points a new host to a private participant invite", async () => {
   }
   assert.match(
     stdout,
-    /Next: invite a teammate who can collaborate with `mpai invite --name TEAMMATE --role participant --share selected`\./u,
+    /Next: choose a session with `mpai list`, then invite a teammate with `mpai invite --name TEAMMATE --role participant --session SESSION_ID`\./u,
   );
+});
+
+test("a host can create an invite already scoped to one explicit session", async () => {
+  const root = await mkdtemp(join(tmpdir(), "mpai-cli-session-invite-"));
+  roots.push(root);
+  const stateRoot = join(root, "state");
+  const claudeConfig = join(root, ".claude");
+  const projectDir = join(claudeConfig, "projects", "-tmp-mpai-project");
+  const sessionId = "11111111-2222-4333-8444-555555555555";
+  await mkdir(projectDir, { recursive: true });
+  await writeFile(
+    join(projectDir, `${sessionId}.jsonl`),
+    `${JSON.stringify({
+      type: "user",
+      sessionId,
+      uuid: "user-one",
+      timestamp: "2026-08-03T08:00:00.000Z",
+      cwd: "/tmp/mpai-project",
+      message: { role: "user", content: "Prepare the alpha." },
+    })}\n`,
+  );
+  const hostStore = new ConfigStore({ root: stateRoot });
+  await hostStore.setup({ name: "Alex", port: 7337 });
+
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [
+      join(projectRoot, "src", "cli.js"),
+      "invite",
+      "--name",
+      "Maya",
+      "--role",
+      "participant",
+      "--session",
+      sessionId.slice(-8),
+      "--address",
+      "127.0.0.1",
+      "--codex-bin",
+      "/mpai-test/missing-codex",
+    ],
+    {
+      cwd: projectRoot,
+      env: {
+        ...process.env,
+        MULTIPLAYER_AI_HOME: stateRoot,
+        CLAUDE_CONFIG_DIR: claudeConfig,
+      },
+    },
+  );
+
+  assert.match(stdout, /Send Maya these two lines:/u);
+  assert.match(stdout, new RegExp(`claude:${sessionId} is shared with Maya as part of this invite\\.`, "u"));
+  assert.doesNotMatch(stdout, /mpai share SESSION_ID/u);
+  const config = JSON.parse(await readFile(join(stateRoot, "config.json"), "utf8"));
+  assert.deepEqual(config.invites[0].taskAccess, {
+    mode: "selected",
+    taskIds: [`claude:${sessionId}`],
+    excludedTaskIds: [],
+  });
 });
 
 test("two isolated identities join and send an attributed prompt through the real server", async () => {
