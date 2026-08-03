@@ -348,3 +348,7 @@ tests are documented in [MARKET-THESIS.md](./docs/MARKET-THESIS.md).
 ## License
 
 [MIT](./LICENSE) © mpai contributors
+
+mpai is an independent open-source project. It is not affiliated with,
+endorsed by, or sponsored by Tailscale, OpenAI, or Anthropic. Product and
+company names belong to their respective owners.

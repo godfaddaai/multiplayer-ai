@@ -871,6 +871,7 @@ footer {
 }
 .footer-brand { color: var(--paper); }
 footer p { margin: 0; font-size: 10px; }
+footer p small { display: block; max-width: 440px; margin-top: 7px; color: #69717d; font: 400 8px/1.5 var(--mono); }
 footer > div { justify-self: end; display: flex; gap: 22px; font-size: 10px; }
 .copy-toast {
   position: fixed;
