@@ -57,6 +57,32 @@ remote turns to the same task, but it cannot lock a separate local Claude Code
 process. Treat the live room and named presence as the human coordination
 signal before sending a turn into an actively running session.
 
+## Live managed-Codex receipt — August 3, 2026
+
+The public 0.4.8 installations completed one direction of the physical
+two-Mac managed-Codex gate without touching an existing work session:
+
+1. Hudson's Mac started a dedicated temporary Codex task through the managed
+   app-server and seeded it with a harmless exact-response prompt.
+2. Hudson explicitly shared only that provider-qualified task with Reagan.
+3. Reagan used `mpai prompt @Hudson codex:...` from the other Mac over
+   Tailscale. The terminal streamed `Reagan → Codex`, the exact expected reply,
+   and a completed terminal state.
+4. Hudson's native persisted transcript contained the full
+   `[Multiplayer teammate: Reagan]` turn and response. The remote audit showed
+   matching `prompt.received` and `prompt.completed` records attributed to
+   Reagan and the Codex task.
+5. Hudson unshared the task. A subsequent exact-ID read from Reagan was denied
+   with `This AI session has not been shared with you`.
+6. Both public 0.4.8 services remained healthy; Hudson was running the Codex
+   `proxy` adapter after the service restart.
+
+The reciprocal Hudson → Reagan managed-Codex direction is still open. Reagan's
+managed daemon rejected the disposable proof turn with `CODEX_AUTH_REQUIRED`
+because its ChatGPT refresh token was stale, while mpai kept the host service
+healthy. Reauthenticate that daemon before attempting the reciprocal receipt;
+do not weaken the standalone prompting boundary to manufacture a pass.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP

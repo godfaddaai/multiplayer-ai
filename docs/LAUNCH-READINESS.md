@@ -7,8 +7,8 @@ when the criterion requires outside behavior.
 
 Current evidence score: **75/100** after the public 0.4.8 deployment,
 release-artifact lifecycle/100-cycle soak receipts, deterministic
-one-host/two-teammate concurrency proof, and the privacy-safe local alpha
-receipt on August 3, 2026.
+one-host/two-teammate concurrency proof, a live cross-Mac managed-Codex turn,
+and the privacy-safe local alpha receipt on August 3, 2026.
 
 ## 1. Core multiplayer usefulness — 18/20
 
@@ -17,8 +17,8 @@ receipt on August 3, 2026.
 | Provider-neutral Codex and Claude discovery/read | 4/4 | Automated adapter and hub suites; both adapters healthy on the live host |
 | Terminal room, switching, search, presence, reconnect | 4/4 | Terminal-room suite and real two-Mac session listing |
 | Claude exact-session attributed prompting | 4/4 | Reagan → Hudson two-Mac native Claude Code receipt |
-| Managed Codex attributed prompting | 3/4 | Managed transport and attribution suites pass; two-way cross-Mac native receipt remains open |
-| Durable human identity in room, provider transcript, and audit | 3/4 | Claude receipt plus server/audit suites; both-provider two-way certification remains open |
+| Managed Codex attributed prompting | 3/4 | Managed transport and attribution suites pass; Reagan → Hudson succeeded through the public 0.4.8 services with the attributed turn verified in Hudson's native transcript and audit; the reciprocal direction remains open |
+| Durable human identity in room, provider transcript, and audit | 3/4 | Claude receipt plus a live one-direction managed-Codex receipt and server/audit suites; both-provider two-way certification remains open |
 
 ## 2. Activation and distribution — 17/20
 
@@ -37,7 +37,7 @@ receipt on August 3, 2026.
 |---|---:|---|
 | Tailnet-only listener and Tailscale identity binding | 4/4 | Network and identity suites |
 | Private-by-default task access on list/read/presence/audit/prompt | 5/5 | Direct-access and route-wide authorization suite |
-| Viewer/participant roles, revocation, collision, idempotency | 3/3 | Server suite |
+| Viewer/participant roles, revocation, collision, idempotency | 3/3 | Server suite plus a live cross-Mac Codex unshare followed by a denied exact-ID read |
 | Peer secrets outside config | 3/3 | Keychain round trip, per-peer backend routing, mode-0600 fallback, migration, and config tests |
 | Redacted diagnostics | 2/2 | Real mode-0600 bundle plus sensitive-fixture exclusion suite |
 | Public policy surface | 2/3 | MIT, contribution, conduct, security reporting, privacy, and acceptable-use policies exist; the preliminary name screen found material adjacent MPAI standards use, so qualified trademark clearance remains open |
@@ -47,7 +47,7 @@ receipt on August 3, 2026.
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Automated behavioral and syntax suite | 4/4 | 41/41 tests and syntax checks |
-| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.8 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads |
+| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.8 public-asset installs, service restarts, matching doctor receipts, reciprocal session reads, and Hudson's standalone → managed-proxy restart with post-turn health |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex auth-error replay returned an actionable turn failure without changing the host PID; standalone-block and Claude permission behavior suites pass |
 | Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson 0.4.4 migration failed safely then recovered; both hosts upgraded through 0.4.8 and restarted with reciprocal access intact; other lifecycle transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
