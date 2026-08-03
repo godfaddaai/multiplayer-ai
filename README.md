@@ -11,6 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/godfaddaai/multiplayer-ai/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/godfaddaai/multiplayer-ai/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/godfaddaai/multiplayer-ai/actions/workflows/codeql.yml"><img alt="CodeQL status" src="https://github.com/godfaddaai/multiplayer-ai/actions/workflows/codeql.yml/badge.svg"></a>
   <a href="https://github.com/godfaddaai/multiplayer-ai/releases"><img alt="GitHub release" src="https://img.shields.io/github/v/release/godfaddaai/multiplayer-ai?include_prereleases&style=flat"></a>
   <a href="./LICENSE"><img alt="MIT license" src="https://img.shields.io/badge/license-MIT-0b0d12.svg"></a>
   <a href="https://godfaddaai.github.io/multiplayer-ai/"><img alt="View landing page" src="https://img.shields.io/badge/see_the_product-7687ff.svg"></a>

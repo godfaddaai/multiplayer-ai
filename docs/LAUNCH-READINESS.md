@@ -9,7 +9,8 @@ Current evidence score: **76/100** after the public 0.4.9 deployment,
 release-artifact lifecycle/100-cycle soak receipts, deterministic
 one-host/two-teammate concurrency proof, a live cross-Mac managed-Codex turn,
 managed-provider restart recovery, and the privacy-safe local alpha receipt on
-August 3, 2026.
+August 3, 2026. GitHub CodeQL now runs on every main-branch push and weekly;
+the first extended scan fixed its one genuine finding and has zero open alerts.
 
 ## 1. Core multiplayer usefulness — 18/20
 
@@ -47,7 +48,7 @@ August 3, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Automated behavioral and syntax suite | 4/4 | 43/43 tests and syntax checks |
+| Automated behavioral and syntax suite | 4/4 | 44/44 tests and syntax checks; CodeQL extended scan runs on pushes, pull requests, and weekly with zero open alerts after its bearer-parser finding was fixed |
 | Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.9 public-asset installs, service restarts, matching doctor receipts, reciprocal session reads, and Hudson's managed-provider restart with post-turn health |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex auth-error replay returned an actionable turn failure without changing the host PID; standalone-block and Claude permission behavior suites pass |
 | Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 2/5 | On public 0.4.9, Hudson's managed Codex daemon stopped while mpai PID 38042 stayed up and reads fell back safely; after the daemon returned, Reagan's next named prompt promoted the same service back to proxy and completed without reinstall or rejoin. Sleep/wake, Wi-Fi, and relay transitions remain open |
