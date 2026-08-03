@@ -130,12 +130,14 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.4
+## What works in 0.4.5
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
 - A live terminal room with named participants
 - Exact session switching, search, and reconnect notices
+- A ten-second peer connection deadline with actionable wake, Tailscale, and
+  host-service recovery instructions
 - Attributed remote prompts in supported provider modes
 - Viewer and participant roles
 - Private-by-default session sharing and invite revocation

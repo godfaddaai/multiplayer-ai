@@ -2,6 +2,26 @@
 
 All notable project changes are documented here.
 
+## [0.4.5] - 2026-08-02
+
+Fast, actionable teammate-offline recovery.
+
+### Fixed
+
+- Peer connection and response-header attempts now stop after ten seconds
+  instead of leaving a first-time user at an apparently frozen command.
+- Connection failures and timeouts now become one privacy-safe
+  `PEER_UNREACHABLE` error with exact checks for Mac wake state, Tailscale, and
+  the mpai host service.
+- The connection deadline ends when a prompt stream is established, so a
+  legitimate long-running Claude Code or Codex response is not interrupted.
+
+### Proven
+
+- Dedicated tests cover refused connections, a peer that never responds, the
+  recovery message, removal of network/credential details, and a valid prompt
+  stream that outlives the connection deadline.
+
 ## [0.4.4] - 2026-08-02
 
 Non-interactive host credential repair.
