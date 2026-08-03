@@ -73,7 +73,7 @@
           <p class="hero-deck">Remote control lets you continue your own AI work. mpai lets a named teammate enter the exact Codex or Claude Code conversation already in motion—without changing tools. One host install. One teammate paste.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#quickstart">
-              <span>Install mpai</span><b aria-hidden="true">↓</b>
+              <span>Start a 5-minute room</span><b aria-hidden="true">↓</b>
             </a>
             <a class="button button-quiet" href="https://github.com/godfaddaai/multiplayer-ai/issues/7"><span>Join the first 10 teams</span><b aria-hidden="true">↗</b></a>
           </div>
@@ -184,15 +184,14 @@
         <div class="section-kicker">00 / QUICKSTART</div>
         <div class="quickstart-copy">
           <h2>Two Macs.<br>One invite.</h2>
-          <p>Install mpai once on the host. One guided command verifies the host, lets them choose one existing session, and creates a named invite scoped only to it. A teammate with Node.js 20+ pastes the printed command and enters immediately—no global install, separate account, or new IDE.</p>
+          <p>Copy one command on the host. It installs mpai, verifies the machine, asks for both names, lets the host choose one existing session, and creates an invite scoped only to it. A teammate with Node.js 20+ pastes the printed command and enters immediately—no global install, separate account, or new IDE.</p>
         </div>
         <div class="command-stack">
-          <div class="command-row"><span>1</span><code>brew install godfaddaai/tap/mpai</code><button type="button" data-copy="brew install godfaddaai/tap/mpai" aria-label="Copy install command">copy</button></div>
-          <div class="command-row alternative"><span>or</span><code>npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz</code><button type="button" data-copy="npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz" aria-label="Copy exact Node.js fallback install command">copy</button></div>
-          <div class="command-row"><span>2</span><code>mpai start --name "Maya" --with "Alex"</code><button type="button" data-copy='mpai start --name "Maya" --with "Alex"' aria-label="Copy guided host command">copy</button></div>
-          <div class="command-row"><span>3</span><code>choose one session — teammate pastes the printed npx command</code></div>
+          <div class="command-row"><span>1</span><code>brew install godfaddaai/tap/mpai &amp;&amp; mpai start</code><button type="button" data-copy="brew install godfaddaai/tap/mpai &amp;&amp; mpai start" aria-label="Copy one-command host setup">copy</button></div>
+          <div class="command-row alternative"><span>or</span><code>npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz &amp;&amp; mpai start</code><button type="button" data-copy="npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.16/multiplayer-ai-0.4.16.tgz &amp;&amp; mpai start" aria-label="Copy exact Node.js fallback host setup">copy</button></div>
+          <div class="command-row"><span>2</span><code>teammate pastes the private npx command printed by mpai</code></div>
         </div>
-        <p class="requirements">Public alpha · macOS · Tailscale · Homebrew on the host · Node.js 20+ for the no-global-install guest · Codex and/or Claude Code</p>
+        <p class="requirements">Public alpha · macOS · Tailscale · Homebrew or Node.js 20+ on the host · Node.js 20+ for the no-global-install guest · Codex and/or Claude Code</p>
       </section>
 
       <section class="manifesto section" id="how">
@@ -318,7 +317,7 @@
           <a class="button button-primary light" href="https://github.com/godfaddaai/multiplayer-ai" data-github-link><span>Star on GitHub</span><b aria-hidden="true">↗</b></a>
           <a class="button button-outline" href="https://github.com/godfaddaai/multiplayer-ai/issues/7"><span>Join the first 10 teams</span><b aria-hidden="true">＋</b></a>
         </div>
-        <code class="final-command">brew install godfaddaai/tap/mpai</code>
+        <code class="final-command">brew install godfaddaai/tap/mpai &amp;&amp; mpai start</code>
         <a class="product-hunt-badge" href="https://www.producthunt.com/products/mpai?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-mpai" aria-label="Find mpai on Product Hunt">
           <img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1213234&amp;theme=dark" alt="mpai — Make existing Codex and Claude Code sessions multiplayer on Product Hunt" width="250" height="54">
         </a>

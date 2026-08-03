@@ -33,6 +33,8 @@ test("release-facing metadata stays pinned to the runtime version", async () => 
   assert.match(formula, /sha256 "[a-f0-9]{64}"/u);
   assert.ok(readme.includes(releasePath));
   assert.ok(site.includes(releasePath));
+  assert.ok(readme.includes("brew install godfaddaai/tap/mpai && mpai start"));
+  assert.ok(site.includes("brew install godfaddaai/tap/mpai &amp;&amp; mpai start"));
   assert.ok(site.includes(`alpha ${VERSION}`));
   assert.ok(publicAlpha.includes(`Status: public source alpha ${VERSION}`));
   assert.ok(publicAlpha.includes(releasePath));
