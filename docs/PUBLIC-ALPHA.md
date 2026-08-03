@@ -22,20 +22,19 @@ warehouse.
 
 ## Installation
 
-Install directly from GitHub, then let one command finish the machine setup:
+Install with Homebrew, then let one command finish the machine setup:
 
 ```bash
-npm install --global github:godfaddaai/multiplayer-ai
+brew install godfaddaai/tap/mpai
 mpai setup --name Alex
 ```
 
 It must configure identity, find the tailnet address, install the always-on
 service, discover available providers, and print one clear next action.
-Homebrew distribution remains the target for the next release:
+The GitHub install remains available for machines without Homebrew:
 
 ```bash
-brew install mpai/tap/mpai
-mpai setup --name Alex
+npm install --global github:godfaddaai/multiplayer-ai
 ```
 
 ## Implemented in 0.4.1
@@ -64,9 +63,9 @@ mpai setup --name Alex
    sessions are view-only by default. We need a documented managed-daemon path
    for each supported surface rather than imply every active session is safely
    writable.
-2. **Complete distribution.** The public GitHub source and versioned release are
-   available. Add a Homebrew tap, upgrade command, rollback path, and uninstall
-   verification.
+2. **Complete distribution.** The public GitHub source, versioned release, and
+   Homebrew tap are available. Add versioned upgrade automation, a rollback
+   path, and uninstall verification.
 3. **Credential storage.** Move peer bearer tokens from a mode-0600 JSON file to
    macOS Keychain; keep only references and non-secret metadata in config.
 4. **Two-way provider certification.** Run harmless attributed prompt receipts

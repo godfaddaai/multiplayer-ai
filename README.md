@@ -30,9 +30,11 @@
 
 ## The idea
 
-AI coding tools are still mostly single-player. One person can be forty turns
-deep in a useful Codex or Claude Code conversation while everyone else gets a
-summary, a screen share, or a finished pull request.
+Remote control is arriving for AI coding, but it is built primarily for one
+person continuing their own work across devices. Teams still have a different
+problem: one person can be forty turns deep in a useful Codex or Claude Code
+conversation while everyone else gets a summary, a screen share, or a finished
+pull request.
 
 mpai adds the missing team layer:
 
@@ -63,15 +65,21 @@ context and can add a turn with their own name attached.
 ### Requirements
 
 - macOS
-- Node.js 20+
+- Homebrew, or Node.js 20+ for the fallback install
 - Tailscale connected on both Macs
 - An authenticated current <code>codex</code> and/or <code>claude</code> CLI
 
 ### 1. Install on both Macs
 
 ~~~bash
-npm install --global github:godfaddaai/multiplayer-ai
+brew install godfaddaai/tap/mpai
 mpai setup --name "Your Name"
+~~~
+
+Without Homebrew:
+
+~~~bash
+npm install --global github:godfaddaai/multiplayer-ai
 ~~~
 
 <code>mpai setup</code> configures identity, discovers available providers,
@@ -246,7 +254,8 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
 ## Roadmap
 
 - [ ] macOS Keychain-backed peer credentials
-- [ ] Homebrew tap, upgrade, rollback, and uninstall
+- [x] One-command Homebrew tap install
+- [ ] Versioned upgrade, rollback, and uninstall verification
 - [ ] Safe attachment across supported active Codex surfaces
 - [ ] Redacted <code>mpai support-bundle</code>
 - [ ] Three-person concurrency certification
