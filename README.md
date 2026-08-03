@@ -33,6 +33,11 @@
 > the [current alpha boundary](./docs/PUBLIC-ALPHA.md) before using it with
 > sensitive work.
 
+> [!TIP]
+> **Have two Macs, Tailscale, and a real teammate?** Run the
+> [five-minute first-room pilot](https://github.com/godfaddaai/multiplayer-ai/issues/7).
+> We are measuring completed rooms and week-later return—not launch votes.
+
 ## The idea
 
 Remote control is arriving for AI coding, but it is built primarily for one
