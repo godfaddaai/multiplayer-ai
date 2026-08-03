@@ -23,6 +23,7 @@ async function fixture() {
     hostIdentity: { id: "maya-id", name: "Maya" },
   });
   const presence = [];
+  const transcriptReads = [];
   const client = {
     async whoami() {
       return {
@@ -43,7 +44,8 @@ async function fixture() {
         }],
       };
     },
-    async readTask(taskId) {
+    async readTask(taskId, options) {
+      transcriptReads.push({ taskId, options });
       return {
         task: {
           id: taskId,
@@ -80,7 +82,7 @@ async function fixture() {
     () => new Promise((resolve) => server.close(resolve)),
     () => rm(root, { recursive: true, force: true }),
   );
-  return { baseUrl };
+  return { baseUrl, transcriptReads };
 }
 
 function headers() {
@@ -107,7 +109,7 @@ test("dashboard serves a CSP-protected app without exposing peer credentials", a
 });
 
 test("dashboard proxies provider-neutral tasks, presence, and prompt streams", async () => {
-  const { baseUrl } = await fixture();
+  const { baseUrl, transcriptReads } = await fixture();
   const peers = await (await fetch(`${baseUrl}/api/peers`, { headers: headers() })).json();
   assert.equal(peers.data[0].online, true);
   assert.equal(peers.data[0].role, "participant");
@@ -122,6 +124,7 @@ test("dashboard proxies provider-neutral tasks, presence, and prompt streams", a
     await fetch(`${baseUrl}/api/peers/maya-id/tasks/${encodeURIComponent(taskId)}`, { headers: headers() })
   ).json();
   assert.equal(task.task.messages[0].author, "Claude");
+  assert.deepEqual(transcriptReads, [{ taskId, options: { tail: 100 } }]);
 
   const heartbeat = await fetch(`${baseUrl}/api/peers/maya-id/presence`, {
     method: "POST",

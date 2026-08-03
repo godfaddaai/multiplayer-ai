@@ -88,7 +88,7 @@ brew install godfaddaai/tap/mpai && mpai start
 Without Homebrew:
 
 ~~~bash
-npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.18/multiplayer-ai-0.4.18.tgz && mpai start
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.19/multiplayer-ai-0.4.19.tgz && mpai start
 ~~~
 
 The guided <code>mpai start</code> flow asks for both names, configures identity,
@@ -115,7 +115,7 @@ issue, terminal recording, or public chat. On the teammate's Mac with Node.js
 20+, that one paste opens the room without a global install or setup step:
 
 ~~~bash
-npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.18/multiplayer-ai-0.4.18.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
+npx --yes https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.19/multiplayer-ai-0.4.19.tgz join 'mpai://100.x.y.z:7337/join?token=...' --no-service --attach
 ~~~
 
 The invite establishes Alex's attributed identity, stores the peer credential
@@ -142,10 +142,12 @@ mpai unshare all --with Alex
 mpai share SESSION_ID --with Alex
 ~~~
 
-## What works in 0.4.18
+## What works in 0.4.19
 
 - One task and event model across Codex and Claude Code
 - Native session discovery and transcript reading
+- Fast bounded reads for very large Codex histories without sharing tool or
+  Codex-internal context
 - A live terminal room with named participants
 - Exact session switching, search, and reconnect notices
 - A ten-second peer connection deadline with actionable wake, Tailscale, and

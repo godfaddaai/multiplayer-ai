@@ -6,7 +6,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
 import { WebSocketServer } from "ws";
-import { CodexClient } from "../src/codex.js";
+import {
+  CodexClient,
+  DEFAULT_CODEX_MAX_PAYLOAD_BYTES,
+} from "../src/codex.js";
 
 test("managed mode speaks WebSocket JSON-RPC over a Unix socket", async () => {
   const root = await mkdtemp(join(tmpdir(), "mpai-codex-managed-"));
@@ -41,6 +44,8 @@ test("managed mode speaks WebSocket JSON-RPC over a Unix socket", async () => {
     await client.start();
     const result = await client.listThreads({ limit: 1 });
     assert.equal(client.transport, "proxy");
+    assert.equal(client.ws._receiver._maxPayload, DEFAULT_CODEX_MAX_PAYLOAD_BYTES);
+    assert.equal(DEFAULT_CODEX_MAX_PAYLOAD_BYTES, 512 * 1024 * 1024);
     assert.deepEqual(result.data, []);
     assert.equal(extensionsHeader, undefined);
   } finally {

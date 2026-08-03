@@ -10,6 +10,7 @@ import { MpaiError } from "./errors.js";
 import { VERSION } from "./version.js";
 
 const SOURCE_KINDS = ["cli", "vscode", "appServer", "exec", "unknown"];
+export const DEFAULT_CODEX_MAX_PAYLOAD_BYTES = 512 * 1024 * 1024;
 
 function textFromContent(content) {
   if (typeof content === "string") return content;
@@ -103,6 +104,7 @@ export class CodexClient extends EventEmitter {
     cwd = process.cwd(),
     requestTimeoutMs = 30_000,
     turnTimeoutMs = 30 * 60_000,
+    maxPayloadBytes = DEFAULT_CODEX_MAX_PAYLOAD_BYTES,
     managedSocketPath = join(
       homedir(),
       ".codex",
@@ -116,6 +118,7 @@ export class CodexClient extends EventEmitter {
     this.cwd = cwd;
     this.requestTimeoutMs = requestTimeoutMs;
     this.turnTimeoutMs = turnTimeoutMs;
+    this.maxPayloadBytes = maxPayloadBytes;
     this.managedSocketPath = managedSocketPath;
     this.proc = null;
     this.ws = null;
@@ -236,6 +239,7 @@ export class CodexClient extends EventEmitter {
     const socketPath = this.managedSocketPath;
     const ws = new WebSocket(`ws+unix://${socketPath}:/`, {
       perMessageDeflate: false,
+      maxPayload: this.maxPayloadBytes,
     });
     this.ws = ws;
     await new Promise((resolve, reject) => {
@@ -414,11 +418,11 @@ export class CodexClient extends EventEmitter {
     return result;
   }
 
-  async readThread(threadId) {
+  async readThread(threadId, { includeTurns = true } = {}) {
     await this.start();
     return this.request("thread/read", {
       threadId,
-      includeTurns: true,
+      includeTurns,
     });
   }
 
