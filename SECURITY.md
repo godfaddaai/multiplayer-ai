@@ -59,3 +59,7 @@ The alpha is not yet security-certified for large organizations, regulated
 workloads, untrusted collaborators, shared OS accounts, hostile local users, or
 public-internet exposure. Do not bypass Tailscale or bind the collaboration
 service to a public interface.
+
+See the [privacy notice](./PRIVACY.md) and
+[acceptable use policy](./ACCEPTABLE_USE.md) for the current data-handling and
+authorization boundaries.

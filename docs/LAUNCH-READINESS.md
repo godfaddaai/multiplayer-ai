@@ -5,7 +5,8 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **66/100** after the 0.4.4 candidate on August 2, 2026.
+Current evidence score: **67/100** after the public 0.4.4 deployment on August
+2, 2026.
 
 ## 1. Core multiplayer usefulness — 18/20
 
@@ -21,8 +22,8 @@ Current evidence score: **66/100** after the 0.4.4 candidate on August 2, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.3 asset hash and isolated install verified; Homebrew test-bot installs pass on clean macOS 26 and Linux |
-| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version doctor receipts on the live Reagan host and Hudson 0.4.4 candidate host |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.4 asset hash and isolated install verified; Homebrew test-bot installs pass on clean macOS 26 and Linux |
+| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version doctor receipts on the live Reagan host and Hudson's public 0.4.4 host |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join and room paths name the host command required |
 | Upgrade, rollback, and uninstall path | 2/3 | Stable launcher, documented procedures, and live service uninstall/reinstall receipt; release rollback and full package uninstall remain open |
@@ -37,14 +38,14 @@ Current evidence score: **66/100** after the 0.4.4 candidate on August 2, 2026.
 | Viewer/participant roles, revocation, collision, idempotency | 3/3 | Server suite |
 | Peer secrets outside config | 3/3 | Keychain round trip, per-peer backend routing, mode-0600 fallback, migration, and config tests |
 | Redacted diagnostics | 2/2 | Real mode-0600 bundle plus sensitive-fixture exclusion suite |
-| Public policy surface | 1/3 | MIT, contribution, conduct, security reporting exist; privacy/AUP and trademark review remain open |
+| Public policy surface | 2/3 | MIT, contribution, conduct, security reporting, privacy, and acceptable-use policies exist; trademark review remains open |
 
 ## 4. Reliability and lifecycle — 9/20
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Automated behavioral and syntax suite | 4/4 | 33/33 tests and syntax checks |
-| Real service restart and matching-version health | 2/2 | Live Reagan restart and Hudson upgrade receipts |
+| Real service restart and matching-version health | 2/2 | Live Reagan restart and Hudson public 0.4.4 upgrade receipts |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex, standalone-block, and Claude permission behavior suites |
 | Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson upgrade failed safely, then migrated and restarted with reciprocal access intact; other lifecycle transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 0/4 | Not run |
@@ -65,7 +66,7 @@ Current evidence score: **66/100** after the 0.4.4 candidate on August 2, 2026.
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.3 installs and tests on clean macOS and Linux.
+1. **Closed:** Homebrew 0.4.4 installs and tests on clean macOS and Linux.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.
 3. Ten people who did not build mpai install it; median existing-tailnet time

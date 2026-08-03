@@ -102,8 +102,8 @@ and prints the exact attach command.
    versions, service/provider health, aggregate task/audit counts, and
    categorized recent failures without tokens or transcript contents.
 8. **Release identity and policy.** The public name, repository, MIT license,
-   contribution policy, and responsible disclosure path exist. Complete a
-   trademark check, privacy notice, and acceptable-use policy before a hosted
+   contribution policy, responsible disclosure path, privacy notice, and
+   acceptable-use policy exist. Complete a trademark check before a hosted
    organization control plane.
 
 ### P1: should close

@@ -245,7 +245,9 @@ non-interactive macOS session that cannot access Keychain falls back to a
 mode-0600 local credential file and records that backend in the peer reference.
 Reads follow that per-peer reference. The local config never stores the token
 itself; existing inline alpha tokens migrate on first load. Read
-[SECURITY.md](./SECURITY.md) for threat boundaries and reporting.
+[SECURITY.md](./SECURITY.md) for threat boundaries and reporting. The
+[privacy notice](./PRIVACY.md) explains local data handling, and the
+[acceptable use policy](./ACCEPTABLE_USE.md) states the authorization boundary.
 
 ## Alpha limits
 
