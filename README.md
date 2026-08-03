@@ -112,6 +112,10 @@ The invite establishes Alex's attributed identity, stores the peer credential
 outside config, makes Alex's Mac ready to host in return, checks for shared
 sessions, and prints the exact next command.
 
+Testing this with a real teammate? Join the
+[first 10-team public-alpha cohort](https://github.com/godfaddaai/multiplayer-ai/issues/7)
+and report only privacy-safe timing and outcome metadata.
+
 For a trusted cofounder relationship where both people intentionally share all
 present and future sessions:
 
