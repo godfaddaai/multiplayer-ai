@@ -92,6 +92,11 @@ expected response. No mpai reinstall or peer rejoin occurred. The native
 transcript and audit contained the matching Reagan turn, and the task was
 unshared and denied again after verification.
 
+The public 0.4.10 security release then upgraded both Macs and restarted both
+services on matching 0.4.10 endpoints. Reagan could still list Hudson's shared
+sessions, and Hudson could still list Reagan's, without rejoining or changing
+the existing share configuration.
+
 ## Deterministic reliability soak
 
 `test/soak.test.js` runs 100 complete protocol cycles through a real local HTTP

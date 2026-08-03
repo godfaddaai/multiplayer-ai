@@ -21,6 +21,14 @@ part of every release.
   Node 22.
 - CodeQL extended security analysis runs on pushes, pull requests, and weekly;
   its high-severity parser finding is fixed and zero alerts remain open.
+- The exact public release asset matched SHA-256
+  `4a0ddb1fbe72175272cd0beabb7ac7247473ac06fb49fe1be5d42eedce57a79c`,
+  installed into an isolated prefix, and reported 0.4.10 from both binaries.
+- Both live Macs upgraded to matching 0.4.10 services with reciprocal session
+  reads intact.
+- Homebrew lifecycle run 30797200745 installed the exact formula, executed
+  0.4.10, passed its formula test, uninstalled it, and verified both CLI links
+  were absent on clean macOS 26 and Linux.
 
 ## [0.4.9] - 2026-08-03
 

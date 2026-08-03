@@ -5,7 +5,7 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **76/100** after the public 0.4.9 deployment,
+Current evidence score: **76/100** after the public 0.4.10 deployment,
 release-artifact lifecycle/100-cycle soak receipts, deterministic
 one-host/two-teammate concurrency proof, a live cross-Mac managed-Codex turn,
 managed-provider restart recovery, and the privacy-safe local alpha receipt on
@@ -26,8 +26,8 @@ the first extended scan fixed its one genuine finding and has zero open alerts.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.9 public asset hash plus isolated install verified; CI run 30794006889 proves the Node 22 Homebrew formula installs, executes 0.4.9, tests, uninstalls, and leaves both CLI links absent on clean macOS 26 and Linux |
-| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.9 doctor receipts on the live Reagan and Hudson hosts; setup prints an explicit participant invite with selected-session sharing |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.10 public asset hash plus isolated install verified; CI run 30797200745 proves the Node 22 Homebrew formula installs, executes 0.4.10, tests, uninstalls, and leaves both CLI links absent on clean macOS 26 and Linux |
+| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.10 doctor receipts on the live Reagan and Hudson hosts; setup prints an explicit participant invite with selected-session sharing |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join names the share command; connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps while established prompt streams remain open |
 | Upgrade, rollback, and uninstall path | 3/3 | Stable launcher and live service reinstall receipt plus a disposable public-asset 0.4.4 → 0.4.3 → 0.4.4 rollback and full package uninstall with state preserved |
@@ -49,7 +49,7 @@ the first extended scan fixed its one genuine finding and has zero open alerts.
 | Criterion | Points | Current evidence |
 |---|---:|---|
 | Automated behavioral and syntax suite | 4/4 | 44/44 tests and syntax checks; CodeQL extended scan runs on pushes, pull requests, and weekly with zero open alerts after its bearer-parser finding was fixed |
-| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.9 public-asset installs, service restarts, matching doctor receipts, reciprocal session reads, and Hudson's managed-provider restart with post-turn health |
+| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.10 public-asset installs, service restarts, matching doctor receipts, reciprocal session reads, and Hudson's managed-provider restart with post-turn health |
 | Provider failures remain narrow and fail closed | 2/2 | Managed Codex auth-error replay returned an actionable turn failure without changing the host PID; standalone-block and Claude permission behavior suites pass |
 | Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 2/5 | On public 0.4.9, Hudson's managed Codex daemon stopped while mpai PID 38042 stayed up and reads fell back safely; after the daemon returned, Reagan's next named prompt promoted the same service back to proxy and completed without reinstall or rejoin. Sleep/wake, Wi-Fi, and relay transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
@@ -70,7 +70,7 @@ the first extended scan fixed its one genuine finding and has zero open alerts.
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.9 installs, executes, tests, and uninstalls on clean
+1. **Closed:** Homebrew 0.4.10 installs, executes, tests, and uninstalls on clean
    macOS and Linux, with both CLI links absent afterward.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.

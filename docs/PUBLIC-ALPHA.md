@@ -112,6 +112,9 @@ and prints the exact attach command.
 - Live 0.4.8 → 0.4.9 public-asset upgrades on Reagan and Hudson: both services
   restarted with matching 0.4.9 doctor receipts and reciprocal session reads
   remained intact.
+- Live 0.4.9 → 0.4.10 public-asset upgrades on Reagan and Hudson: both services
+  restarted with matching 0.4.10 doctor receipts and reciprocal session reads
+  remained intact.
 - A disposable Hudson → Reagan managed-Codex prompt reproduced an expired-token
   failure after the attributed turn reached the native transcript. On 0.4.8,
   the replay returned the actionable auth error while the host PID and both
@@ -122,9 +125,12 @@ and prints the exact attach command.
 - The exact public 0.4.9 release asset matched SHA-256
   `83c230402a7a1d10defee9f1a869dd1141ba569278cca201979b408a70847fb5`,
   installed into an isolated prefix, and reported 0.4.9 from both binaries.
-- Clean macOS 26 and Linux runners installed the exact 0.4.9 Homebrew formula,
-  executed 0.4.9, passed its formula test, uninstalled it, and verified both
-  CLI links were absent afterward in run 30794006889.
+- The exact public 0.4.10 release asset matched SHA-256
+  `4a0ddb1fbe72175272cd0beabb7ac7247473ac06fb49fe1be5d42eedce57a79c`,
+  installed into an isolated prefix, and reported 0.4.10 from both binaries.
+- Clean macOS 26 and Linux runners installed the exact 0.4.10 Homebrew formula,
+  executed 0.4.10, passed its formula test, uninstalled it, and verified both
+  CLI links were absent afterward in run 30797200745.
 - On the public 0.4.9 artifact, Hudson's managed Codex daemon stopped while the
   mpai service PID stayed unchanged and shared reads fell back safely. After
   the daemon returned, Reagan's next named remote prompt promoted that same
@@ -139,7 +145,7 @@ and prints the exact attach command.
   tailnet identities. Per-invite visibility, simultaneous named presence,
   same-task prompt collision, unaffected-peer continuity, and revocation pass;
   a physical third-Mac receipt remains open.
-- Packaged 0.4.9 installs on two separate Macs with matching live services.
+- Packaged 0.4.10 installs on two separate Macs with matching live services.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
   attributed Reagan prompt from one Mac into Hudson's existing session.
@@ -152,7 +158,7 @@ and prints the exact attach command.
    sessions are view-only by default. We need a documented managed-daemon path
    for each supported surface rather than imply every active session is safely
    writable.
-2. **Complete distribution (current 0.4.9 proof).** The public GitHub source, versioned release, and
+2. **Complete distribution (current 0.4.10 proof).** The public GitHub source, versioned release, and
    Homebrew tap are available, and services launch through the stable installed
    CLI instead of a versioned package source or Node executable. Service
    stop/remove/reinstall is live-verified. Public release-asset rollback and

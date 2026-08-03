@@ -1,8 +1,8 @@
 class Mpai < Formula
   desc "Make Codex and Claude Code sessions multiplayer from the terminal"
   homepage "https://godfaddaai.github.io/multiplayer-ai/"
-  url "https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.6/multiplayer-ai-0.4.6.tgz"
-  sha256 "b8d7e561b4fd64db7a01b597e8fa42fbdeb24346b520b6627da813da99175b34"
+  url "https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.10/multiplayer-ai-0.4.10.tgz"
+  sha256 "4a0ddb1fbe72175272cd0beabb7ac7247473ac06fb49fe1be5d42eedce57a79c"
   license "MIT"
 
   livecheck do
@@ -10,10 +10,10 @@ class Mpai < Formula
     strategy :github_latest
   end
 
-  depends_on "node@20"
+  depends_on "node@22"
 
   def install
-    system formula_opt_bin("node@20")/"npm", "install", *std_npm_args
+    system formula_opt_bin("node@22")/"npm", "install", *std_npm_args
     bin.install_symlink libexec.glob("bin/*")
   end
 
