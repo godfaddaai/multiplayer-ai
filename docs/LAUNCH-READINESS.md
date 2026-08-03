@@ -5,7 +5,7 @@ support real teams. It is not a probability of virality or a valuation claim.
 No point is awarded from intent, documentation alone, or founder-only opinion
 when the criterion requires outside behavior.
 
-Current evidence score: **75/100** after the public 0.4.7 deployment,
+Current evidence score: **75/100** after the public 0.4.8 deployment,
 release-artifact lifecycle/100-cycle soak receipts, deterministic
 one-host/two-teammate concurrency proof, and the privacy-safe local alpha
 receipt on August 3, 2026.
@@ -24,8 +24,8 @@ receipt on August 3, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.7 public asset hash plus isolated install verified; Homebrew test-bot installs the formula on clean macOS 26 and Linux |
-| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.7 doctor receipts on the live Reagan and Hudson hosts; setup now prints an explicit participant invite with selected-session sharing |
+| Versioned GitHub release and one-command Homebrew install | 4/4 | 0.4.8 public asset hash plus isolated install verified; Homebrew test-bot installs the formula on clean macOS 26 and Linux |
+| Host setup installs and verifies a reachable matching service | 4/4 | Matching-version 0.4.8 doctor receipts on the live Reagan and Hudson hosts; setup prints an explicit participant invite with selected-session sharing |
 | Fresh teammate can paste an invite without prior setup | 4/4 | Isolated CLI test reaches ready shared room with credential outside config |
 | Empty-share and offline recovery print exact next action | 2/2 | Join names the share command; connection/header attempts stop after ten seconds with privacy-safe wake, Tailscale, and host-service recovery steps while established prompt streams remain open |
 | Upgrade, rollback, and uninstall path | 3/3 | Stable launcher and live service reinstall receipt plus a disposable public-asset 0.4.4 → 0.4.3 → 0.4.4 rollback and full package uninstall with state preserved |
@@ -46,10 +46,10 @@ receipt on August 3, 2026.
 
 | Criterion | Points | Current evidence |
 |---|---:|---|
-| Automated behavioral and syntax suite | 4/4 | 40/40 tests and syntax checks |
-| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.7 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads |
-| Provider failures remain narrow and fail closed | 2/2 | Managed Codex, standalone-block, and Claude permission behavior suites |
-| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson 0.4.4 migration failed safely then recovered; both hosts upgraded through 0.4.7 and restarted with reciprocal access intact; other lifecycle transitions remain open |
+| Automated behavioral and syntax suite | 4/4 | 41/41 tests and syntax checks |
+| Real service restart and matching-version health | 2/2 | Live Reagan and Hudson 0.4.8 public-asset installs, service restarts, matching doctor receipts, and reciprocal session reads |
+| Provider failures remain narrow and fail closed | 2/2 | Managed Codex auth-error replay returned an actionable turn failure without changing the host PID; standalone-block and Claude permission behavior suites pass |
+| Upgrade, sleep/wake, Wi-Fi, relay, and provider restart recovery | 1/5 | Live Hudson 0.4.4 migration failed safely then recovered; both hosts upgraded through 0.4.8 and restarted with reciprocal access intact; other lifecycle transitions remain open |
 | 100 attach/read/leave cycles without ordering defects | 4/4 | Real local HTTP server/client soak passed 100 attach, attributed turn, read, and leave cycles with ordered transcripts/events, unique IDs, correct authorship/presence, and 200 ordered audit records |
 | One host plus two simultaneous teammates | 2/3 | Real local HTTP server with two isolated simulated tailnet identities passes per-invite visibility, simultaneous named presence, prompt collision, unaffected-peer continuity, and revocation; physical third-Mac certification remains open |
 
@@ -68,7 +68,7 @@ receipt on August 3, 2026.
 
 The score can reach 98 only after all of these are proven:
 
-1. **Closed:** Homebrew 0.4.7 installs and tests on clean macOS and Linux.
+1. **Closed:** Homebrew 0.4.8 installs and tests on clean macOS and Linux.
 2. Harmless named prompts work in both directions for Claude Code and managed
    Codex, with each host's native transcript checked.
 3. Ten people who did not build mpai install it; median existing-tailnet time

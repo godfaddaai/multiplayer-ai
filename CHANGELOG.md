@@ -23,6 +23,12 @@ Fail-closed managed Codex errors without a host crash.
 - A managed-socket regression sends an immediate auth error, requires the
   typed failure, proves all turn listeners are removed, and confirms the same
   Codex client remains usable afterward.
+- The exact public release asset matched SHA-256
+  `78eb0d4e6f3c5cdc9d3149472fb28719857d7df83d91bb92083a0a5abf8f1af5`,
+  installed into an isolated prefix, and reported 0.4.8 from both binaries.
+- Homebrew formula-install jobs passed on macOS 26 and Linux. Both live Macs
+  restarted on matching 0.4.8 services; replaying the remote auth failure left
+  the host PID unchanged and reciprocal reads healthy.
 
 ## [0.4.7] - 2026-08-03
 

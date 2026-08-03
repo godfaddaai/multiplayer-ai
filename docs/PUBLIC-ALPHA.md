@@ -92,10 +92,16 @@ and prints the exact attach command.
 - Live 0.4.6 → 0.4.7 public-asset upgrades on Reagan and Hudson: both services
   restarted with matching 0.4.7 doctor receipts and reciprocal session reads
   remained intact.
-- The exact public 0.4.7 release asset matched SHA-256
-  `352eda0c4215d5ee5588aa0476e6b5c59a6ba9f9f6241e34c5beb6c15714073f`,
-  installed into an isolated prefix, reported 0.4.7 from both binaries, and
-  printed the private participant invite as setup's exact next step.
+- Live 0.4.7 → 0.4.8 public-asset upgrades on Reagan and Hudson: both services
+  restarted with matching 0.4.8 doctor receipts and reciprocal session reads
+  remained intact.
+- A disposable Hudson → Reagan managed-Codex prompt reproduced an expired-token
+  failure after the attributed turn reached the native transcript. On 0.4.8,
+  the replay returned the actionable auth error while the host PID and both
+  peers' read access remained unchanged.
+- The exact public 0.4.8 release asset matched SHA-256
+  `78eb0d4e6f3c5cdc9d3149472fb28719857d7df83d91bb92083a0a5abf8f1af5`,
+  installed into an isolated prefix, and reported 0.4.8 from both binaries.
 - Disposable public-artifact lifecycle proof: install 0.4.4, preserve configured
   state while rolling back to 0.4.3, recover forward to 0.4.4, then uninstall
   the package with both installed binaries removed and state retained.
@@ -106,7 +112,7 @@ and prints the exact attach command.
   tailnet identities. Per-invite visibility, simultaneous named presence,
   same-task prompt collision, unaffected-peer continuity, and revocation pass;
   a physical third-Mac receipt remains open.
-- Packaged 0.4.7 installs on two separate Macs with matching live services.
+- Packaged 0.4.8 installs on two separate Macs with matching live services.
 - Live cross-Mac proof that one teammate can list another's separate Codex and
   Claude Code sessions, open a real Claude Code transcript, and send an
   attributed Reagan prompt from one Mac into Hudson's existing session.

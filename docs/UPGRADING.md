@@ -84,6 +84,12 @@ read-only session access remained intact. The patch changes only setup's
 printed first-invite guidance; stored identities, invitations, and audit state
 were preserved.
 
+Both hosts then upgraded from the exact public 0.4.8 release asset. Their
+services restarted with matching 0.4.8 doctor receipts and reciprocal access
+remained intact. A live managed-Codex auth failure returned a scoped error to
+the teammate without restarting the host service, proving the crash repair on
+the public artifact.
+
 On August 2, 2026, the exact public GitHub release assets were exercised in an
 isolated npm prefix: 0.4.4 installed, configured state was created, the package
 rolled back to 0.4.3, recovered forward to 0.4.4, and was fully uninstalled.
