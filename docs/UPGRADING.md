@@ -58,3 +58,8 @@ This intentionally preserves `~/.multiplayer-ai` and joined-peer Keychain
 items so a reinstall can recover. Review and remove those separately only when
 you intentionally want to destroy local identity, invitations, audit history,
 and peer access.
+
+The service-only uninstall/reinstall sequence was executed on the live 0.4.3
+host: the LaunchAgent disappeared, status reported stopped, reinstall restored
+the endpoint, and `mpai doctor` again reported matching 0.4.3 Codex and Claude
+Code health. Full Homebrew package removal remains a disposable-install gate.

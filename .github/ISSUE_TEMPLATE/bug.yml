@@ -12,7 +12,7 @@ body:
     id: version
     attributes:
       label: mpai version
-      placeholder: 0.4.1
+      placeholder: 0.4.3
     validations:
       required: true
   - type: dropdown
@@ -40,7 +40,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: checks
+    id: support
     attributes:
-      label: Relevant doctor output
-      description: Include versions and statuses only. Remove paths, IPs, identities, and tokens.
+      label: Redacted support bundle summary
+      description: Run `mpai support-bundle`, review it, then attach the JSON or paste only the relevant metadata. Never attach config, audit.jsonl, service logs, or transcripts.

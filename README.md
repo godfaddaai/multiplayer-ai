@@ -253,6 +253,8 @@ This is useful enough to dogfood and early enough to break:
 - It is not yet certified for 100-person organizations.
 
 Every release gate is tracked in [PUBLIC-ALPHA.md](./docs/PUBLIC-ALPHA.md).
+The weighted, evidence-only path to 98/100 is tracked in
+[LAUNCH-READINESS.md](./docs/LAUNCH-READINESS.md).
 
 ## Development
 

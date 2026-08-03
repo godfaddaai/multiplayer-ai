@@ -78,8 +78,9 @@ and prints the exact attach command.
    writable.
 2. **Complete distribution.** The public GitHub source, versioned release, and
    Homebrew tap are available, and services launch through the stable installed
-   CLI instead of a versioned package source or Node executable. Complete
-   automated rollback and uninstall verification.
+   CLI instead of a versioned package source or Node executable. Service
+   stop/remove/reinstall is live-verified. Complete automated rollback and full
+   package-uninstall verification.
 3. **Credential storage (closed in 0.4.2).** Peer bearer tokens live in macOS
    Keychain. Config retains only references and non-secret metadata, and legacy
    inline tokens migrate on first load.
