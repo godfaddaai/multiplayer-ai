@@ -30,7 +30,7 @@ Keep very large Codex sessions usable as shared terminal rooms.
   internal-context exclusion, partial active files, named teammate recovery,
   and the bounded managed-WebSocket payload.
 - The packed 0.4.19 artifact has SHA-256
-  `7044050bff7ec25eebaec336d3887ca5a0520afd8387419212b1686c9d8db7e5`.
+  `66bd09930d40c1459a04fb3b66bbcf619d41d1837d1e0af3446d21d77706d565`.
 
 ## [0.4.18] - 2026-08-03
 

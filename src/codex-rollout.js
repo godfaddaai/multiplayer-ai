@@ -1,4 +1,4 @@
-import { open, readdir, stat } from "node:fs/promises";
+import { open, readdir } from "node:fs/promises";
 import { homedir } from "node:os";
 import { join } from "node:path";
 
@@ -98,9 +98,9 @@ export class CodexRolloutReader {
   async readMessages(threadId, { limit = 200 } = {}) {
     const path = await this.pathFor(threadId);
     if (!path) return null;
-    const fileStat = await stat(path);
     const handle = await open(path, "r");
     try {
+      const fileStat = await handle.stat();
       let bytes = Math.min(fileStat.size, this.initialBytes);
       while (true) {
         const start = Math.max(0, fileStat.size - bytes);
