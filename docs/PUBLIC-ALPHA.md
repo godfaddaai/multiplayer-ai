@@ -115,8 +115,10 @@ and prints the exact attach command.
    categorized recent failures without tokens or transcript contents.
 8. **Release identity and policy.** The public name, repository, MIT license,
    contribution policy, responsible disclosure path, privacy notice, and
-   acceptable-use policy exist. Complete a trademark check before a hosted
-   organization control plane.
+   acceptable-use policy exist. The [preliminary name screen](./NAME-SCREEN.md)
+   found material adjacent use of the uppercase MPAI acronym in AI standards;
+   qualified trademark clearance remains required before a hosted organization
+   control plane.
 
 ### P1: should close
 

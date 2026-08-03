@@ -39,7 +39,7 @@ one-host/two-teammate concurrency proof on August 2, 2026.
 | Viewer/participant roles, revocation, collision, idempotency | 3/3 | Server suite |
 | Peer secrets outside config | 3/3 | Keychain round trip, per-peer backend routing, mode-0600 fallback, migration, and config tests |
 | Redacted diagnostics | 2/2 | Real mode-0600 bundle plus sensitive-fixture exclusion suite |
-| Public policy surface | 2/3 | MIT, contribution, conduct, security reporting, privacy, and acceptable-use policies exist; trademark review remains open |
+| Public policy surface | 2/3 | MIT, contribution, conduct, security reporting, privacy, and acceptable-use policies exist; the preliminary name screen found material adjacent MPAI standards use, so qualified trademark clearance remains open |
 
 ## 4. Reliability and lifecycle — 15/20
 
