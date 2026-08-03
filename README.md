@@ -257,8 +257,7 @@ This is useful enough to dogfood and early enough to break:
 - Safe Codex prompting depends on the managed-daemon path. Standalone Codex is
   view-only by default.
 - The Claude integration targets the local CLI session store.
-- Full rollback certification, sleep/wake certification, and three-person
-  concurrency proof remain open.
+- Physical sleep/wake recovery and three-person concurrency proof remain open.
 - It is not yet certified for 100-person organizations.
 
 Every release gate is tracked in [PUBLIC-ALPHA.md](./docs/PUBLIC-ALPHA.md).
