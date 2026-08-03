@@ -95,6 +95,7 @@ On Maya's Mac:
 
 ~~~bash
 mpai invite --name Alex --role participant --share selected
+mpai list
 mpai share SESSION_ID --with Alex
 ~~~
 
