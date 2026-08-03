@@ -34,8 +34,12 @@ service, discover available providers, and print one clear next action.
 The GitHub install remains available for machines without Homebrew:
 
 ```bash
-npm install --global github:godfaddaai/multiplayer-ai
+npm install --global https://github.com/godfaddaai/multiplayer-ai/releases/download/v0.4.8/multiplayer-ai-0.4.8.tgz
 ```
+
+Homebrew can refuse every formula before mpai runs when Apple's Command Line
+Tools are outdated. Update them through System Settings, or use the exact npm
+fallback above when Node.js 20+ is already installed.
 
 An invited teammate can start from a completely fresh install. `mpai join`
 creates their attributed local identity, stores the peer credential outside

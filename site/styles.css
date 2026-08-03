@@ -571,6 +571,9 @@ kbd { font: inherit; }
   font: 400 8px var(--mono);
 }
 .command-row code { overflow: hidden; color: #d7dbe2; font: 400 11px var(--mono); text-overflow: ellipsis; white-space: nowrap; }
+.command-row.alternative { min-height: 52px; background: rgba(255, 255, 255, 0.018); }
+.command-row.alternative > span { border-style: dashed; font-size: 7px; text-transform: uppercase; }
+.command-row.alternative code { color: #8e96a2; font-size: 9px; }
 .command-row.accent code { color: #aeb7ff; }
 .command-row button {
   padding: 6px 8px;
